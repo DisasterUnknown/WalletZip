@@ -22,7 +22,7 @@ class BudgetCard extends StatelessWidget {
       final n = int.parse(number);
       return NumberFormat.decimalPattern().format(n);
     } catch (e) {
-      return number; 
+      return number;
     }
   }
 
@@ -40,7 +40,11 @@ class BudgetCard extends StatelessWidget {
 
   // Build individual item (Income, Expense, Remaining)
   Widget _buildBudgetItem(
-      String label, String value, Color color, IconData icon) {
+    String label,
+    String value,
+    Color color,
+    IconData icon,
+  ) {
     return Column(
       children: [
         Icon(icon, color: color, size: 26),
@@ -70,9 +74,8 @@ class BudgetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
@@ -89,77 +92,89 @@ class BudgetCard extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.5,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 8),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: 20),
+          
+              // Values container
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 10,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: Colors.white.withValues(alpha: 0.05),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.08),
                   ),
                 ),
-                const SizedBox(height: 20),
-      
-                // Values container
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Colors.white.withValues(alpha: 0.05),
-                    border:
-                        Border.all(color: Colors.white.withValues(alpha: 0.08)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildBudgetItem(
-                          "Income", income, Colors.greenAccent, Icons.arrow_upward_rounded),
-                      _buildBudgetItem(
-                          "Remaining", remaining, Colors.white, Icons.account_balance_wallet_outlined),
-                      _buildBudgetItem(
-                          "Expense", expense, Colors.redAccent, Icons.arrow_downward_rounded),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildBudgetItem(
+                      "Income",
+                      income,
+                      Colors.greenAccent,
+                      Icons.arrow_upward_rounded,
+                    ),
+                    _buildBudgetItem(
+                      "Remaining",
+                      remaining,
+                      Colors.white,
+                      Icons.account_balance_wallet_outlined,
+                    ),
+                    _buildBudgetItem(
+                      "Expense",
+                      expense,
+                      Colors.redAccent,
+                      Icons.arrow_downward_rounded,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+          
+              // Gradient line
+              Container(
+                margin: const EdgeInsets.only(top: 12),
+                height: 4,
+                width: 120,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.greenAccent.withValues(alpha: 0.8),
+                      Colors.white.withValues(alpha: 0.4),
+                      Colors.redAccent.withValues(alpha: 0.8),
                     ],
                   ),
+                  borderRadius: BorderRadius.circular(2),
                 ),
-                const SizedBox(height: 10),
-      
-                // Gradient line
-                Container(
-                  margin: const EdgeInsets.only(top: 12),
-                  height: 4,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.greenAccent.withValues(alpha: 0.8),
-                        Colors.white.withValues(alpha: 0.4),
-                        Colors.redAccent.withValues(alpha: 0.8),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+              ),
+              const SizedBox(height: 8),
+          
+              // Balance message
+              Text(
+                getBalanceMessage(),
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 13,
+                  letterSpacing: 0.3,
                 ),
-                const SizedBox(height: 8),
-      
-                // Balance message
-                Text(
-                  getBalanceMessage(),
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 13,
-                    letterSpacing: 0.3,
-                  ),
-                ),
-                const SizedBox(height: 12),
-              ],
-            ),
+              ),
+              const SizedBox(height: 12),
+            ],
           ),
         ),
       ),

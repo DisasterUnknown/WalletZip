@@ -77,11 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 } else if (year == currentYear) {
                   status = "Ongoing";
                 } else {
-                  status = "Closed";
+                  status = "Completed";
                 }
 
                 return GestureDetector(
-                  onTap: () async => await RoutingService().navigateWithoutAnimationTo(RoutingService.monthlyExpenses),
+                  onTap: () async => await RoutingService().navigateTo(RoutingService.yearExpenses, arguments: card['year']),
                   child: Container(
                     margin: const EdgeInsets.symmetric(
                       horizontal: 16,
