@@ -67,6 +67,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         left: sideMargin,
                         right: sideMargin,
                       ),
+                      padding: EdgeInsets.only(top: 5),
                       child: Text(
                         title,
                         maxLines: 1,
