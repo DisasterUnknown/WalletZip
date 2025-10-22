@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black),
         debugShowCheckedModeBanner: false,
         navigatorKey: routing.navigatorKey,
-        initialRoute: RoutingService.expence_record,
+        initialRoute: RoutingService.dashboard,
         routes: routing.routes,
       ),
     );

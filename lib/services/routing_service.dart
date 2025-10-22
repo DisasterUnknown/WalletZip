@@ -15,14 +15,14 @@ class RoutingService {
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  static const String expence_record = '/';
+  static const String dashboard = '/';
+  static const String expenceRecord = '/expence-record';
   static const String yearExpenses = '/year-expenses';
   static const String monthlyExpenses = '/monthly-expenses';
   static const String dailyExpenses = '/daily-expenses';
   static const String categories = '/categories';
   static const String settings = '/settings';
   static const String budget = '/budget';
-  static const String dashboard = '/dashboard';
 
   Future<dynamic>? navigateTo(String routeName, {Object? arguments}) {
     return navigatorKey.currentState
@@ -47,7 +47,7 @@ class RoutingService {
   }
 
   Map<String, WidgetBuilder> get routes => {
-        expence_record: (context) => const HomeScreen(),
+        expenceRecord: (context) => const HomeScreen(),
         yearExpenses: (context) => const YearExpensesScreen(),
         monthlyExpenses: (context) => const MonthlyExpensesScreen(),
         dailyExpenses: (context) => const DailyExpensesScreen(),

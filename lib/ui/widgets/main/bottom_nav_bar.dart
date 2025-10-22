@@ -93,7 +93,7 @@ class BottomNavBar extends StatelessWidget {
                 ),
 
               buildTab(Icons.badge_outlined, RoutingService.budget, 4),
-              buildTab(Icons.date_range_outlined, RoutingService.expence_record, 5),
+              buildTab(Icons.date_range_outlined, RoutingService.expenceRecord, 5),
             ],
           ),
         ),
