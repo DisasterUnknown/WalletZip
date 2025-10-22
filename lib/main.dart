@@ -15,9 +15,7 @@ class MyApp extends StatelessWidget {
     return SafeArea(
       child: MaterialApp(
         title: 'Expenso',
-        theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: Colors.black, 
-        ),
+        theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black),
         debugShowCheckedModeBanner: false,
         navigatorKey: routing.navigatorKey,
         initialRoute: RoutingService.expence_record,

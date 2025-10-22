@@ -1,3 +1,4 @@
+import 'package:expenso/ui/widgets/sub/add_expense_income/add_transaction_form.dart';
 import 'package:flutter/material.dart';
 
 class FloatingAddBtn extends StatelessWidget {
@@ -32,7 +33,10 @@ class FloatingAddBtn extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         onPressed: () {
-          print("Square Floating + pressed!");
+          showDialog(
+            context: context,
+            builder: (_) => const AddExpenseOverlay(),
+          );
         },
         child: const Icon(Icons.add, size: 30, color: Colors.white),
       ),
