@@ -1,8 +1,8 @@
 import 'package:expenso/core/constants/default_categories.dart';
 import 'package:expenso/core/shared_prefs/shared_pref_service.dart';
 import 'package:expenso/data/models/category.dart';
-import 'package:expenso/ui/widgets/bottom_nav_bar.dart';
-import 'package:expenso/ui/widgets/custom_app_bar.dart';
+import 'package:expenso/ui/widgets/main/bottom_nav_bar.dart';
+import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesScreen extends StatefulWidget {

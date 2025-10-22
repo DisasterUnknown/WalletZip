@@ -1,4 +1,4 @@
-import 'package:expenso/ui/widgets/custom_app_bar.dart';
+import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class DailyExpensesScreen extends StatelessWidget {

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         navigatorKey: routing.navigatorKey,
-        initialRoute: RoutingService.home,
+        initialRoute: RoutingService.expence_record,
         routes: routing.routes,
       ),
     );

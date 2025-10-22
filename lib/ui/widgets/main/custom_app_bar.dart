@@ -86,9 +86,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         margin: EdgeInsets.only(right: sideMargin),
                         child: GestureDetector(
                           onTap: () =>
-                              RoutingService().navigateWithoutAnimationTo(RoutingService.home),
+                              RoutingService().navigateWithoutAnimationTo(RoutingService.settings),
                           child: const Icon(
-                            Icons.home_outlined,
+                            Icons.settings_outlined,
                             color: Colors.white,
                             size: iconSize + 2,
                           ),

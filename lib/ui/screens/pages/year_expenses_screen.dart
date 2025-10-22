@@ -1,5 +1,6 @@
-import 'package:expenso/ui/widgets/custom_app_bar.dart';
-import 'package:expenso/ui/widgets/status_card.dart';
+import 'package:expenso/services/routing_service.dart';
+import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
+import 'package:expenso/ui/widgets/sub/status_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // << add this
 
@@ -68,11 +69,13 @@ class YearExpensesScreen extends StatelessWidget {
                 final currentMonthIndex = DateTime.now().month;
                 final currentYear = DateTime.now().year;
                 final isOngoing =
-                    monthIndex == currentMonthIndex && int.parse(year) == currentYear;
+                    monthIndex == currentMonthIndex &&
+                    int.parse(year) == currentYear;
 
                 String status;
                 if (int.parse(year) > currentYear ||
-                    (int.parse(year) == currentYear && monthIndex > currentMonthIndex)) {
+                    (int.parse(year) == currentYear &&
+                        monthIndex > currentMonthIndex)) {
                   status = "Pending";
                 } else if (isOngoing) {
                   status = "Ongoing";
@@ -81,12 +84,21 @@ class YearExpensesScreen extends StatelessWidget {
                 }
 
                 return GestureDetector(
-                  onTap: () {
-                    print("Tapped on $month $year");
+                  onTap: () async {
+                    await RoutingService().navigateTo(
+                      RoutingService.monthlyExpenses,
+                      arguments: [year, month],
+                    );
                   },
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 6,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(16),
@@ -120,8 +132,8 @@ class YearExpensesScreen extends StatelessWidget {
                                 color: status == "Pending"
                                     ? Colors.orangeAccent
                                     : status == "Ongoing"
-                                        ? Colors.greenAccent
-                                        : Colors.white54,
+                                    ? Colors.greenAccent
+                                    : Colors.white54,
                                 fontSize: 12,
                               ),
                             ),
@@ -132,7 +144,9 @@ class YearExpensesScreen extends StatelessWidget {
                         Text(
                           price.isEmpty ? "—" : formatNumber(price),
                           style: TextStyle(
-                            color: price.isEmpty ? Colors.white54 : Colors.greenAccent,
+                            color: price.isEmpty
+                                ? Colors.white54
+                                : Colors.greenAccent,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),

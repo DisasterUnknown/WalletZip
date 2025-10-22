@@ -1,6 +1,7 @@
-import 'package:expenso/ui/widgets/bottom_nav_bar.dart';
-import 'package:expenso/ui/widgets/custom_app_bar.dart';
-import 'package:expenso/ui/widgets/status_card.dart';
+import 'package:expenso/ui/widgets/main/bottom_nav_bar.dart';
+import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
+import 'package:expenso/ui/widgets/sub/floating_action_btn.dart';
+import 'package:expenso/ui/widgets/sub/status_card.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -28,6 +29,9 @@ class DashboardScreen extends StatelessWidget {
           ),
         ),
       ),
+
+      floatingActionButton: FloatingAddBtn(),
+
       bottomNavigationBar: BottomNavBar(
         tabIndex: 1,
         showAdd: false,

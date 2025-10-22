@@ -1,8 +1,8 @@
-import 'dart:ui';
 import 'package:expenso/services/routing_service.dart';
-import 'package:expenso/ui/widgets/bottom_nav_bar.dart';
-import 'package:expenso/ui/widgets/custom_app_bar.dart';
-import 'package:expenso/ui/widgets/status_card.dart';
+import 'package:expenso/ui/widgets/main/bottom_nav_bar.dart';
+import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
+import 'package:expenso/ui/widgets/sub/floating_action_btn.dart';
+import 'package:expenso/ui/widgets/sub/status_card.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,13 +18,6 @@ class _HomeScreenState extends State<HomeScreen> {
     {"year": "2024", "price": "3,200"},
     {"year": "2023", "price": ""},
   ];
-
-  void _addYearCard() {
-    setState(() {
-      final latestYear = int.parse(yearCards.first['year'] ?? "2025");
-      yearCards.insert(0, {"year": (latestYear + 1).toString(), "price": ""});
-    });
-  }
 
   void _removeYearCard(int index) {
     if (yearCards[index]['price'] == null ||
@@ -46,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
-        title: "Home",
+        title: "Expense Records",
         showBackButton: false,
         showHomeButton: true,
       ),
@@ -56,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               const SizedBox(height: 5),
 
-              // BudgetCard 
+              // BudgetCard
               const BudgetCard(
                 title: "Total Difference",
                 income: "54,654",
@@ -65,11 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 10),
 
-              // Year-Price Cards 
+              // Year-Price Cards
               ...List.generate(yearCards.length, (index) {
                 final card = yearCards[index];
                 final year = int.tryParse(card['year'] ?? "") ?? 0;
                 final currentYear = DateTime.now().year;
+                final isOngoing = year == currentYear;
 
                 String status;
                 if (year > currentYear) {
@@ -81,7 +75,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
 
                 return GestureDetector(
-                  onTap: () async => await RoutingService().navigateTo(RoutingService.yearExpenses, arguments: card['year']),
+                  onTap: () async => await RoutingService().navigateTo(
+                    RoutingService.yearExpenses,
+                    arguments: card['year'],
+                  ),
                   child: Container(
                     margin: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -96,7 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(12),
                       border: Border(
                         left: BorderSide(
-                          color: Colors.greenAccent.withValues(alpha: 0.8),
+                          color: isOngoing
+                              ? Colors.greenAccent
+                              : Colors.blueGrey.withValues(alpha: 0.8),
                           width: 4,
                         ),
                       ),
@@ -116,8 +115,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Text(
                               status,
-                              style: const TextStyle(
-                                color: Colors.white54,
+                              style: TextStyle(
+                                color: status == "Pending"
+                                    ? Colors.orangeAccent
+                                    : status == "Ongoing"
+                                    ? Colors.greenAccent
+                                    : Colors.white54,
                                 fontSize: 12,
                               ),
                             ),
@@ -165,10 +168,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+
+      floatingActionButton: FloatingAddBtn(),
+
       bottomNavigationBar: BottomNavBar(
-        tabIndex: 6,
-        showAdd: true,
-        onAddPressed: _addYearCard,
+        tabIndex: 5,
+        showAdd: false,
       ),
     );
   }

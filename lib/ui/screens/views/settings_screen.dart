@@ -1,5 +1,5 @@
-import 'package:expenso/ui/widgets/bottom_nav_bar.dart';
-import 'package:expenso/ui/widgets/custom_app_bar.dart';
+import 'package:expenso/ui/widgets/main/bottom_nav_bar.dart';
+import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -15,11 +15,8 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: const Center(child: Text("Welcome to Expenso")),
       bottomNavigationBar: BottomNavBar(
-        tabIndex: 5,
+        tabIndex: 6,
         showAdd: false,
-        onAddPressed: () {
-          print("Add tapped");
-        },
       ),
     );
   }

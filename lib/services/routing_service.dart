@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../ui/screens/views/home_screen.dart';
+import '../ui/screens/views/expence_record_screen.dart';
 import '../ui/screens/pages/year_expenses_screen.dart';
 import '../ui/screens/pages/monthly_expenses_screen.dart';
 import '../ui/screens/pages/daily_expenses_screen.dart';
@@ -15,7 +15,7 @@ class RoutingService {
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  static const String home = '/';
+  static const String expence_record = '/';
   static const String yearExpenses = '/year-expenses';
   static const String monthlyExpenses = '/monthly-expenses';
   static const String dailyExpenses = '/daily-expenses';
@@ -47,7 +47,7 @@ class RoutingService {
   }
 
   Map<String, WidgetBuilder> get routes => {
-        home: (context) => const HomeScreen(),
+        expence_record: (context) => const HomeScreen(),
         yearExpenses: (context) => const YearExpensesScreen(),
         monthlyExpenses: (context) => const MonthlyExpensesScreen(),
         dailyExpenses: (context) => const DailyExpensesScreen(),
