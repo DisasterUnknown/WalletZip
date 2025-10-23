@@ -94,7 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const SizedBox(height: 10),
                     // Year cards
-                    ...List.generate(yearCards.length, (index) {
+                    ...List.generate(yearCards.length + 1, (index) {
+                      if (index == yearCards.length) {
+                        return const SizedBox(
+                          height: 60,
+                        );
+                      }
+
                       final yearData = yearCards[index];
                       final year = int.tryParse(yearData.year) ?? 0;
                       final currentYearInt = DateTime.now().year;

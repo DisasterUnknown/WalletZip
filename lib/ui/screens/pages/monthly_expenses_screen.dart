@@ -29,7 +29,7 @@ class _MonthlyExpensesScreenState extends State<MonthlyExpensesScreen> {
 
     final args =
         ModalRoute.of(context)?.settings.arguments as List<String>? ??
-            ["Unknown", "Unknown"];
+        ["Unknown", "Unknown"];
     year = args[0];
     month = args[1];
 
@@ -56,7 +56,8 @@ class _MonthlyExpensesScreenState extends State<MonthlyExpensesScreen> {
     }
 
     // Compute a simple hash (length + last timestamp)
-    final hash = '${monthExpenses.length}-${monthExpenses.isNotEmpty ? monthExpenses.last.dateTime.millisecondsSinceEpoch : 0}';
+    final hash =
+        '${monthExpenses.length}-${monthExpenses.isNotEmpty ? monthExpenses.last.dateTime.millisecondsSinceEpoch : 0}';
 
     // Only refresh if data has changed
     if (_dataHash != hash) {
@@ -100,8 +101,14 @@ class _MonthlyExpensesScreenState extends State<MonthlyExpensesScreen> {
 
                 Expanded(
                   child: ListView.builder(
-                    itemCount: expenses.length,
+                    itemCount: expenses.length + 1,
                     itemBuilder: (context, index) {
+                      if (index == expenses.length) {
+                        return const SizedBox(
+                          height: 80,
+                        );
+                      }
+
                       final e = expenses[index];
                       final date = e.dateTime;
                       final day = DateFormat('dd').format(date);

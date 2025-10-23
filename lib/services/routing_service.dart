@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../ui/screens/views/expence_record_screen.dart';
 import '../ui/screens/pages/year_expenses_screen.dart';
 import '../ui/screens/pages/monthly_expenses_screen.dart';
-import '../ui/screens/pages/daily_expenses_screen.dart';
 import '../ui/screens/views/categories_screen.dart';
 import '../ui/screens/views/settings_screen.dart';
 import '../ui/screens/views/budget_screen.dart';
@@ -19,7 +18,6 @@ class RoutingService {
   static const String expenceRecord = '/expence-record';
   static const String yearExpenses = '/year-expenses';
   static const String monthlyExpenses = '/monthly-expenses';
-  static const String dailyExpenses = '/daily-expenses';
   static const String categories = '/categories';
   static const String settings = '/settings';
   static const String budget = '/budget';
@@ -50,7 +48,6 @@ class RoutingService {
         expenceRecord: (context) => const HomeScreen(),
         yearExpenses: (context) => const YearExpensesScreen(),
         monthlyExpenses: (context) => const MonthlyExpensesScreen(),
-        dailyExpenses: (context) => const DailyExpensesScreen(),
         categories: (context) => const CategoriesScreen(),
         settings: (context) => const SettingsScreen(),
         budget: (context) => const BudgetScreen(),
