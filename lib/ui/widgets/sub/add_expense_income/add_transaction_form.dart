@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:expenso/core/constants/default_categories.dart';
 import 'package:expenso/core/shared_prefs/shared_pref_service.dart';
+import 'package:expenso/data/db/db_helper.dart';
+import 'package:expenso/data/models/expense.dart';
 import 'package:expenso/data/models/category.dart';
 import 'widgets/date_time_picker_row.dart';
 import 'widgets/transaction_type_toggle.dart';
@@ -68,10 +70,11 @@ class _AddExpenseOverlayState extends State<AddExpenseOverlay> {
     });
   }
 
-  void _submitExpense() {
+  void _submitExpense() async {
     setState(() => errorMessage = null);
 
     if (!_formKey.currentState!.validate()) return;
+
     if (selectedCategoryIds.isEmpty) {
       setState(() => errorMessage = 'Please select at least one category!');
       return;
@@ -83,19 +86,24 @@ class _AddExpenseOverlayState extends State<AddExpenseOverlay> {
       return;
     }
 
-    // All valid → proceed
-    final selectedCategories = userCategories
-        .where((c) => selectedCategoryIds.contains(c.id))
-        .map((c) => c.name)
-        .toList();
+    final expense = Expense(
+      type: transactionType.toLowerCase(),
+      price: amount,
+      categoryIds: selectedCategoryIds,
+      note: descriptionController.text,
+      dateTime: DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        selectedTime.hour,
+        selectedTime.minute,
+      ),
+    );
 
-    print('Transaction Type: $transactionType');
-    print('Amount: $amount');
-    print('Categories: ${selectedCategories.join(', ')}');
-    print('Description: ${descriptionController.text}');
-    print('Date: ${DateFormat('yyyy-MM-dd').format(selectedDate)}');
-    print('Time: ${selectedTime.format(context)}');
+    // Save to DB
+    await DBHelper().insertExpense(expense);
 
+    if (!mounted) return;
     Navigator.of(context).pop();
   }
 
@@ -163,10 +171,8 @@ class _AddExpenseOverlayState extends State<AddExpenseOverlay> {
                       controller: descriptionController,
                       label: 'Description',
                       accentColor: accentColor,
-                      validator: (v) =>
-                          v == null || v.isEmpty ? 'Enter description' : null,
                       keyboardType: TextInputType.text,
-                      enableThousandsFormatter: false, 
+                      enableThousandsFormatter: false,
                     ),
                     const SizedBox(height: 12),
 

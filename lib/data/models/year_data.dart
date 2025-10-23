@@ -1,7 +1,7 @@
 import 'month_data.dart';
 
 class YearData {
-  final String year; // "2025"
+  final String year; // e.g., "2025"
   final List<MonthData> months;
 
   YearData({required this.year, required this.months});

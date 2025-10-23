@@ -1,7 +1,7 @@
 import 'expense.dart';
 
 class DayData {
-  final String day; // "25"
+  final String day; // e.g., "23"
   final List<Expense> expenses;
 
   DayData({required this.day, required this.expenses});

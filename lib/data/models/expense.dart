@@ -1,6 +1,6 @@
 class Expense {
   final int? id;
-  final String type;           // "income" or "expense"
+  final String type; // "income" or "expense"
   final double price;
   final List<int> categoryIds; // multiple categories
   final String? note;
@@ -15,26 +15,21 @@ class Expense {
     required this.dateTime,
   });
 
-  // Convert to Map (for SQLite / JSON)
   Map<String, dynamic> toMap() => {
         'id': id,
         'type': type,
         'price': price,
-        'categoryIds': categoryIds.join(','), // store as comma-separated string in SQLite
+        'categoryIds': categoryIds.join(','), // comma-separated string
         'note': note,
         'dateTime': dateTime.toIso8601String(),
       };
 
-  // Create Expense from Map (SQLite / JSON)
   factory Expense.fromMap(Map<String, dynamic> map) => Expense(
         id: map['id'],
         type: map['type'],
         price: map['price'],
         categoryIds: map['categoryIds'] != null && map['categoryIds'] != ''
-            ? (map['categoryIds'] as String)
-                .split(',')
-                .map((e) => int.parse(e))
-                .toList()
+            ? (map['categoryIds'] as String).split(',').map(int.parse).toList()
             : [],
         note: map['note'],
         dateTime: DateTime.parse(map['dateTime']),

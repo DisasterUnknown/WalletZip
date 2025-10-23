@@ -1,7 +1,7 @@
 import 'day_data.dart';
 
 class MonthData {
-  final String month; // "Jan"
+  final String month; // e.g., "January"
   final List<DayData> days;
 
   MonthData({required this.month, required this.days});
