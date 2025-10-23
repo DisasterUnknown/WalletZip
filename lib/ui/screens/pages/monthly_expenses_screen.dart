@@ -235,7 +235,7 @@ class _MonthlyExpensesScreenState extends State<MonthlyExpensesScreen> {
                 ),
               ],
             ),
-      floatingActionButton: const FloatingAddBtn(),
+      floatingActionButton: FloatingAddBtn(month: month, year: year),
     );
   }
 }

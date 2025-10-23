@@ -2,7 +2,9 @@ import 'package:expenso/ui/widgets/sub/add_expense_income/add_transaction_form.d
 import 'package:flutter/material.dart';
 
 class FloatingAddBtn extends StatelessWidget {
-  const FloatingAddBtn({super.key});
+  final String? month;
+  final String? year;
+  const FloatingAddBtn({super.key, this.month, this.year});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class FloatingAddBtn extends StatelessWidget {
         onPressed: () async {
           final added = await showDialog(
             context: context,
-            builder: (_) => const AddExpenseOverlay(),
+            builder: (_) => AddExpenseOverlay(month: month, year: year),
           );
 
           // if something was added, reload data

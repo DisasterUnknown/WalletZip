@@ -13,7 +13,9 @@ import 'widgets/expense_text_field.dart';
 import 'widgets/submit_button.dart';
 
 class AddExpenseOverlay extends StatefulWidget {
-  const AddExpenseOverlay({super.key});
+  final String? month;
+  final String? year;
+  const AddExpenseOverlay({super.key, this.month, this.year});
 
   @override
   State<AddExpenseOverlay> createState() => _AddExpenseOverlayState();
@@ -40,6 +42,22 @@ class _AddExpenseOverlayState extends State<AddExpenseOverlay> {
   void initState() {
     super.initState();
     _loadUserCategories();
+
+    // If month and year are provided, set selectedDate accordingly
+    if (widget.month != null && widget.year != null) {
+      try {
+        final monthIndex = DateFormat('MMMM').parse(widget.month!).month;
+        final yearInt = int.parse(widget.year!);
+        selectedDate = DateTime(yearInt, monthIndex, selectedDate.day);
+        selectedYear = yearInt.toString();
+        selectedMonth = widget.month!;
+      } catch (_) {
+        // fallback to current date if parsing fails
+        selectedDate = DateTime.now();
+        selectedYear = selectedDate.year.toString();
+        selectedMonth = DateFormat('MMMM').format(selectedDate);
+      }
+    }
   }
 
   Future<void> _loadUserCategories() async {
