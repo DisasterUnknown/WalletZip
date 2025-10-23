@@ -32,11 +32,16 @@ class FloatingAddBtn extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 0,
         backgroundColor: Colors.transparent,
-        onPressed: () {
-          showDialog(
+        onPressed: () async {
+          final added = await showDialog(
             context: context,
             builder: (_) => const AddExpenseOverlay(),
           );
+
+          // if something was added, reload data
+          if (added == true) {
+            
+          }
         },
         child: const Icon(Icons.add, size: 30, color: Colors.white),
       ),

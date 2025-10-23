@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:expenso/core/constants/default_categories.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -15,6 +16,9 @@ class DBHelper {
   DBHelper._internal();
 
   static Database? _db;
+
+  /// Notifier to alert listeners when the DB changes
+  final ValueNotifier<int> expenseCountNotifier = ValueNotifier(0);
 
   Future<Database> get database async {
     if (_db != null) return _db!;
@@ -63,7 +67,7 @@ class DBHelper {
     }
   }
 
-  // Insert a category
+  // CATEGORY METHODS
   Future<int> insertCategory(Category category) async {
     final db = await database;
     return await db.insert(
@@ -73,24 +77,53 @@ class DBHelper {
     );
   }
 
-  // Insert an expense
-  Future<int> insertExpense(Expense expense) async {
-    final db = await database;
-    return await db.insert(
-      'expenses',
-      expense.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  // Fetch all categories
   Future<List<Category>> getCategories() async {
     final db = await database;
     final res = await db.query('categories');
     return res.map((c) => Category.fromMap(c)).toList();
   }
 
-  // Fetch expenses by date
+  // EXPENSE METHODS
+  Future<int> insertExpense(Expense expense) async {
+    final db = await database;
+    final id = await db.insert(
+      'expenses',
+      expense.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+
+    // Notify listeners
+    await _notifyExpenseCount();
+    return id;
+  }
+
+  Future<int> updateExpense(Expense expense) async {
+    final db = await database;
+    final result = await db.update(
+      'expenses',
+      expense.toMap(),
+      where: 'id = ?',
+      whereArgs: [expense.id],
+    );
+
+    await _notifyExpenseCount();
+    return result;
+  }
+
+  Future<int> deleteExpense(int id) async {
+    final db = await database;
+    final result = await db.delete('expenses', where: 'id = ?', whereArgs: [id]);
+
+    await _notifyExpenseCount();
+    return result;
+  }
+
+  Future<List<Expense>> getAllExpenses() async {
+    final db = await database;
+    final res = await db.query('expenses');
+    return res.map((e) => Expense.fromMap(e)).toList();
+  }
+
   Future<List<Expense>> getExpensesByDate(DateTime date) async {
     final db = await database;
     final start = DateTime(date.year, date.month, date.day);
@@ -105,31 +138,7 @@ class DBHelper {
     return res.map((e) => Expense.fromMap(e)).toList();
   }
 
-  // Fetch all expenses
-  Future<List<Expense>> getAllExpenses() async {
-    final db = await database;
-    final res = await db.query('expenses');
-    return res.map((e) => Expense.fromMap(e)).toList();
-  }
-
-  // Update an expense
-  Future<int> updateExpense(Expense expense) async {
-    final db = await database;
-    return await db.update(
-      'expenses',
-      expense.toMap(),
-      where: 'id = ?',
-      whereArgs: [expense.id],
-    );
-  }
-
-  // Delete an expense
-  Future<int> deleteExpense(int id) async {
-    final db = await database;
-    return await db.delete('expenses', where: 'id = ?', whereArgs: [id]);
-  }
-
-  // Optional: Build YearData from all expenses
+  // STRUCTURED DATA
   Future<List<YearData>> getAllDataStructured() async {
     final expenses = await getAllExpenses();
     Map<String, YearData> yearsMap = {};
@@ -164,5 +173,11 @@ class DBHelper {
     }
 
     return yearsMap.values.toList();
+  }
+
+  // PRIVATE: NOTIFY
+  Future<void> _notifyExpenseCount() async {
+    final count = (await getAllExpenses()).length;
+    expenseCountNotifier.value = count;
   }
 }

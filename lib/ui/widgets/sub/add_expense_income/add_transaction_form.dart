@@ -104,7 +104,7 @@ class _AddExpenseOverlayState extends State<AddExpenseOverlay> {
     await DBHelper().insertExpense(expense);
 
     if (!mounted) return;
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(true);
   }
 
   @override
