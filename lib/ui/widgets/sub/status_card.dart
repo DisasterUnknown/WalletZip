@@ -1,49 +1,87 @@
+import 'package:expenso/data/db/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class BudgetCard extends StatelessWidget {
+class BudgetCard extends StatefulWidget {
   final String title;
-  final String income;
-  final String expense;
-  final String remaining;
+  final String? type; // "month", "year", "lifetime"
+  final String? month; // Only needed for type = "month"
+  final String? year;  // For type = "month" or "year"
 
   const BudgetCard({
     super.key,
-    this.title = "Title",
-    this.income = "0",
-    this.expense = "0",
-    this.remaining = "0",
+    this.title = "Total Summary",
+    this.type = "lifetime",
+    this.month,
+    this.year,
   });
 
-  // Format numbers with commas
-  String formatNumber(String number) {
-    try {
-      final n = int.parse(number);
-      return NumberFormat.decimalPattern().format(n);
-    } catch (e) {
-      return number;
+  @override
+  State<BudgetCard> createState() => _BudgetCardState();
+}
+
+class _BudgetCardState extends State<BudgetCard> {
+  double income = 0;
+  double expense = 0;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBudgetData();
+  }
+
+  Future<void> _loadBudgetData() async {
+    final allData = await DBHelper().getAllDataStructured();
+
+    double totalIncome = 0;
+    double totalExpense = 0;
+
+    for (var yearData in allData) {
+      // Filter by year if type = "year" or "month"
+      if (widget.type == "year" && yearData.year != widget.year) continue;
+
+      for (var monthData in yearData.months) {
+        // Filter by month if needed
+        if (widget.type == "month") {
+          final monthName =
+              DateFormat.MMMM().format(DateTime(0, int.parse(monthData.month)));
+          if (monthName != widget.month) continue;
+        }
+
+        for (var dayData in monthData.days) {
+          for (var e in dayData.expenses) {
+            if (e.type.toLowerCase() == "income") {
+              totalIncome += e.price;
+            } else if (e.type.toLowerCase() == "expense") {
+              totalExpense += e.price;
+            }
+          }
+        }
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        income = totalIncome;
+        expense = totalExpense;
+        isLoading = false;
+      });
     }
   }
 
-  // Determine balance message
+  String formatNumber(double number) {
+    return NumberFormat('#,##0.00').format(number);
+  }
+
   String getBalanceMessage() {
-    final rem = (int.tryParse(income) ?? 0) - (int.tryParse(expense) ?? 0);
-    if (rem > 0) {
-      return "On track 🎯";
-    } else if (rem < 0) {
-      return "Review spending ⚠️";
-    } else {
-      return "Balanced ⚖️";
-    }
+    final rem = income - expense;
+    if (rem > 0) return "On track 🎯";
+    if (rem < 0) return "Review spending ⚠️";
+    return "Balanced ⚖️";
   }
 
-  // Build individual item (Income, Expense, Remaining)
-  Widget _buildBudgetItem(
-    String label,
-    String value,
-    Color color,
-    IconData icon,
-  ) {
+  Widget _buildBudgetItem(String label, String value, Color color, IconData icon) {
     return Column(
       children: [
         Icon(icon, color: color, size: 26),
@@ -58,7 +96,7 @@ class BudgetCard extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          formatNumber(value),
+          value,
           style: TextStyle(
             color: color,
             fontSize: 15,
@@ -72,6 +110,8 @@ class BudgetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final remaining = income - expense;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
@@ -89,93 +129,96 @@ class BudgetCard extends StatelessWidget {
             ),
           ],
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 8),
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.5,
+        child: isLoading
+            ? const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: CircularProgressIndicator(color: Colors.white),
                 ),
-              ),
-              const SizedBox(height: 20),
-          
-              // Values container
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 10,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Colors.white.withValues(alpha: 0.05),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.08),
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildBudgetItem(
-                      "Income",
-                      income,
-                      Colors.greenAccent,
-                      Icons.arrow_upward_rounded,
+                  const SizedBox(height: 20),
+
+                  // Budget summary
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 10,
                     ),
-                    _buildBudgetItem(
-                      "Remaining",
-                      remaining,
-                      Colors.white,
-                      Icons.account_balance_wallet_outlined,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.white.withValues(alpha: 0.05),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.08),
+                      ),
                     ),
-                    _buildBudgetItem(
-                      "Expense",
-                      expense,
-                      Colors.redAccent,
-                      Icons.arrow_downward_rounded,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildBudgetItem(
+                          "Income",
+                          formatNumber(income),
+                          Colors.greenAccent,
+                          Icons.arrow_upward_rounded,
+                        ),
+                        _buildBudgetItem(
+                          "Remaining",
+                          formatNumber(remaining),
+                          Colors.white,
+                          Icons.account_balance_wallet_outlined,
+                        ),
+                        _buildBudgetItem(
+                          "Expense",
+                          formatNumber(expense),
+                          Colors.redAccent,
+                          Icons.arrow_downward_rounded,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-          
-              // Gradient line
-              Container(
-                margin: const EdgeInsets.only(top: 12),
-                height: 4,
-                width: 120,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.greenAccent.withValues(alpha: 0.8),
-                      Colors.white.withValues(alpha: 0.4),
-                      Colors.redAccent.withValues(alpha: 0.8),
-                    ],
                   ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
+                  const SizedBox(height: 14),
+
+                  // Gradient line
+                  Container(
+                    margin: const EdgeInsets.only(top: 12),
+                    height: 4,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.greenAccent.withValues(alpha: 0.8),
+                          Colors.white.withValues(alpha: 0.4),
+                          Colors.redAccent.withValues(alpha: 0.8),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+
+                  Text(
+                    getBalanceMessage(),
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 13,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
               ),
-              const SizedBox(height: 8),
-          
-              // Balance message
-              Text(
-                getBalanceMessage(),
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 13,
-                  letterSpacing: 0.3,
-                ),
-              ),
-              const SizedBox(height: 12),
-            ],
-          ),
-        ),
       ),
     );
   }

@@ -18,14 +18,7 @@ class DashboardScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Center(
           child: Column(
-            children: [
-              BudgetCard(
-                title: "Total Difference",
-                income: "54654",
-                expense: "34120",
-                remaining: "20534",
-              ),
-            ],
+            children: [BudgetCard(title: "Lifetime Summary", type: "lifetime")],
           ),
         ),
       ),

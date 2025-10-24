@@ -17,7 +17,7 @@ class YearExpensesScreen extends StatefulWidget {
 class _YearExpensesScreenState extends State<YearExpensesScreen> {
   late String year;
   bool isLoading = true;
-  Map<int, double> monthlyTotals = {}; // monthIndex -> total amount
+  Map<int, double> monthlyTotals = {};
 
   @override
   void didChangeDependencies() {
@@ -38,7 +38,7 @@ class _YearExpensesScreenState extends State<YearExpensesScreen> {
 
     final Map<int, double> totals = {};
     for (var i = 1; i <= 12; i++) {
-      totals[i] = 0.0; // initialize
+      totals[i] = 0.0;
       final monthData = yearData.months.firstWhere(
         (m) => int.parse(m.month) == i,
         orElse: () => MonthData(month: i.toString(), days: []),
@@ -91,30 +91,34 @@ class _YearExpensesScreenState extends State<YearExpensesScreen> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 5),
-                    const BudgetCard(
-                      title: "Total Difference",
-                      income: "54,654",
-                      expense: "34,120",
-                      remaining: "20,534",
-                    ),
-                    const SizedBox(height: 10),
+          : Column(
+              children: [
+                const SizedBox(height: 5),
+                // 🔹 Shrunk summary card like in MonthlyExpensesScreen
+                BudgetCard(
+                  title: "Yearly Summary",
+                  type: "year",
+                  year: year,
+                ),
+                const SizedBox(height: 10),
 
-                    ...List.generate(months.length, (index) {
+                // 🔹 Scrollable list (like your monthly screen)
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: months.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == months.length) {
+                        return const SizedBox(height: 80);
+                      }
+
                       final monthIndex = index + 1;
                       final month = months[index];
-
                       final total = monthlyTotals[monthIndex] ?? 0.0;
                       final priceText = total == 0 ? "—" : formatNumber(total);
 
                       final currentMonthIndex = DateTime.now().month;
                       final currentYear = DateTime.now().year;
-                      final isOngoing =
-                          monthIndex == currentMonthIndex &&
+                      final isOngoing = monthIndex == currentMonthIndex &&
                           int.parse(year) == currentYear;
 
                       String status;
@@ -141,8 +145,8 @@ class _YearExpensesScreenState extends State<YearExpensesScreen> {
                             vertical: 6,
                           ),
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 14,
+                            horizontal: 14,
+                            vertical: 10,
                           ),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.08),
@@ -159,7 +163,6 @@ class _YearExpensesScreenState extends State<YearExpensesScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              // Month + Status
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -167,7 +170,7 @@ class _YearExpensesScreenState extends State<YearExpensesScreen> {
                                     month,
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 16,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -177,24 +180,22 @@ class _YearExpensesScreenState extends State<YearExpensesScreen> {
                                       color: status == "Pending"
                                           ? Colors.orangeAccent
                                           : status == "Ongoing"
-                                          ? Colors.greenAccent
-                                          : Colors.white54,
+                                              ? Colors.greenAccent
+                                              : Colors.white54,
                                       fontSize: 12,
                                     ),
                                   ),
                                 ],
                               ),
-
-                              // Price formatted
                               Text(
                                 priceText,
                                 style: TextStyle(
                                   color: total == 0
                                       ? Colors.white54
                                       : total < 0
-                                      ? Colors.red
-                                      : Colors.greenAccent,
-                                  fontSize: 18,
+                                          ? Colors.redAccent
+                                          : Colors.greenAccent,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -202,11 +203,10 @@ class _YearExpensesScreenState extends State<YearExpensesScreen> {
                           ),
                         ),
                       );
-                    }),
-                    const SizedBox(height: 20),
-                  ],
+                    },
+                  ),
                 ),
-              ),
+              ],
             ),
     );
   }

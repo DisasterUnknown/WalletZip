@@ -91,11 +91,11 @@ class _MonthlyExpensesScreenState extends State<MonthlyExpensesScreen> {
           : Column(
               children: [
                 const SizedBox(height: 5),
-                const BudgetCard(
-                  title: "Total Difference",
-                  income: "54,654",
-                  expense: "34,120",
-                  remaining: "20,534",
+                BudgetCard(
+                  title: "Monthly Summary",
+                  type: "month",
+                  month: month, 
+                  year: year, 
                 ),
                 const SizedBox(height: 10),
 
@@ -104,9 +104,7 @@ class _MonthlyExpensesScreenState extends State<MonthlyExpensesScreen> {
                     itemCount: expenses.length + 1,
                     itemBuilder: (context, index) {
                       if (index == expenses.length) {
-                        return const SizedBox(
-                          height: 80,
-                        );
+                        return const SizedBox(height: 80);
                       }
 
                       final e = expenses[index];

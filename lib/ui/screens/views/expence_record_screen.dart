@@ -31,13 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadYearCards() async {
+    if (!mounted) return;
     setState(() => isLoading = true);
 
     final allData = await DBHelper().getAllDataStructured();
 
-    // Get all years
     List<YearData> years = List.from(allData);
-
     final currentYear = DateTime.now().year.toString();
 
     // Add current year if not present
@@ -66,9 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     }
-    return total == 0
-        ? ""
-        : NumberFormat('#,##0.00').format(total); 
+    return total == 0 ? "" : NumberFormat('#,##0.00').format(total);
   }
 
   @override
@@ -81,24 +78,21 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 5),
-                    const BudgetCard(
-                      title: "Total Difference",
-                      income: "54,654",
-                      expense: "34,120",
-                      remaining: "20,534",
-                    ),
-                    const SizedBox(height: 10),
-                    // Year cards
-                    ...List.generate(yearCards.length + 1, (index) {
+          : Column(
+              children: [
+                const SizedBox(height: 5),
+
+                // 🔹 Compact top summary card
+                const BudgetCard(title: "Lifetime Summary", type: "lifetime"),
+                const SizedBox(height: 10),
+
+                // 🔹 Scrollable list of years
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: yearCards.length + 1,
+                    itemBuilder: (context, index) {
                       if (index == yearCards.length) {
-                        return const SizedBox(
-                          height: 60,
-                        );
+                        return const SizedBox(height: 80);
                       }
 
                       final yearData = yearCards[index];
@@ -116,6 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
 
                       final total = getYearTotal(yearData);
+                      final double totalValue =
+                          double.tryParse(total.replaceAll(',', '')) ?? 0;
 
                       return GestureDetector(
                         onTap: () async {
@@ -127,15 +123,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Container(
                           margin: const EdgeInsets.symmetric(
                             horizontal: 16,
-                            vertical: 8,
+                            vertical: 6,
                           ),
                           padding: const EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 16,
+                            horizontal: 14,
+                            vertical: 10,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white.withOpacity(0.08),
+                            borderRadius: BorderRadius.circular(16),
                             border: Border(
                               left: BorderSide(
                                 color: isOngoing
@@ -155,7 +151,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     yearData.year,
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 16,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   Text(
@@ -171,33 +168,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 6),
-                                child: Text(
-                                  total.isEmpty ? "—" : total,
-                                  style: TextStyle(
-                                    color: total.isEmpty
-                                        ? Colors.white54
-                                        : (double.tryParse(
-                                                    total.replaceAll(',', '')) ??
-                                                0) <
-                                            0
-                                            ? Colors.red
-                                            : Colors.greenAccent,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              Text(
+                                total.isEmpty ? "—" : total,
+                                style: TextStyle(
+                                  color: total.isEmpty
+                                      ? Colors.white54
+                                      : totalValue < 0
+                                          ? Colors.redAccent
+                                          : Colors.greenAccent,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
                           ),
                         ),
                       );
-                    }),
-                    const SizedBox(height: 20),
-                  ],
+                    },
+                  ),
                 ),
-              ),
+              ],
             ),
       floatingActionButton: const FloatingAddBtn(),
       bottomNavigationBar: const BottomNavBar(tabIndex: 5, showAdd: false),
