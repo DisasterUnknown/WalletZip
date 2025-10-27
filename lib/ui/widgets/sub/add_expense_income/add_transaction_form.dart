@@ -28,7 +28,7 @@ class _AddExpenseOverlayState extends State<AddExpenseOverlay> {
   TimeOfDay selectedTime = TimeOfDay.now();
   String transactionType = 'Expense';
   List<Category> userCategories = [];
-  List<int> selectedCategoryIds = [];
+  int? selectedCategoryId; // single category selection
 
   final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -69,21 +69,19 @@ class _AddExpenseOverlayState extends State<AddExpenseOverlay> {
           .whereType<int>()
           .toSet();
       setState(() {
-        userCategories = categories
-            .where((cat) => ids.contains(cat.id))
-            .toList();
+        userCategories = categories.where((cat) => ids.contains(cat.id)).toList();
       });
     } else {
       setState(() => userCategories = categories);
     }
   }
 
-  void _toggleCategory(Category category) {
+  void _selectCategory(Category category) {
     setState(() {
-      if (selectedCategoryIds.contains(category.id)) {
-        selectedCategoryIds.remove(category.id);
+      if (selectedCategoryId == category.id) {
+        selectedCategoryId = null; // deselect if tapped again
       } else {
-        selectedCategoryIds.add(category.id);
+        selectedCategoryId = category.id; // select this one
       }
     });
   }
@@ -93,12 +91,12 @@ class _AddExpenseOverlayState extends State<AddExpenseOverlay> {
 
     if (!_formKey.currentState!.validate()) return;
 
-    if (selectedCategoryIds.isEmpty) {
-      setState(() => errorMessage = 'Please select at least one category!');
+    if (selectedCategoryId == null) {
+      setState(() => errorMessage = 'Please select a category!');
       return;
     }
 
-    final amount = double.tryParse((amountController.text).replaceAll(',', ''));
+    final amount = double.tryParse(amountController.text.replaceAll(',', ''));
     if (amount == null || amount <= 0) {
       setState(() => errorMessage = 'Please enter a valid amount!');
       return;
@@ -107,7 +105,7 @@ class _AddExpenseOverlayState extends State<AddExpenseOverlay> {
     final expense = Expense(
       type: transactionType.toLowerCase(),
       price: amount,
-      categoryIds: selectedCategoryIds,
+      categoryIds: [selectedCategoryId!], // wrap in list for DB
       note: descriptionController.text,
       dateTime: DateTime(
         selectedDate.year,
@@ -206,9 +204,9 @@ class _AddExpenseOverlayState extends State<AddExpenseOverlay> {
                     /// Category selector
                     CategorySelector(
                       userCategories: userCategories,
-                      selectedCategoryIds: selectedCategoryIds,
+                      selectedCategoryId: selectedCategoryId,
                       accentColor: accentColor,
-                      onCategoryTap: _toggleCategory,
+                      onCategoryTap: _selectCategory,
                     ),
                     const SizedBox(height: 16),
 

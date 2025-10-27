@@ -123,4 +123,9 @@ final List<Category> categories = [
   Category(id: 97, name: 'Party', icon: Icons.cake_outlined, state: 'inactive'),
   Category(id: 98, name: 'Office', icon: Icons.apartment_outlined, state: 'inactive'),
   Category(id: 99, name: 'Work', icon: Icons.work_outline, state: 'inactive'),
+
+  Category(id: 101, name: 'Shopping', icon: Icons.shopping_bag_outlined, state: 'inactive'),
+
+
+  Category(id: 102, name: 'Other', icon: Icons.query_stats_outlined, state: 'inactive'),
 ];

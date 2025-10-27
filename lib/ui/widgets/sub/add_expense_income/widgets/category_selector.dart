@@ -3,14 +3,14 @@ import 'package:expenso/data/models/category.dart';
 
 class CategorySelector extends StatelessWidget {
   final List<Category> userCategories;
-  final List<int> selectedCategoryIds;
+  final int? selectedCategoryId; // only one selected
   final Color accentColor;
   final Function(Category) onCategoryTap;
 
   const CategorySelector({
     super.key,
     required this.userCategories,
-    required this.selectedCategoryIds,
+    required this.selectedCategoryId,
     required this.accentColor,
     required this.onCategoryTap,
   });
@@ -51,7 +51,7 @@ class CategorySelector extends StatelessWidget {
   }
 
   Widget _categoryCard(Category category) {
-    final isSelected = selectedCategoryIds.contains(category.id);
+    final isSelected = selectedCategoryId == category.id; // only one
     return GestureDetector(
       onTap: () => onCategoryTap(category),
       child: Container(
