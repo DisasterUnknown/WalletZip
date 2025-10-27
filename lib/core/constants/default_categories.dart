@@ -10,7 +10,7 @@ final List<Category> categories = [
   Category(id: 5, name: 'Snack', icon: Icons.fastfood_outlined, state: 'inactive'),
   Category(id: 6, name: 'Lunch', icon: Icons.lunch_dining_outlined, state: 'inactive'),
   Category(id: 7, name: 'Dinner', icon: Icons.dinner_dining_outlined, state: 'inactive'),
-  Category(id: 8, name: 'Breakfast', icon: Icons.free_breakfast_outlined, state: 'inactive'),
+  Category(id: 8, name: 'Breakfast', icon: Icons.breakfast_dining_outlined, state: 'inactive'),
   Category(id: 9, name: 'Fruit', icon: Icons.emoji_food_beverage_outlined, state: 'inactive'),
   Category(id: 10, name: 'Veg', icon: Icons.grass_outlined, state: 'inactive'),
   Category(id: 100, name: 'Biscuit', icon: Icons.cookie_outlined, state: 'inactive'),

@@ -149,13 +149,13 @@ class _YearExpensesScreenState extends State<YearExpensesScreen> {
                             vertical: 10,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.08),
+                            color: Colors.white.withValues(alpha: 0.08),
                             borderRadius: BorderRadius.circular(16),
                             border: Border(
                               left: BorderSide(
                                 color: isOngoing
                                     ? Colors.greenAccent
-                                    : Colors.blueGrey.withOpacity(0.8),
+                                    : Colors.blueGrey.withValues(alpha: 0.8),
                                 width: 4,
                               ),
                             ),

@@ -23,7 +23,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
-            color: Colors.grey[900]!.withOpacity(0.6), // semi-transparent dark
+            color: Colors.grey[900]!.withValues(alpha: 0.6), // semi-transparent dark
             padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
