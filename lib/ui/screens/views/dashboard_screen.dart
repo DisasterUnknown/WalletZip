@@ -16,8 +16,10 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   bool isLoading = true;
-  Map<String, double> categoryTotals = {};
-  double totalExpenses = 0;
+  Map<String, double> categoryTotalsExpenses = {};
+  Map<String, double> categoryTotalsIncome = {};
+  double globalTotalExpenses = 0;
+  double globalTotalIncome = 0;
   List<Category> categories = [];
 
   @override
@@ -26,65 +28,152 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _loadData();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadData();
+  }
+
   Future<void> _loadData() async {
     setState(() => isLoading = true);
+
     final db = DBHelper();
     final allCategories = await db.getCategories();
     final allExpenses = await db.getAllExpenses();
 
-    final Map<String, double> totals = {};
-    double total = 0;
+    final Map<String, double> totalsExpenses = {};
+    final Map<String, double> totalsIncome = {};
+    double totalExpenses = 0;
+    double totalIncome = 0;
 
     for (var e in allExpenses) {
-      if (e.type.toLowerCase() != "expense") continue;
-
-      List<int> ids = [];
-      if (e.categoryIds.isNotEmpty) {
-        ids = e.categoryIds.map((s) => (s)).toList();
-      }
+      final ids = e.categoryIds.isNotEmpty ? e.categoryIds.toList() : [];
 
       if (ids.isEmpty) {
-        totals["Uncategorized"] = (totals["Uncategorized"] ?? 0) + e.price;
+        _addToTotals(
+          e.type,
+          'Uncategorized',
+          e.price,
+          totalsExpenses,
+          totalsIncome,
+          (v) => totalExpenses += v,
+          (v) => totalIncome += v,
+        );
       } else {
         for (var id in ids) {
           final cat = allCategories.firstWhere(
             (c) => c.id == id,
             orElse: () => Category(
               id: 0,
-              name: "Uncategorized",
-              state: "active",
+              name: 'Uncategorized',
+              state: 'active',
               icon: Icons.category,
             ),
           );
-          totals[cat.name] = (totals[cat.name] ?? 0) + e.price;
+          _addToTotals(
+            e.type,
+            cat.name,
+            e.price,
+            totalsExpenses,
+            totalsIncome,
+            (v) => totalExpenses += v,
+            (v) => totalIncome += v,
+          );
         }
       }
-
-      total += e.price;
     }
 
     if (mounted) {
       setState(() {
-        categoryTotals = totals;
-        totalExpenses = total;
+        categoryTotalsExpenses = totalsExpenses;
+        categoryTotalsIncome = totalsIncome;
+        globalTotalExpenses = totalExpenses;
+        globalTotalIncome = totalIncome;
         categories = allCategories;
         isLoading = false;
       });
     }
   }
 
-  
+  void _addToTotals(
+    String type,
+    String categoryName,
+    double amount,
+    Map<String, double> expensesMap,
+    Map<String, double> incomeMap,
+    void Function(double) addExpense,
+    void Function(double) addIncome,
+  ) {
+    if (type.toLowerCase() == 'expense') {
+      expensesMap[categoryName] = (expensesMap[categoryName] ?? 0) + amount;
+      addExpense(amount);
+    } else if (type.toLowerCase() == 'income') {
+      incomeMap[categoryName] = (incomeMap[categoryName] ?? 0) + amount;
+      addIncome(amount);
+    }
+  }
+
+  Widget _buildCategorySection(
+    String title,
+    Map<String, double> categoryTotals,
+    double globalTotal,
+    String type,
+    double barMaxWidth,
+  ) {
+    if (categoryTotals.isEmpty) return const SizedBox.shrink();
+
+    final sortedEntries = categoryTotals.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 8, bottom: 0, left: 16, right: 16),
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.9),
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 2),
+        ...sortedEntries.map((e) {
+          final cat = categories.firstWhere(
+            (c) => c.name == e.key,
+            orElse: () => Category(
+              id: 0,
+              name: 'Uncategorized',
+              state: 'active',
+              icon: Icons.category,
+            ),
+          );
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: buildCategoryCard(
+              e.key,
+              type,
+              e.value,
+              cat.icon,
+              barMaxWidth,
+              globalTotal,
+            ),
+          );
+        }),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final barMaxWidth = screenWidth * 0.7;
-    final sortedEntries = categoryTotals.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
+    final barMaxWidth = screenWidth - 64;
 
     return Scaffold(
       appBar: const CustomAppBar(
-        title: "Dashboard",
+        title: 'Dashboard',
         showBackButton: false,
         showHomeButton: true,
       ),
@@ -92,56 +181,46 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 5),
-                  const BudgetCard(title: "Lifetime Summary", type: "lifetime"),
+                  const SizedBox(height: 10),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: BudgetCard(
+                      title: 'Lifetime Summary',
+                      type: 'lifetime',
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  _buildCategorySection(
+                    'Top Expenses by Category',
+                    categoryTotalsExpenses,
+                    globalTotalExpenses,
+                    'expense',
+                    barMaxWidth,
+                  ),
                   const SizedBox(height: 16),
 
-                  if (categoryTotals.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Top Expenses by Category",
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.9),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  const SizedBox(height: 8),
+                  _buildCategorySection(
+                    'Top Income by Category',
+                    categoryTotalsIncome,
+                    globalTotalIncome,
+                    'income',
+                    barMaxWidth,
+                  ),
+                  const SizedBox(height: 16),
 
-                  // Render sorted category cards
-                  ...sortedEntries.map((e) {
-                    final cat = categories.firstWhere(
-                      (c) => c.name == e.key,
-                      orElse: () => Category(
-                        id: 0,
-                        name: "Uncategorized",
-                        state: "active",
-                        icon: Icons.category,
-                      ),
-                    );
-                    return buildCategoryCard(
-                      e.key,
-                      e.value,
-                      cat.icon,
-                      barMaxWidth,
-                      totalExpenses
-                    );
-                  }),
-
-                  if (categoryTotals.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
+                  if (categoryTotalsExpenses.isEmpty &&
+                      categoryTotalsIncome.isEmpty)
+                    const Padding(
+                      padding: EdgeInsets.all(16.0),
                       child: Text(
-                        "No categorized expenses found.",
+                        'No categorized data found.',
                         style: TextStyle(color: Colors.white70),
                       ),
                     ),
+
                   const SizedBox(height: 90),
                 ],
               ),

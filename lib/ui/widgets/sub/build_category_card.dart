@@ -5,6 +5,7 @@ String formatNumber(double number) => NumberFormat('#,##0.00').format(number);
 
 Widget buildCategoryCard(
   String category,
+  String type,
   double amount,
   IconData icon,
   double maxWidth,
@@ -38,7 +39,7 @@ Widget buildCategoryCard(
           children: [
             Row(
               children: [
-                Icon(icon, color: Colors.redAccent, size: 24),
+                Icon(icon, color: type == 'expense' ? Colors.redAccent : Colors.greenAccent, size: 24),
                 const SizedBox(width: 8),
                 Text(
                   category,
@@ -52,8 +53,8 @@ Widget buildCategoryCard(
             ),
             Text(
               formatNumber(amount),
-              style: const TextStyle(
-                color: Colors.redAccent,
+              style: TextStyle(
+                color: type == 'expense' ? Colors.redAccent : Colors.greenAccent,
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
@@ -78,8 +79,8 @@ Widget buildCategoryCard(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Colors.redAccent.withValues(alpha: 0.8),
-                    Colors.redAccent.withValues(alpha: 0.5),
+                    type == 'expense' ? Colors.redAccent.withValues(alpha: 0.8) : Colors.greenAccent.withValues(alpha: 0.8),
+                    type == 'expense' ? Colors.redAccent.withValues(alpha: 0.5) : Colors.greenAccent.withValues(alpha: 0.5),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(4),
