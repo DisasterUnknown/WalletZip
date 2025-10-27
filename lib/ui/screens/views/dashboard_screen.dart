@@ -60,6 +60,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           (v) => totalIncome += v,
         );
       } else {
+        // Split price among categories
+        final distributedAmount = e.price / ids.length;
+
         for (var id in ids) {
           final cat = allCategories.firstWhere(
             (c) => c.id == id,
@@ -70,14 +73,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
               icon: Icons.category,
             ),
           );
+
           _addToTotals(
             e.type,
             cat.name,
-            e.price,
+            distributedAmount,
             totalsExpenses,
             totalsIncome,
-            (v) => totalExpenses += v,
-            (v) => totalIncome += v,
+            (v) => totalExpenses += distributedAmount,
+            (v) => totalIncome += distributedAmount,
           );
         }
       }
@@ -129,7 +133,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 8, bottom: 0, left: 16, right: 16),
+          padding: const EdgeInsets.only(
+            top: 8,
+            bottom: 0,
+            left: 16,
+            right: 16,
+          ),
           child: Text(
             title,
             style: TextStyle(
