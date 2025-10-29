@@ -171,7 +171,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           child: Text(
             title,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),

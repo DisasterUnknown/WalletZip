@@ -15,7 +15,7 @@ Widget buildCategoryCard(
   final barWidth = maxWidth * percentage;
 
   return Container(
-    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
       color: Colors.white.withValues(alpha: 0.08),

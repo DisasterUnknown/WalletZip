@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:expenso/core/constants/default_categories.dart';
+import 'package:expenso/data/models/budget.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -55,6 +56,16 @@ class DBHelper {
       )
     ''');
 
+    // Budget table
+    await db.execute('''
+      CREATE TABLE budgets (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        amount REAL,
+        month INTEGER,
+        year INTEGER
+      )
+    ''');
+
     // Insert default categories
     for (var category in categories) {
       await db.insert('categories', {
@@ -65,6 +76,24 @@ class DBHelper {
         'state': category.state,
       });
     }
+  }
+
+  // Budget
+  Future<int> insertBudget(Budget budget) async {
+    final db = await database;
+    await db.delete('budgets');
+    return await db.insert('budgets', budget.toMap());
+  }
+
+  Future<List<Budget>> getAllBudgets() async {
+    final db = await database;
+    final res = await db.query('budgets', orderBy: "year DESC, month DESC");
+    return res.map((b) => Budget.fromMap(b)).toList();
+  }
+
+  Future<int> deleteBudget(int id) async {
+    final db = await database;
+    return db.delete('budgets', where: "id = ?", whereArgs: [id]);
   }
 
   // CATEGORY METHODS
@@ -112,7 +141,11 @@ class DBHelper {
 
   Future<int> deleteExpense(int id) async {
     final db = await database;
-    final result = await db.delete('expenses', where: 'id = ?', whereArgs: [id]);
+    final result = await db.delete(
+      'expenses',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
 
     await _notifyExpenseCount();
     return result;
