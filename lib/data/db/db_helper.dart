@@ -62,7 +62,8 @@ class DBHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         amount REAL,
         month INTEGER,
-        year INTEGER
+        year INTEGER,
+        type TEXT DEFAULT 'monthly'
       )
     ''');
 

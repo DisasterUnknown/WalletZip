@@ -1,14 +1,16 @@
 class Budget {
   int? id;
-  double amount; // monthly amount
+  double amount; // amount according to type
   int month;
   int year;
+  String type; // "Monthly", "Yearly", or "Daily"
 
   Budget({
     this.id,
     required this.amount,
     required this.month,
     required this.year,
+    this.type = "monthly", // default to Monthly
   });
 
   Map<String, dynamic> toMap() {
@@ -17,6 +19,7 @@ class Budget {
       "amount": amount,
       "month": month,
       "year": year,
+      "type": type,
     };
   }
 
@@ -26,6 +29,7 @@ class Budget {
       amount: map["amount"],
       month: map["month"],
       year: map["year"],
+      type: map["type"] ?? "monthly",
     );
   }
 }

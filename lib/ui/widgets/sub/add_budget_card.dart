@@ -42,24 +42,21 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
     setState(() => _isSaving = true);
 
     final now = DateTime.now();
-    double monthlyAmount = amount;
 
     switch (_selectedType) {
       case 'Yearly':
-        monthlyAmount = amount / 12;
         break;
       case 'Daily':
-        final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
-        monthlyAmount = amount * daysInMonth;
         break;
       default:
         break;
     }
 
     final budget = Budget(
-      amount: monthlyAmount,
+      amount: amount,
       month: now.month,
       year: now.year,
+      type: _selectedType,
     );
 
     await DBHelper().insertBudget(budget);
@@ -113,7 +110,8 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
                         if (value == null || value.isEmpty) {
                           return "Enter amount";
                         }
-                        if (double.tryParse(value.replaceAll(',', '')) == null) {
+                        if (double.tryParse(value.replaceAll(',', '')) ==
+                            null) {
                           return "Enter a valid number";
                         }
                         return null;
@@ -136,7 +134,9 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                  color: selected ? accentColor : Colors.white54,
+                                  color: selected
+                                      ? accentColor
+                                      : Colors.white54,
                                   width: 1.5,
                                 ),
                               ),
@@ -144,7 +144,9 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
                                 child: Text(
                                   type,
                                   style: TextStyle(
-                                    color: selected ? accentColor : Colors.white54,
+                                    color: selected
+                                        ? accentColor
+                                        : Colors.white54,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
