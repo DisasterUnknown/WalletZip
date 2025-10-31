@@ -1,12 +1,13 @@
 import 'package:expenso/ui/widgets/sub/ring_charts/ring_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // For formatting numbers
 
 class BudgetCardGlass extends StatelessWidget {
   final String title;
   final double budget;
   final double spent;
-  final String? budgetType; // new field: "Daily", "Monthly", "Yearly"
-  final String? type; // new field: "Daily", "Monthly", "Yearly"
+  final String? budgetType; // "Daily", "Monthly", "Yearly"
+  final String? type; // "Daily", "Monthly", "Yearly"
 
   const BudgetCardGlass({
     super.key,
@@ -22,9 +23,16 @@ class BudgetCardGlass extends StatelessWidget {
     final balance = budget - spent;
     final double percent = (balance / budget) * 100;
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final cardPadding = screenWidth * 0.04; // Responsive padding
+    final chartWidth = screenWidth * 0.15; // Ring chart responsive size
+    final fontSize = screenWidth * 0.035; // Text responsive size
+
+    final formatter = NumberFormat('#,##0.00'); // Format with commas + 2 decimals
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.symmetric(horizontal: cardPadding, vertical: 10),
+      padding: EdgeInsets.all(cardPadding),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(24),
@@ -39,8 +47,12 @@ class BudgetCardGlass extends StatelessWidget {
       ),
       child: Row(
         children: [
-          RingChart(percent: percent, isNegative: balance < 0),
-          const SizedBox(width: 16),
+          SizedBox(
+            width: chartWidth,
+            height: chartWidth,
+            child: RingChart(percent: percent, isNegative: balance < 0),
+          ),
+          SizedBox(width: cardPadding),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,17 +61,20 @@ class BudgetCardGlass extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    if (budgetType!.toLowerCase() == type!.toLowerCase()) ...[
-                      Icon(Icons.check_circle, size: 14, color: Colors.orangeAccent.shade400),
-                    ]
+                    Text(title,
+                        style: TextStyle(
+                            fontSize: fontSize, fontWeight: FontWeight.w600)),
+                    if (budgetType?.toLowerCase() == type?.toLowerCase())
+                      Icon(Icons.check_circle,
+                          size: fontSize * 0.8,
+                          color: Colors.orangeAccent.shade400),
                   ],
                 ),
-                const SizedBox(height: 8),
-                _line("Balance:", balance),
+                SizedBox(height: cardPadding / 2),
+                _line("Balance:", balance, formatter, fontSize),
                 _divider(),
-                _line("Budget:", budget),
-                _line("Spent:", spent),
+                _line("Budget:", budget, formatter, fontSize),
+                _line("Spent:", spent, formatter, fontSize),
               ],
             ),
           ),
@@ -68,13 +83,19 @@ class BudgetCardGlass extends StatelessWidget {
     );
   }
 
-  Widget _line(String label, double value) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: const TextStyle(fontSize: 13)),
-          Text(value.toStringAsFixed(2), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-        ],
-      );
+  Widget _line(
+      String label, double value, NumberFormat formatter, double fontSize) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: TextStyle(fontSize: fontSize * 0.85)),
+        Text(formatter.format(value),
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: fontSize * 0.85)),
+      ],
+    );
+  }
 
-  Widget _divider() => Container(height: 1, margin: const EdgeInsets.symmetric(vertical: 4), color: Colors.white24);
+  Widget _divider() =>
+      Container(height: 1, margin: const EdgeInsets.symmetric(vertical: 4), color: Colors.white24);
 }

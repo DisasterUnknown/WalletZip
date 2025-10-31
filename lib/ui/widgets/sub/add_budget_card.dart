@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:expenso/ui/widgets/sub/add_expense_income/widgets/expense_text_field.dart';
+import 'package:expenso/ui/widgets/sub/add_expense_income/widgets/thousands_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:expenso/data/db/db_helper.dart';
 import 'package:expenso/data/models/budget.dart';
@@ -22,6 +23,41 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
   Color get accentColor => Colors.redAccent;
 
   @override
+  void initState() {
+    super.initState();
+    _loadExistingBudget();
+  }
+
+  /// Load budget for current month/year, if exists
+  Future<void> _loadExistingBudget() async {
+    final budgets = await DBHelper().getAllBudgets();
+    final now = DateTime.now();
+
+    final currentBudget = budgets.firstWhere(
+      (b) => b.month == now.month && b.year == now.year,
+      orElse: () =>
+          Budget(amount: 0, month: now.month, year: now.year, type: 'Monthly'),
+    );
+
+    // Format the initial amount with commas and two decimal places
+    String formattedAmount = '';
+    if (currentBudget.amount > 0) {
+      final numericValue = currentBudget.amount.toStringAsFixed(2);
+      formattedAmount = ThousandsFormatter()
+          .formatEditUpdate(
+            TextEditingValue.empty,
+            TextEditingValue(text: numericValue),
+          )
+          .text;
+    }
+
+    setState(() {
+      _amountController.text = formattedAmount;
+      _selectedType = currentBudget.type;
+    });
+  }
+
+  @override
   void dispose() {
     _amountController.dispose();
     super.dispose();
@@ -40,17 +76,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
     }
 
     setState(() => _isSaving = true);
-
     final now = DateTime.now();
-
-    switch (_selectedType) {
-      case 'Yearly':
-        break;
-      case 'Daily':
-        break;
-      default:
-        break;
-    }
 
     final budget = Budget(
       amount: amount,

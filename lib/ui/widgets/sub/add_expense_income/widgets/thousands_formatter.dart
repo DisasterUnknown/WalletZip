@@ -40,4 +40,6 @@ class ThousandsFormatter extends TextInputFormatter {
       selection: TextSelection.collapsed(offset: newText.length),
     );
   }
+
+  static format(String text) {}
 }

@@ -1,7 +1,7 @@
 import 'package:expenso/ui/widgets/sub/add_expense_income/widgets/thousands_formatter.dart';
 import 'package:flutter/material.dart';
 
-class ExpenseTextField extends StatelessWidget {
+class ExpenseTextField extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final Color accentColor;
@@ -20,13 +20,50 @@ class ExpenseTextField extends StatelessWidget {
   });
 
   @override
+  State<ExpenseTextField> createState() => _ExpenseTextFieldState();
+}
+
+class _ExpenseTextFieldState extends State<ExpenseTextField> {
+  late FocusNode _focusNode;
+  late bool isNumeric;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+
+    isNumeric = widget.keyboardType == TextInputType.number ||
+        widget.keyboardType ==
+            const TextInputType.numberWithOptions(decimal: true);
+
+    if (isNumeric) {
+      _focusNode.addListener(() {
+        if (_focusNode.hasFocus) {
+          // Move cursor to the end when focused
+          widget.controller.selection = TextSelection.fromPosition(
+            TextPosition(offset: widget.controller.text.length),
+          );
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
+      controller: widget.controller,
+      focusNode: _focusNode,
+      keyboardType: widget.keyboardType,
+      textAlign: isNumeric ? TextAlign.right : TextAlign.left,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        labelText: label,
+        labelText: widget.label,
         labelStyle: const TextStyle(color: Colors.white70),
         filled: true,
         fillColor: Colors.black87,
@@ -40,11 +77,36 @@ class ExpenseTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: accentColor, width: 2),
+          borderSide: BorderSide(color: widget.accentColor, width: 2),
         ),
       ),
-      validator: validator,
-      inputFormatters: enableThousandsFormatter ? [ThousandsFormatter()] : [],
+      validator: widget.validator,
+      onChanged: (value) {
+        if (!isNumeric) return; // Only run for numeric inputs
+
+        // Remove commas
+        String numericValue = value.replaceAll(',', '');
+
+        // Limit to 12 digits
+        if (numericValue.length > 10) {
+          numericValue = numericValue.substring(0, 10);
+        }
+
+        // Apply thousands formatting
+        final formatted = ThousandsFormatter()
+            .formatEditUpdate(
+              TextEditingValue.empty,
+              TextEditingValue(text: numericValue),
+            )
+            .text;
+
+        // Update controller and cursor
+        widget.controller.value = TextEditingValue(
+          text: formatted,
+          selection: TextSelection.collapsed(offset: formatted.length),
+        );
+      },
+      inputFormatters: widget.enableThousandsFormatter ? [ThousandsFormatter()] : [],
     );
   }
 }
