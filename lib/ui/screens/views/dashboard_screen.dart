@@ -286,6 +286,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                         style: TextStyle(color: Colors.white70),
                                       ),
                                     ),
+                                  SizedBox(height: 80),
                                   const Spacer(), // ensures everything sticks to the top
                                 ],
                               ),
