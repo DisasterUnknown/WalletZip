@@ -85,20 +85,10 @@ class _DashboardScreenState extends State<DashboardScreen>
     double totalIncome = 0;
 
     for (var e in filteredExpenses) {
-      final ids = e.categoryIds.isNotEmpty ? e.categoryIds.toList() : [];
-      if (ids.isEmpty) {
-        _addToTotals(
-          e.type,
-          'Uncategorized',
-          e.price,
-          totalsExpenses,
-          totalsIncome,
-          (v) => totalExpenses += v,
-          (v) => totalIncome += v,
-        );
-      } else {
-        final distributedAmount = e.price / ids.length;
-        for (var id in ids) {
+      // If the entry has categories
+      if (e.categoryIds.isNotEmpty) {
+        final distributedAmount = e.price / e.categoryIds.length;
+        for (var id in e.categoryIds) {
           final cat = allCategories.firstWhere(
             (c) => c.id == id,
             orElse: () => Category(
@@ -118,6 +108,22 @@ class _DashboardScreenState extends State<DashboardScreen>
             (v) => totalIncome += distributedAmount,
           );
         }
+      } else {
+        // No categories: distinguish budget income vs uncategorized
+        final displayName =
+            (e.isBudgetEntry && e.type.toLowerCase() == 'income')
+            ? 'Budget'
+            : 'Uncategorized';
+
+        _addToTotals(
+          e.type,
+          displayName,
+          e.price,
+          totalsExpenses,
+          totalsIncome,
+          (v) => totalExpenses += v,
+          (v) => totalIncome += v,
+        );
       }
     }
 
@@ -241,39 +247,52 @@ class _DashboardScreenState extends State<DashboardScreen>
                 Expanded(
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
-                    child: SingleChildScrollView(
-                      key: ValueKey(selectedFilter), // smooth transition
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 20),
-                          _buildCategorySection(
-                            'Top Expenses by Category',
-                            categoryTotalsExpenses,
-                            globalTotalExpenses,
-                            'expense',
-                            barMaxWidth,
-                          ),
-                          const SizedBox(height: 16),
-                          _buildCategorySection(
-                            'Top Income by Category',
-                            categoryTotalsIncome,
-                            globalTotalIncome,
-                            'income',
-                            barMaxWidth,
-                          ),
-                          if (categoryTotalsExpenses.isEmpty &&
-                              categoryTotalsIncome.isEmpty)
-                            const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Text(
-                                'No categorized data found.',
-                                style: TextStyle(color: Colors.white70),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return SingleChildScrollView(
+                          key: ValueKey(selectedFilter),
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: constraints
+                                  .maxHeight, // ensure full height but not centering
+                            ),
+                            child: IntrinsicHeight(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 20),
+                                  _buildCategorySection(
+                                    'Top Expenses by Category',
+                                    categoryTotalsExpenses,
+                                    globalTotalExpenses,
+                                    'expense',
+                                    barMaxWidth,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  _buildCategorySection(
+                                    'Top Income by Category',
+                                    categoryTotalsIncome,
+                                    globalTotalIncome,
+                                    'income',
+                                    barMaxWidth,
+                                  ),
+                                  if (categoryTotalsExpenses.isEmpty &&
+                                      categoryTotalsIncome.isEmpty)
+                                    const Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Text(
+                                        'No categorized data found.',
+                                        style: TextStyle(color: Colors.white70),
+                                      ),
+                                    ),
+                                  const Spacer(), // ensures everything sticks to the top
+                                ],
                               ),
                             ),
-                          const SizedBox(height: 90),
-                        ],
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),

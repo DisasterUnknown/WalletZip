@@ -52,7 +52,8 @@ class DBHelper {
         price REAL,
         categoryIds TEXT,
         note TEXT,
-        dateTime TEXT
+        dateTime TEXT,
+        isBudgetEntry INTEGER DEFAULT 0
       )
     ''');
 

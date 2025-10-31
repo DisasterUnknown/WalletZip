@@ -122,7 +122,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
 
                     /// Type selector with equal width
                     Row(
-                      children: ['Monthly', 'Yearly', 'Daily'].map((type) {
+                      children: ['Yearly', 'Monthly', 'Daily'].map((type) {
                         final selected = _selectedType == type;
                         return Expanded(
                           child: GestureDetector(

@@ -5,12 +5,16 @@ class BudgetCardGlass extends StatelessWidget {
   final String title;
   final double budget;
   final double spent;
+  final String? budgetType; // new field: "Daily", "Monthly", "Yearly"
+  final String? type; // new field: "Daily", "Monthly", "Yearly"
 
   const BudgetCardGlass({
     super.key,
     required this.title,
     required this.budget,
     required this.spent,
+    this.budgetType,
+    this.type,
   });
 
   @override
@@ -41,7 +45,16 @@ class BudgetCardGlass extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                    if (budgetType!.toLowerCase() == type!.toLowerCase()) ...[
+                      Icon(Icons.check_circle, size: 14, color: Colors.orangeAccent.shade400),
+                    ]
+                  ],
+                ),
                 const SizedBox(height: 8),
                 _line("Balance:", balance),
                 _divider(),

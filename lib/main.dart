@@ -1,7 +1,11 @@
+import 'package:expenso/services/startup_service.dart';
 import 'package:flutter/material.dart';
 import 'services/routing_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await StartupService.checkAndAddBudgetIncome();
+
   runApp(const MyApp());
 }
 

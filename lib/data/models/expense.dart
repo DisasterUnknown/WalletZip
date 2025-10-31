@@ -5,6 +5,7 @@ class Expense {
   final List<int> categoryIds; // multiple categories
   final String? note;
   final DateTime dateTime;
+  final bool isBudgetEntry;
 
   Expense({
     this.id,
@@ -13,6 +14,7 @@ class Expense {
     required this.categoryIds,
     this.note,
     required this.dateTime,
+    this.isBudgetEntry = false,
   });
 
   Map<String, dynamic> toMap() => {
@@ -22,6 +24,7 @@ class Expense {
         'categoryIds': categoryIds.join(','), // comma-separated string
         'note': note,
         'dateTime': dateTime.toIso8601String(),
+        'isBudgetEntry': isBudgetEntry ? 1 : 0,
       };
 
   factory Expense.fromMap(Map<String, dynamic> map) => Expense(
@@ -33,5 +36,6 @@ class Expense {
             : [],
         note: map['note'],
         dateTime: DateTime.parse(map['dateTime']),
+        isBudgetEntry: map['isBudgetEntry'] == 1, 
       );
 }

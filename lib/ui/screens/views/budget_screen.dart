@@ -8,6 +8,7 @@ import 'package:expenso/data/models/budget.dart';
 
 class BudgetScreen extends StatefulWidget {
   const BudgetScreen({super.key});
+
   @override
   State<BudgetScreen> createState() => _BudgetScreenState();
 }
@@ -15,6 +16,7 @@ class BudgetScreen extends StatefulWidget {
 class _BudgetScreenState extends State<BudgetScreen> {
   Budget? currentBudget;
   double totalExpenses = 0.0;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -23,19 +25,19 @@ class _BudgetScreenState extends State<BudgetScreen> {
   }
 
   Future<void> _loadBudgetAndExpenses() async {
+    setState(() => isLoading = true);
+
     final budgets = await DBHelper().getAllBudgets();
     final now = DateTime.now();
 
-    // Get budget for current month & year, fallback to default
-    final budget = budgets.firstWhere(
-      (b) => b.month == now.month && b.year == now.year,
-      orElse: () => Budget(
-        amount: 6000.0,
-        month: now.month,
-        year: now.year,
-        type: "Monthly",
-      ),
-    );
+    Budget? budget;
+    if (budgets.isNotEmpty) {
+      // Find budget for current month/year
+      budget = budgets.firstWhere(
+        (b) => b.month == now.month && b.year == now.year,
+        orElse: () => budgets.first, // fallback to first budget if none for this month
+      );
+    }
 
     // Calculate total expenses for this month
     final allExpenses = await DBHelper().getAllExpenses();
@@ -52,6 +54,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
       setState(() {
         currentBudget = budget;
         totalExpenses = expensesThisMonth;
+        isLoading = false;
       });
     }
   }
@@ -60,39 +63,75 @@ class _BudgetScreenState extends State<BudgetScreen> {
   Widget build(BuildContext context) {
     final now = DateTime.now();
     final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
-    final isLeapYear = (now.year % 4 == 0 && (now.year % 100 != 0 || now.year % 400 == 0));
+    final isLeapYear =
+        (now.year % 4 == 0 && (now.year % 100 != 0 || now.year % 400 == 0));
 
-    double monthly = 0.0;
-    double daily = 0.0;
-    double yearly = 0.0;
+    if (isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
 
-    if (currentBudget != null) {
-      switch (currentBudget!.type.toLowerCase()) {
-        case "monthly":
-          monthly = currentBudget!.amount;
-          daily = monthly / daysInMonth;
-          yearly = daily * (isLeapYear ? 366 : 365);
-          break;
-        case "yearly":
-          yearly = currentBudget!.amount;
-          monthly = yearly / 12;
-          daily = monthly / daysInMonth;
-          break;
-        case "daily":
-          daily = currentBudget!.amount;
-          monthly = daily * daysInMonth;
-          yearly = daily * (isLeapYear ? 366 : 365);
-          break;
-        default:
-          monthly = currentBudget!.amount;
-          daily = monthly / daysInMonth;
-          yearly = daily * (isLeapYear ? 366 : 365);
-      }
-    } else {
-      // Fallback if somehow budget is null
-      monthly = 6000.0;
-      daily = monthly / daysInMonth;
-      yearly = monthly * 12;
+    // No budget added yet
+    if (currentBudget == null) {
+      return Scaffold(
+        appBar: const CustomAppBar(
+          title: "Budget",
+          showBackButton: false,
+          showHomeButton: true,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "No budget set for this month.",
+                style: TextStyle(color: Colors.white70, fontSize: 16),
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: BottomNavBar(
+          tabIndex: 4,
+          showAdd: true,
+          onAddPressed: () {
+            showDialog(
+              context: context,
+              builder: (_) => AddBudgetCard(onSaved: _loadBudgetAndExpenses),
+            );
+          },
+        ),
+      );
+    }
+
+    // Budget exists → calculate all amounts
+    double monthly = 0, daily = 0, weekly = 0, yearly = 0;
+    final currentBudgetType = currentBudget!.type.toLowerCase();
+
+    switch (currentBudgetType) {
+      case "monthly":
+        monthly = currentBudget!.amount;
+        daily = monthly / daysInMonth;
+        weekly = daily * 7;
+        yearly = daily * (isLeapYear ? 366 : 365);
+        break;
+      case "yearly":
+        yearly = currentBudget!.amount;
+        monthly = yearly / 12;
+        daily = monthly / daysInMonth;
+        weekly = daily * 7;
+        break;
+      case "daily":
+        daily = currentBudget!.amount;
+        weekly = daily * 7;
+        monthly = daily * daysInMonth;
+        yearly = daily * (isLeapYear ? 366 : 365);
+        break;
+      default:
+        monthly = currentBudget!.amount;
+        daily = monthly / daysInMonth;
+        weekly = daily * 7;
+        yearly = daily * (isLeapYear ? 366 : 365);
     }
 
     final spent = totalExpenses;
@@ -111,16 +150,29 @@ class _BudgetScreenState extends State<BudgetScreen> {
               title: "Yearly Budget",
               budget: yearly,
               spent: spent,
+              budgetType: currentBudgetType,
+              type: "Yearly",
             ),
             BudgetCardGlass(
               title: "Monthly Budget",
               budget: monthly,
               spent: spent,
+              budgetType: currentBudgetType,
+              type: "Monthly",
+            ),
+            BudgetCardGlass(
+              title: "Weekly Budget",
+              budget: weekly,
+              spent: spent / daysInMonth,
+              budgetType: currentBudgetType,
+              type: "Weekly",
             ),
             BudgetCardGlass(
               title: "Daily Budget",
               budget: daily,
               spent: spent / daysInMonth,
+              budgetType: currentBudgetType,
+              type: "Daily",
             ),
           ],
         ),
