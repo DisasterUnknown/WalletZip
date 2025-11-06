@@ -7,14 +7,14 @@ import 'package:expenso/ui/widgets/sub/status_card.dart';
 import 'package:expenso/utils/number_formatter.dart';
 import 'package:flutter/material.dart';
 
-class YearExpensesScreen extends StatefulWidget {
-  const YearExpensesScreen({super.key});
+class YearExpensesPage extends StatefulWidget {
+  const YearExpensesPage({super.key});
 
   @override
-  State<YearExpensesScreen> createState() => _YearExpensesScreenState();
+  State<YearExpensesPage> createState() => _YearExpensesPageState();
 }
 
-class _YearExpensesScreenState extends State<YearExpensesScreen> {
+class _YearExpensesPageState extends State<YearExpensesPage> {
   late String year;
   bool isLoading = true;
   Map<int, double> monthlyTotals = {};

@@ -29,10 +29,16 @@ class DBHelper {
 
   Future<Database> _initDB() async {
     final path = join(await getDatabasesPath(), 'expenses.db');
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+    return await openDatabase(
+      path,
+      version: 2, // incremented to trigger migration if needed
+      onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
+    );
   }
 
-  Future _onCreate(Database db, int version) async {
+  /// Create all tables
+  Future<void> _onCreate(Database db, int version) async {
     // Category table
     await db.execute('''
       CREATE TABLE categories (
@@ -44,7 +50,7 @@ class DBHelper {
       )
     ''');
 
-    // Expense table
+    // Expense table — ✅ updated structure
     await db.execute('''
       CREATE TABLE expenses (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,7 +59,11 @@ class DBHelper {
         categoryIds TEXT,
         note TEXT,
         dateTime TEXT,
-        isBudgetEntry INTEGER DEFAULT 0
+        isBudgetEntry INTEGER DEFAULT 0,
+        isTemporary INTEGER DEFAULT 0,
+        status TEXT,
+        linkedTransactionId INTEGER,
+        expectedDate TEXT
       )
     ''');
 
@@ -80,10 +90,21 @@ class DBHelper {
     }
   }
 
-  // Budget
+  /// Upgrade DB safely without breaking old data
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('ALTER TABLE expenses ADD COLUMN isTemporary INTEGER DEFAULT 0');
+      await db.execute('ALTER TABLE expenses ADD COLUMN status TEXT');
+      await db.execute('ALTER TABLE expenses ADD COLUMN linkedTransactionId INTEGER');
+      await db.execute('ALTER TABLE expenses ADD COLUMN expectedDate TEXT');
+    }
+  }
+
+  // ------------------ BUDGET METHODS ------------------
+
   Future<int> insertBudget(Budget budget) async {
     final db = await database;
-    await db.delete('budgets');
+    await db.delete('budgets'); // only one active budget
     return await db.insert('budgets', budget.toMap());
   }
 
@@ -98,7 +119,8 @@ class DBHelper {
     return db.delete('budgets', where: "id = ?", whereArgs: [id]);
   }
 
-  // CATEGORY METHODS
+  // ------------------ CATEGORY METHODS ------------------
+
   Future<int> insertCategory(Category category) async {
     final db = await database;
     return await db.insert(
@@ -114,7 +136,8 @@ class DBHelper {
     return res.map((c) => Category.fromMap(c)).toList();
   }
 
-  // EXPENSE METHODS
+  // ------------------ EXPENSE METHODS ------------------
+
   Future<int> insertExpense(Expense expense) async {
     final db = await database;
     final id = await db.insert(
@@ -123,7 +146,6 @@ class DBHelper {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
-    // Notify listeners
     await _notifyExpenseCount();
     return id;
   }
@@ -162,7 +184,7 @@ class DBHelper {
   Future<List<Expense>> getExpensesByDate(DateTime date) async {
     final db = await database;
     final start = DateTime(date.year, date.month, date.day);
-    final end = start.add(Duration(days: 1));
+    final end = start.add(const Duration(days: 1));
 
     final res = await db.query(
       'expenses',
@@ -173,7 +195,8 @@ class DBHelper {
     return res.map((e) => Expense.fromMap(e)).toList();
   }
 
-  // STRUCTURED DATA
+  // ------------------ STRUCTURED DATA ------------------
+
   Future<List<YearData>> getAllDataStructured() async {
     final expenses = await getAllExpenses();
     Map<String, YearData> yearsMap = {};
@@ -183,7 +206,7 @@ class DBHelper {
       final m = e.dateTime.month.toString().padLeft(2, '0');
       final d = e.dateTime.day.toString().padLeft(2, '0');
 
-      if (!yearsMap.containsKey(y)) yearsMap[y] = YearData(year: y, months: []);
+      yearsMap.putIfAbsent(y, () => YearData(year: y, months: []));
       var yearData = yearsMap[y]!;
 
       var monthData = yearData.months.firstWhere(
@@ -210,7 +233,8 @@ class DBHelper {
     return yearsMap.values.toList();
   }
 
-  // PRIVATE: NOTIFY
+  // ------------------ PRIVATE ------------------
+
   Future<void> _notifyExpenseCount() async {
     final count = (await getAllExpenses()).length;
     expenseCountNotifier.value = count;

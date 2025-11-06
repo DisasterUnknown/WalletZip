@@ -1,7 +1,8 @@
+import 'package:expenso/ui/screens/pages/add_new_transaction_record_page.dart';
 import 'package:flutter/material.dart';
 import '../ui/screens/views/expence_record_screen.dart';
-import '../ui/screens/pages/year_expenses_screen.dart';
-import '../ui/screens/pages/monthly_expenses_screen.dart';
+import '../ui/screens/pages/year_expenses_page.dart';
+import '../ui/screens/pages/monthly_expenses_page.dart';
 import '../ui/screens/views/categories_screen.dart';
 import '../ui/screens/views/settings_screen.dart';
 import '../ui/screens/views/budget_screen.dart';
@@ -15,6 +16,7 @@ class RoutingService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   static const String dashboard = '/';
+  static const String addUpdateTransaction = '/add-update-transaction';
   static const String expenceRecord = '/expence-record';
   static const String yearExpenses = '/year-expenses';
   static const String monthlyExpenses = '/monthly-expenses';
@@ -46,8 +48,9 @@ class RoutingService {
 
   Map<String, WidgetBuilder> get routes => {
         expenceRecord: (context) => const HomeScreen(),
-        yearExpenses: (context) => const YearExpensesScreen(),
-        monthlyExpenses: (context) => const MonthlyExpensesScreen(),
+        addUpdateTransaction: (context) => const AddNewTransactionRecordPage(),
+        yearExpenses: (context) => const YearExpensesPage(),
+        monthlyExpenses: (context) => const MonthlyExpensesPage(),
         categories: (context) => const CategoriesScreen(),
         settings: (context) => const SettingsScreen(),
         budget: (context) => const BudgetScreen(),

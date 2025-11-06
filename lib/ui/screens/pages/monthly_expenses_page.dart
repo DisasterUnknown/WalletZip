@@ -9,14 +9,14 @@ import 'package:expenso/ui/widgets/sub/status_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class MonthlyExpensesScreen extends StatefulWidget {
-  const MonthlyExpensesScreen({super.key});
+class MonthlyExpensesPage extends StatefulWidget {
+  const MonthlyExpensesPage({super.key});
 
   @override
-  State<MonthlyExpensesScreen> createState() => _MonthlyExpensesScreenState();
+  State<MonthlyExpensesPage> createState() => _MonthlyExpensesPageState();
 }
 
-class _MonthlyExpensesScreenState extends State<MonthlyExpensesScreen> {
+class _MonthlyExpensesPageState extends State<MonthlyExpensesPage> {
   late String year;
   late String month;
   List<Expense> expenses = [];

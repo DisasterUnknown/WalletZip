@@ -7,6 +7,12 @@ class Expense {
   final DateTime dateTime;
   final bool isBudgetEntry;
 
+  /// Temporary Transaction
+  final bool isTemporary; // marks if this is a temporary transaction
+  final String? status; // 'open' | 'completed'
+  final int? linkedTransactionId; // ID of the related transaction if completed
+  final DateTime? expectedDate; // optional expected date for reimbursement
+
   Expense({
     this.id,
     required this.type,
@@ -15,27 +21,45 @@ class Expense {
     this.note,
     required this.dateTime,
     this.isBudgetEntry = false,
+    this.isTemporary = false,
+    this.status,
+    this.linkedTransactionId,
+    this.expectedDate,
   });
 
   Map<String, dynamic> toMap() => {
-        'id': id,
-        'type': type,
-        'price': price,
-        'categoryIds': categoryIds.join(','), // comma-separated string
-        'note': note,
-        'dateTime': dateTime.toIso8601String(),
-        'isBudgetEntry': isBudgetEntry ? 1 : 0,
-      };
+    'id': id,
+    'type': type,
+    'price': price,
+    'categoryIds': categoryIds.join(','),
+    'note': note,
+    'dateTime': dateTime.toIso8601String(),
+    'isBudgetEntry': isBudgetEntry ? 1 : 0,
+    'isTemporary': isTemporary ? 1 : 0,
+    'status': status,
+    'linkedTransactionId': linkedTransactionId,
+    'expectedDate': expectedDate?.toIso8601String(),
+  };
 
   factory Expense.fromMap(Map<String, dynamic> map) => Expense(
-        id: map['id'],
-        type: map['type'],
-        price: map['price'],
-        categoryIds: map['categoryIds'] != null && map['categoryIds'] != ''
-            ? (map['categoryIds'] as String).split(',').map(int.parse).toList()
-            : [],
-        note: map['note'],
-        dateTime: DateTime.parse(map['dateTime']),
-        isBudgetEntry: map['isBudgetEntry'] == 1, 
-      );
+    id: map['id'],
+    type: map['type'],
+    price: map['price'],
+    categoryIds: map['categoryIds'] != null && map['categoryIds'] != ''
+        ? (map['categoryIds'] as String)
+              .split(',')
+              .where((e) => e.isNotEmpty)
+              .map(int.parse)
+              .toList()
+        : [],
+    note: map['note'],
+    dateTime: DateTime.parse(map['dateTime']),
+    isBudgetEntry: map['isBudgetEntry'] == 1,
+    isTemporary: map['isTemporary'] == 1,
+    status: map['status'],
+    linkedTransactionId: map['linkedTransactionId'],
+    expectedDate: map['expectedDate'] != null
+        ? DateTime.tryParse(map['expectedDate'])
+        : null,
+  );
 }

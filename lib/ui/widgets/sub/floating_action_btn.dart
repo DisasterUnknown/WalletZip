@@ -1,4 +1,4 @@
-import 'package:expenso/ui/widgets/sub/add_expense_income/add_transaction_form.dart';
+import 'package:expenso/services/routing_service.dart';
 import 'package:flutter/material.dart';
 
 class FloatingAddBtn extends StatelessWidget {
@@ -35,15 +35,10 @@ class FloatingAddBtn extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         onPressed: () async {
-          final added = await showDialog(
-            context: context,
-            builder: (_) => AddExpenseOverlay(month: month, year: year),
+          RoutingService().navigateTo(
+            RoutingService.addUpdateTransaction,
+            arguments: {'month': month, 'year': year},
           );
-
-          // if something was added, reload data
-          if (added == true) {
-            
-          }
         },
         child: const Icon(Icons.add, size: 30, color: Colors.white),
       ),
