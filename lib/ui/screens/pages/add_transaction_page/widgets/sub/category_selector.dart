@@ -18,34 +18,54 @@ class CategorySelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 140,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            Column(
-              children: [
-                Row(
-                  children: userCategories
-                      .asMap()
-                      .entries
-                      .where((e) => e.key.isEven)
-                      .map((e) => _categoryCard(e.value))
-                      .toList(),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: userCategories
-                      .asMap()
-                      .entries
-                      .where((e) => e.key.isOdd)
-                      .map((e) => _categoryCard(e.value))
-                      .toList(),
-                ),
-              ],
+      height: 200,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Select Transaction Category',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 150, 
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Column(
+                      children: [
+                        Row(
+                          children: userCategories
+                              .asMap()
+                              .entries
+                              .where((e) => e.key.isEven)
+                              .map((e) => _categoryCard(e.value))
+                              .toList(),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: userCategories
+                              .asMap()
+                              .entries
+                              .where((e) => e.key.isOdd)
+                              .map((e) => _categoryCard(e.value))
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -83,8 +103,11 @@ class CategorySelector extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(category.icon,
-                color: isSelected ? accentColor : Colors.white70, size: 24),
+            Icon(
+              category.icon,
+              color: isSelected ? accentColor : Colors.white70,
+              size: 24,
+            ),
             const SizedBox(height: 4),
             Text(
               category.name,

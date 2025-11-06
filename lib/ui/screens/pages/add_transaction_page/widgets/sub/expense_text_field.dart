@@ -1,4 +1,4 @@
-import 'package:expenso/ui/widgets/sub/add_expense_income/widgets/thousands_formatter.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/thousands_formatter.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseTextField extends StatefulWidget {

@@ -3,9 +3,9 @@ import 'package:expenso/data/models/expense.dart';
 import 'package:expenso/data/models/month_data.dart';
 import 'package:expenso/data/models/year_data.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
-import 'package:expenso/ui/widgets/sub/confirm_delete_dialog.dart';
 import 'package:expenso/ui/widgets/sub/floating_action_btn.dart';
 import 'package:expenso/ui/widgets/sub/status_card.dart';
+import 'package:expenso/ui/widgets/sub/transaction_record_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -94,8 +94,8 @@ class _MonthlyExpensesPageState extends State<MonthlyExpensesPage> {
                 BudgetCard(
                   title: "Monthly Summary",
                   type: "month",
-                  month: month, 
-                  year: year, 
+                  month: month,
+                  year: year,
                 ),
                 const SizedBox(height: 10),
 
@@ -107,133 +107,14 @@ class _MonthlyExpensesPageState extends State<MonthlyExpensesPage> {
                         return const SizedBox(height: 80);
                       }
 
-                      final e = expenses[index];
-                      final date = e.dateTime;
-                      final day = DateFormat('dd').format(date);
-                      final weekday = DateFormat('E').format(date);
-                      final time = DateFormat('hh:mm a').format(date);
+                      final expense = expenses[index];
 
-                      final isExpense = e.type.toLowerCase() == 'expense';
-                      final borderColor = isExpense
-                          ? Colors.redAccent
-                          : Colors.greenAccent;
-
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 6,
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.08),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border(
-                            left: BorderSide(color: borderColor, width: 4),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Left side: date + details
-                            Row(
-                              children: [
-                                // Date block
-                                Container(
-                                  width: 30,
-                                  margin: const EdgeInsets.only(right: 6),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        weekday,
-                                        style: const TextStyle(
-                                          color: Colors.white70,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                      Text(
-                                        day,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-
-                                // Description + time
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      e.note != null && e.note!.isNotEmpty
-                                          ? (e.note!.length > 20
-                                                ? '${e.note!.substring(0, 20)}...'
-                                                : e.note!)
-                                          : '(No description)',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      time,
-                                      style: const TextStyle(
-                                        color: Colors.white54,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-
-                            // Right side: amount + delete
-                            Row(
-                              children: [
-                                Text(
-                                  e.price
-                                      .toStringAsFixed(2)
-                                      .replaceAllMapped(
-                                        RegExp(r'\B(?=(\d{3})+(?!\d))'),
-                                        (match) => ',',
-                                      ),
-                                  style: TextStyle(
-                                    color: isExpense
-                                        ? Colors.redAccent
-                                        : Colors.greenAccent,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) => ConfirmDeleteDialog(
-                                        message:
-                                            "Delete this ${isExpense ? 'expense' : 'income'} permanently?",
-                                        onConfirm: () => _deleteExpense(e.id!),
-                                      ),
-                                    );
-                                  },
-                                  child: const Icon(
-                                    Icons.delete_forever_rounded,
-                                    color: Colors.white54,
-                                    size: 22,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                      // Use the reusable card widget
+                      return transactionRecordCard(
+                        expense,
+                        context,
+                        showDelete: true,
+                        onDeletePress: (id) => _deleteExpense(id),
                       );
                     },
                   ),

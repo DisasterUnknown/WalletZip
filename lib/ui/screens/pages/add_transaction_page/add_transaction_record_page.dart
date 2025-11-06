@@ -1,10 +1,9 @@
-import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
-import 'package:expenso/ui/widgets/sub/add_expense_income/widgets/category_selector.dart';
-import 'package:expenso/ui/widgets/sub/add_expense_income/widgets/date_time_picker_row.dart';
-import 'package:expenso/ui/widgets/sub/add_expense_income/widgets/expense_text_field.dart';
-import 'package:expenso/ui/widgets/sub/add_expense_income/widgets/submit_button.dart';
-import 'package:expenso/ui/widgets/sub/add_expense_income/widgets/transaction_type_toggle.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/main/category_or_linked_transactions.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/main/toggle_area.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/main/top_input_area.dart';
 import 'package:flutter/material.dart';
+import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/submit_button.dart';
 import 'package:intl/intl.dart';
 import 'package:expenso/core/constants/default_categories.dart';
 import 'package:expenso/core/shared_prefs/shared_pref_service.dart';
@@ -30,8 +29,15 @@ class _AddNewTransactionRecordPageState
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
   String transactionType = 'Expense';
+
+  bool superSetting = false;
+  bool isTemporary = false;
+
   List<Category> userCategories = [];
   int? selectedCategoryId;
+
+  List<Expense> matchedTransactions = [];
+  Expense? selectedMatchedTransaction;
 
   final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -44,14 +50,11 @@ class _AddNewTransactionRecordPageState
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-    // Get arguments from ModalRoute
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, String?>?;
-
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, String?>?;
     month = args?['month'] ?? DateFormat('MMMM').format(DateTime.now());
     year = args?['year'] ?? DateTime.now().year.toString();
 
-    // Set initial date based on month/year
     try {
       final monthIndex = DateFormat('MMMM').parse(month).month;
       final yearInt = int.parse(year);
@@ -70,38 +73,63 @@ class _AddNewTransactionRecordPageState
   Future<void> _loadUserCategories() async {
     final saved = await LocalSharedPreferences.getString('selected_categories');
     if (saved != null && saved.isNotEmpty) {
-      final ids = saved
-          .split(',')
-          .map((e) => int.tryParse(e))
-          .whereType<int>()
-          .toSet();
+      final ids = saved.split(',').map(int.tryParse).whereType<int>().toSet();
       setState(() {
-        userCategories = categories
-            .where((cat) => ids.contains(cat.id))
-            .toList();
+        userCategories = categories.where((c) => ids.contains(c.id)).toList();
       });
     } else {
       setState(() => userCategories = categories);
     }
   }
 
-  void _selectCategory(Category category) {
+  Future<void> _loadMatchedTransactions() async {
+    final all = await DBHelper().getAllExpenses();
     setState(() {
-      if (selectedCategoryId == category.id) {
-        selectedCategoryId = null;
-      } else {
-        selectedCategoryId = category.id;
-      }
+      matchedTransactions = all
+          .where(
+            (e) =>
+                e.isTemporary &&
+                e.type.toLowerCase() != transactionType.toLowerCase(),
+          )
+          .toList();
+      selectedMatchedTransaction = null;
     });
   }
 
-  void _submitExpense() async {
+  void _onSuperSettingChanged(bool value) {
+    setState(() {
+      superSetting = value;
+      if (superSetting) _loadMatchedTransactions();
+    });
+  }
+
+  void _onTransactionTypeChanged(String type) {
+    setState(() {
+      transactionType = type;
+      if (superSetting) _loadMatchedTransactions();
+    });
+  }
+
+  void _selectCategory(Category category) {
+    setState(() {
+      selectedCategoryId = selectedCategoryId == category.id
+          ? null
+          : category.id;
+    });
+  }
+
+  void _submitTransaction() async {
     setState(() => errorMessage = null);
 
     if (!_formKey.currentState!.validate()) return;
 
-    if (selectedCategoryId == null) {
+    if (!superSetting && selectedCategoryId == null) {
       setState(() => errorMessage = 'Please select a category!');
+      return;
+    }
+
+    if (superSetting && selectedMatchedTransaction == null) {
+      setState(() => errorMessage = 'Please select a linked transaction!');
       return;
     }
 
@@ -114,7 +142,9 @@ class _AddNewTransactionRecordPageState
     final expense = Expense(
       type: transactionType.toLowerCase(),
       price: amount,
-      categoryIds: [selectedCategoryId!],
+      categoryIds: superSetting
+          ? selectedMatchedTransaction!.categoryIds
+          : [selectedCategoryId!],
       note: descriptionController.text,
       dateTime: DateTime(
         selectedDate.year,
@@ -123,12 +153,15 @@ class _AddNewTransactionRecordPageState
         selectedTime.hour,
         selectedTime.minute,
       ),
+      linkedTransactionId: superSetting ? selectedMatchedTransaction!.id : null,
+      isTemporary: superSetting ? true : isTemporary,
+      expectedDate: superSetting ? selectedMatchedTransaction?.dateTime : null,
+      status: superSetting ? 'open' : 'completed',
     );
 
     await DBHelper().insertExpense(expense);
-
     if (!mounted) return;
-    Navigator.of(context).pop(true); // return true to calling page
+    Navigator.of(context).pop(true);
   }
 
   @override
@@ -148,77 +181,45 @@ class _AddNewTransactionRecordPageState
           key: _formKey,
           child: Column(
             children: [
-              /// Date + Time pickers
-              DateTimePickerRow(
+              TopInputArea(
                 selectedDate: selectedDate,
                 selectedTime: selectedTime,
-                accentColor: accentColor,
-                onPickDate: (date) => setState(() {
-                  selectedDate = date;
-                  selectedYear = date.year.toString();
-                  selectedMonth = DateFormat('MMMM').format(date);
-                }),
-                onPickTime: (time) => setState(() => selectedTime = time),
-              ),
-              const SizedBox(height: 16),
-
-              /// Amount
-              ExpenseTextField(
-                controller: amountController,
-                label: 'Amount',
-                accentColor: accentColor,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                validator: (v) =>
-                    v == null || v.isEmpty ? 'Enter amount' : null,
-                enableThousandsFormatter: true,
-              ),
-              const SizedBox(height: 10),
-
-              /// Description
-              ExpenseTextField(
-                controller: descriptionController,
-                label: 'Description',
-                accentColor: accentColor,
-                keyboardType: TextInputType.text,
-                enableThousandsFormatter: false,
-              ),
-              const SizedBox(height: 16),
-
-              /// Expense/Income toggle
-              TransactionTypeToggle(
                 transactionType: transactionType,
                 accentColor: accentColor,
-                onTypeChange: (type) => setState(() => transactionType = type),
+                amountController: amountController,
+                descriptionController: descriptionController,
+                onPickDate: (date) => setState(() => selectedDate = date),
+                onPickTime: (time) => setState(() => selectedTime = time),
+                onTransactionTypeChanged: _onTransactionTypeChanged,
               ),
-              const SizedBox(height: 16),
-
-              /// Category selector
-              CategorySelector(
+              const SizedBox(height: 20),
+              ToggleArea(
+                superSetting: superSetting,
+                isTemporary: isTemporary,
+                accentColor: accentColor,
+                onSuperSettingChanged: _onSuperSettingChanged,
+                onTemporaryChanged: (v) => setState(() => isTemporary = v),
+              ),
+              const SizedBox(height: 20),
+              CategoryOrLinkedTransactions(
+                superSetting: superSetting,
                 userCategories: userCategories,
                 selectedCategoryId: selectedCategoryId,
-                accentColor: accentColor,
                 onCategoryTap: _selectCategory,
+                matchedTransactions: matchedTransactions,
+                selectedMatchedTransaction: selectedMatchedTransaction,
+                onSelectMatchedTransaction: (e) => setState(() => selectedMatchedTransaction = e),
+                accentColor: accentColor,
               ),
-              const SizedBox(height: 16),
-
-              /// Error message
-              if (errorMessage != null)
-                Text(
-                  errorMessage!,
-                  style: const TextStyle(
-                    color: Colors.redAccent,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              if (errorMessage != null) ...[
+                const SizedBox(height: 12),
+                Text(errorMessage!, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+              ],
               const SizedBox(height: 12),
-
-              /// Submit button
               SubmitButton(
                 label: 'Save Record',
                 accentColor: accentColor,
-                onPressed: _submitExpense,
+                onPressed: _submitTransaction,
               ),
               const SizedBox(height: 50),
             ],

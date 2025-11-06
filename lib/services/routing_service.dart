@@ -1,4 +1,4 @@
-import 'package:expenso/ui/screens/pages/add_new_transaction_record_page.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/add_transaction_record_page.dart';
 import 'package:flutter/material.dart';
 import '../ui/screens/views/expence_record_screen.dart';
 import '../ui/screens/pages/year_expenses_page.dart';

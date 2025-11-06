@@ -1,0 +1,82 @@
+import 'package:expenso/data/models/category.dart';
+import 'package:expenso/data/models/expense.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/category_selector.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/matched_transaction_card.dart';
+import 'package:flutter/material.dart';
+
+class CategoryOrLinkedTransactions extends StatelessWidget {
+  final bool superSetting;
+  final List<Category> userCategories;
+  final int? selectedCategoryId;
+  final Function(Category) onCategoryTap;
+  final List<Expense> matchedTransactions;
+  final Expense? selectedMatchedTransaction;
+  final Function(Expense) onSelectMatchedTransaction;
+  final Color accentColor;
+
+  const CategoryOrLinkedTransactions({
+    super.key,
+    required this.superSetting,
+    required this.userCategories,
+    this.selectedCategoryId,
+    required this.onCategoryTap,
+    required this.matchedTransactions,
+    this.selectedMatchedTransaction,
+    required this.onSelectMatchedTransaction,
+    required this.accentColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (!superSetting) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: CategorySelector(
+          userCategories: userCategories,
+          selectedCategoryId: selectedCategoryId,
+          accentColor: accentColor,
+          onCategoryTap: onCategoryTap,
+        ),
+      );
+    }
+
+    if (matchedTransactions.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Link to Previous Temporary Transaction',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          const SizedBox(height: 12),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: matchedTransactions.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 6),
+            itemBuilder: (_, index) {
+              final expense = matchedTransactions[index];
+              return MatchedTransactionCard(
+                expense: expense,
+                isSelected: selectedMatchedTransaction == expense,
+                accentColor: accentColor,
+                onTap: () => onSelectMatchedTransaction(expense),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
