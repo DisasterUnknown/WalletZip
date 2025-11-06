@@ -1,5 +1,5 @@
-import 'package:expenso/ui/widgets/sub/add_budget_card.dart';
-import 'package:expenso/ui/widgets/sub/budget_card.dart';
+import 'package:expenso/ui/widgets/sub/budget_widgets/add_budget_card.dart';
+import 'package:expenso/ui/widgets/sub/budget_widgets/budget_card.dart';
 import 'package:flutter/material.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:expenso/ui/widgets/main/bottom_nav_bar.dart';
@@ -66,13 +66,6 @@ class _BudgetScreenState extends State<BudgetScreen> {
     final isLeapYear =
         (now.year % 4 == 0 && (now.year % 100 != 0 || now.year % 400 == 0));
 
-    if (isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    // No budget added yet
     if (currentBudget == null) {
       return Scaffold(
         appBar: const CustomAppBar(
@@ -80,7 +73,9 @@ class _BudgetScreenState extends State<BudgetScreen> {
           showBackButton: false,
           showHomeButton: true,
         ),
-        body: Center(
+        body: isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

@@ -1,4 +1,5 @@
 import 'package:expenso/data/db/db_helper.dart';
+import 'package:expenso/utils/number_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -29,6 +30,11 @@ class _BudgetCardState extends State<BudgetCard> {
   void initState() {
     super.initState();
     _loadBudgetData();
+
+    // Listen to DB changes
+    DBHelper().expenseCountNotifier.addListener(() {
+      _loadBudgetData();
+    });
   }
 
   Future<void> _loadBudgetData() async {
@@ -68,10 +74,6 @@ class _BudgetCardState extends State<BudgetCard> {
         isLoading = false;
       });
     }
-  }
-
-  String formatNumber(double number) {
-    return NumberFormat('#,##0.00').format(number);
   }
 
   String getBalanceMessage() {
@@ -169,19 +171,19 @@ class _BudgetCardState extends State<BudgetCard> {
                       children: [
                         _buildBudgetItem(
                           "Income",
-                          formatNumber(income),
+                          formatNumber(income, convertFromLength: 4),
                           Colors.greenAccent,
                           Icons.arrow_upward_rounded,
                         ),
                         _buildBudgetItem(
                           "Remaining",
-                          formatNumber(remaining),
+                          formatNumber(remaining, convertFromLength: 4),
                           Colors.white,
                           Icons.account_balance_wallet_outlined,
                         ),
                         _buildBudgetItem(
                           "Expense",
-                          formatNumber(expense),
+                          formatNumber(expense, convertFromLength: 4),
                           Colors.redAccent,
                           Icons.arrow_downward_rounded,
                         ),

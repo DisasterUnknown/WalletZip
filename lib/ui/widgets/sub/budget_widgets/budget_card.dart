@@ -1,4 +1,4 @@
-import 'package:expenso/ui/widgets/sub/ring_charts/ring_chart.dart';
+import 'package:expenso/ui/widgets/sub/budget_widgets/ring_charts/ring_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For formatting numbers
 
