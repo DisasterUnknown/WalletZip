@@ -1,7 +1,6 @@
+import 'package:expenso/utils/number_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-String formatNumber(double number) => NumberFormat('#,##0.00').format(number);
 
 Widget buildCategoryCard(
   String category,
@@ -52,7 +51,7 @@ Widget buildCategoryCard(
               ],
             ),
             Text(
-              formatNumber(amount),
+              formatNumber(amount, convertFromLength: 10, showTrailingZeros: true),
               style: TextStyle(
                 color: type == 'expense' ? Colors.redAccent : Colors.greenAccent,
                 fontWeight: FontWeight.bold,

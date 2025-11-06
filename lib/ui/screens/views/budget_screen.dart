@@ -15,7 +15,13 @@ class BudgetScreen extends StatefulWidget {
 
 class _BudgetScreenState extends State<BudgetScreen> {
   Budget? currentBudget;
-  double totalExpenses = 0.0;
+
+  // spent per timeframe (calculated from DB)
+  double yearlySpent = 0.0;
+  double monthlySpent = 0.0;
+  double weeklySpent = 0.0;
+  double todaySpent = 0.0;
+
   bool isLoading = true;
 
   @override
@@ -25,38 +31,80 @@ class _BudgetScreenState extends State<BudgetScreen> {
   }
 
   Future<void> _loadBudgetAndExpenses() async {
+    if (!mounted) return;
     setState(() => isLoading = true);
 
     final budgets = await DBHelper().getAllBudgets();
     final now = DateTime.now();
 
+    // select budget for current month/year if exists, else fallback to first
     Budget? budget;
     if (budgets.isNotEmpty) {
-      // Find budget for current month/year
       budget = budgets.firstWhere(
         (b) => b.month == now.month && b.year == now.year,
-        orElse: () => budgets.first, // fallback to first budget if none for this month
+        orElse: () => budgets.first,
       );
     }
 
-    // Calculate total expenses for this month
+    // Load all expenses once
     final allExpenses = await DBHelper().getAllExpenses();
-    final expensesThisMonth = allExpenses
-        .where(
-          (e) =>
-              e.dateTime.year == now.year &&
-              e.dateTime.month == now.month &&
-              e.type.toLowerCase() == 'expense',
-        )
-        .fold(0.0, (prev, e) => prev + e.price);
 
-    if (mounted) {
-      setState(() {
-        currentBudget = budget;
-        totalExpenses = expensesThisMonth;
-        isLoading = false;
-      });
+    // compute ranges
+    final startOfToday = DateTime(now.year, now.month, now.day);
+    final endOfToday = startOfToday.add(const Duration(days: 1)); // exclusive
+
+    final startOfMonth = DateTime(now.year, now.month, 1);
+    final endOfMonth = DateTime(now.year, now.month + 1, 1);
+
+    final startOfYear = DateTime(now.year, 1, 1);
+    final endOfYear = DateTime(now.year + 1, 1, 1);
+
+    // weekly: last 7 days including today (you can customize to "current week" if desired)
+    final startOfWeek = DateTime(now.year, now.month, now.day)
+        .subtract(Duration(days: 6)); // 7-day window (inclusive)
+    final endOfWeek = DateTime(now.year, now.month, now.day).add(const Duration(days: 1));
+
+    double sumYear = 0.0;
+    double sumMonth = 0.0;
+    double sumWeek = 0.0;
+    double sumToday = 0.0;
+
+    for (var e in allExpenses) {
+      // only consider expenses (not incomes)
+      if (e.type.toLowerCase() != 'expense') continue;
+
+      final dt = e.dateTime;
+
+      // yearly
+      if (!dt.isBefore(startOfYear) && dt.isBefore(endOfYear)) {
+        sumYear += e.price;
+      }
+
+      // monthly
+      if (!dt.isBefore(startOfMonth) && dt.isBefore(endOfMonth)) {
+        sumMonth += e.price;
+      }
+
+      // weekly (last 7 days)
+      if (!dt.isBefore(startOfWeek) && dt.isBefore(endOfWeek)) {
+        sumWeek += e.price;
+      }
+
+      // today
+      if (!dt.isBefore(startOfToday) && dt.isBefore(endOfToday)) {
+        sumToday += e.price;
+      }
     }
+
+    if (!mounted) return;
+    setState(() {
+      currentBudget = budget;
+      yearlySpent = sumYear;
+      monthlySpent = sumMonth;
+      weeklySpent = sumWeek;
+      todaySpent = sumToday;
+      isLoading = false;
+    });
   }
 
   @override
@@ -66,6 +114,13 @@ class _BudgetScreenState extends State<BudgetScreen> {
     final isLeapYear =
         (now.year % 4 == 0 && (now.year % 100 != 0 || now.year % 400 == 0));
 
+    if (isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    // No budget added yet
     if (currentBudget == null) {
       return Scaffold(
         appBar: const CustomAppBar(
@@ -73,9 +128,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
           showBackButton: false,
           showHomeButton: true,
         ),
-        body: isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : Center(
+        body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -99,37 +152,35 @@ class _BudgetScreenState extends State<BudgetScreen> {
       );
     }
 
-    // Budget exists → calculate all amounts
-    double monthly = 0, daily = 0, weekly = 0, yearly = 0;
+    // Budget exists → calculate budget amounts (based on budget.type)
+    double monthlyBudget = 0, dailyBudget = 0, weeklyBudget = 0, yearlyBudget = 0;
     final currentBudgetType = currentBudget!.type.toLowerCase();
 
     switch (currentBudgetType) {
       case "monthly":
-        monthly = currentBudget!.amount;
-        daily = monthly / daysInMonth;
-        weekly = daily * 7;
-        yearly = daily * (isLeapYear ? 366 : 365);
+        monthlyBudget = currentBudget!.amount;
+        dailyBudget = monthlyBudget / daysInMonth;
+        weeklyBudget = dailyBudget * 7;
+        yearlyBudget = dailyBudget * (isLeapYear ? 366 : 365);
         break;
       case "yearly":
-        yearly = currentBudget!.amount;
-        monthly = yearly / 12;
-        daily = monthly / daysInMonth;
-        weekly = daily * 7;
+        yearlyBudget = currentBudget!.amount;
+        monthlyBudget = yearlyBudget / 12;
+        dailyBudget = monthlyBudget / daysInMonth;
+        weeklyBudget = dailyBudget * 7;
         break;
       case "daily":
-        daily = currentBudget!.amount;
-        weekly = daily * 7;
-        monthly = daily * daysInMonth;
-        yearly = daily * (isLeapYear ? 366 : 365);
+        dailyBudget = currentBudget!.amount;
+        weeklyBudget = dailyBudget * 7;
+        monthlyBudget = dailyBudget * daysInMonth;
+        yearlyBudget = dailyBudget * (isLeapYear ? 366 : 365);
         break;
       default:
-        monthly = currentBudget!.amount;
-        daily = monthly / daysInMonth;
-        weekly = daily * 7;
-        yearly = daily * (isLeapYear ? 366 : 365);
+        monthlyBudget = currentBudget!.amount;
+        dailyBudget = monthlyBudget / daysInMonth;
+        weeklyBudget = dailyBudget * 7;
+        yearlyBudget = dailyBudget * (isLeapYear ? 366 : 365);
     }
-
-    final spent = totalExpenses;
 
     return Scaffold(
       appBar: const CustomAppBar(
@@ -141,31 +192,32 @@ class _BudgetScreenState extends State<BudgetScreen> {
         padding: const EdgeInsets.symmetric(vertical: 16),
         child: Column(
           children: [
+            // pass spent values that match the timeframe
             BudgetCardGlass(
               title: "Yearly Budget",
-              budget: yearly,
-              spent: spent,
+              budget: yearlyBudget,
+              spent: yearlySpent,
               budgetType: currentBudgetType,
               type: "Yearly",
             ),
             BudgetCardGlass(
               title: "Monthly Budget",
-              budget: monthly,
-              spent: spent,
+              budget: monthlyBudget,
+              spent: monthlySpent,
               budgetType: currentBudgetType,
               type: "Monthly",
             ),
             BudgetCardGlass(
               title: "Weekly Budget",
-              budget: weekly,
-              spent: spent / daysInMonth,
+              budget: weeklyBudget,
+              spent: weeklySpent,
               budgetType: currentBudgetType,
               type: "Weekly",
             ),
             BudgetCardGlass(
               title: "Daily Budget",
-              budget: daily,
-              spent: spent / daysInMonth,
+              budget: dailyBudget,
+              spent: todaySpent,
               budgetType: currentBudgetType,
               type: "Daily",
             ),

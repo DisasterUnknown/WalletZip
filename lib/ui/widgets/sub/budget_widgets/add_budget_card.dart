@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:expenso/services/startup_service.dart';
 import 'package:expenso/ui/widgets/sub/add_expense_income/widgets/expense_text_field.dart';
 import 'package:expenso/ui/widgets/sub/add_expense_income/widgets/thousands_formatter.dart';
 import 'package:flutter/material.dart';
@@ -86,6 +87,9 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
     );
 
     await DBHelper().insertBudget(budget);
+    
+    // This only call the add the budget to the db in the startupService nothing else
+    StartupService.checkAndAddBudgetIncome();
 
     if (!mounted) return;
     setState(() => _isSaving = false);

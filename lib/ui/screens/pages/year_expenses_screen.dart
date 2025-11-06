@@ -4,8 +4,8 @@ import 'package:expenso/data/models/year_data.dart';
 import 'package:expenso/services/routing_service.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:expenso/ui/widgets/sub/status_card.dart';
+import 'package:expenso/utils/number_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class YearExpensesScreen extends StatefulWidget {
   const YearExpensesScreen({super.key});
@@ -62,10 +62,6 @@ class _YearExpensesScreenState extends State<YearExpensesScreen> {
     }
   }
 
-  String formatNumber(double value) {
-    return NumberFormat('#,##0.00').format(value);
-  }
-
   @override
   Widget build(BuildContext context) {
     final months = [
@@ -114,7 +110,7 @@ class _YearExpensesScreenState extends State<YearExpensesScreen> {
                       final monthIndex = index + 1;
                       final month = months[index];
                       final total = monthlyTotals[monthIndex] ?? 0.0;
-                      final priceText = total == 0 ? "—" : formatNumber(total);
+                      final priceText = total == 0 ? "—" : formatNumber(total, convertFromLength: 10, showTrailingZeros: true);
 
                       final currentMonthIndex = DateTime.now().month;
                       final currentYear = DateTime.now().year;
