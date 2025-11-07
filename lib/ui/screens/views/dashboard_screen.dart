@@ -239,7 +239,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   controller: _tabController,
                   labelColor: CustomColors.getThemeColor(context, 'secondary'),
                   unselectedLabelColor: Colors.white54,
-                  indicatorColor: Colors.greenAccent,
+                  indicatorColor: CustomColors.getThemeColor(context, 'incomeColor'),
                   tabs: const [
                     Tab(text: 'Month'),
                     Tab(text: 'Year'),

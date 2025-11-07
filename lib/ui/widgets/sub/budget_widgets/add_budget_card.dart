@@ -22,7 +22,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
   bool _isSaving = false;
   String? errorMessage;
 
-  Color get accentColor => Colors.redAccent;
+  Color get accentColor => CustomColors.getThemeColor(context, 'expenseColor');
 
   @override
   void initState() {
@@ -193,8 +193,8 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
                     if (errorMessage != null)
                       Text(
                         errorMessage!,
-                        style: const TextStyle(
-                          color: Colors.redAccent,
+                        style: TextStyle(
+                          color: CustomColors.getThemeColor(context, 'expenseColor'),
                           fontWeight: FontWeight.bold,
                         ),
                       ),

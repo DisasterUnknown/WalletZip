@@ -32,14 +32,14 @@ class ConfirmDeleteDialog extends StatelessWidget {
                 // Title + icon
                 Row(
                   children: [
-                    const Icon(Icons.warning_amber_rounded,
-                        color: Colors.redAccent, size: 28),
+                    Icon(Icons.warning_amber_rounded,
+                        color: CustomColors.getThemeColor(context, 'expenseColor'), size: 28),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         title,
-                        style: const TextStyle(
-                          color: Colors.redAccent,
+                        style: TextStyle(
+                          color: CustomColors.getThemeColor(context, 'expenseColor'),
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
@@ -74,7 +74,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
                     const SizedBox(width: 12),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent,
+                        backgroundColor: CustomColors.getThemeColor(context, 'expenseColor'),
                         foregroundColor: CustomColors.getThemeColor(context, 'secondary'),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12),

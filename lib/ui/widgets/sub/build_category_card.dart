@@ -40,7 +40,7 @@ Widget buildCategoryCard(
           children: [
             Row(
               children: [
-                Icon(icon, color: type == 'expense' ? Colors.redAccent : Colors.greenAccent, size: 24),
+                Icon(icon, color: type == 'expense' ? CustomColors.getThemeColor(context, 'expenseColor') : CustomColors.getThemeColor(context, 'incomeColor'), size: 24),
                 const SizedBox(width: 8),
                 Text(
                   category,
@@ -55,7 +55,7 @@ Widget buildCategoryCard(
             Text(
               formatNumber(amount, convertFromLength: 10, showTrailingZeros: true),
               style: TextStyle(
-                color: type == 'expense' ? Colors.redAccent : Colors.greenAccent,
+                color: type == 'expense' ? CustomColors.getThemeColor(context, 'expenseColor') : CustomColors.getThemeColor(context, 'incomeColor'),
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
@@ -80,8 +80,8 @@ Widget buildCategoryCard(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    type == 'expense' ? Colors.redAccent.withValues(alpha: 0.8) : Colors.greenAccent.withValues(alpha: 0.8),
-                    type == 'expense' ? Colors.redAccent.withValues(alpha: 0.5) : Colors.greenAccent.withValues(alpha: 0.5),
+                    type == 'expense' ? CustomColors.getThemeColor(context, 'expenseColor').withValues(alpha: 0.8) : CustomColors.getThemeColor(context, 'incomeColor').withValues(alpha: 0.8),
+                    type == 'expense' ? CustomColors.getThemeColor(context, 'expenseColor').withValues(alpha: 0.5) : CustomColors.getThemeColor(context, 'incomeColor').withValues(alpha: 0.5),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(4),

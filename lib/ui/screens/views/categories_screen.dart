@@ -82,18 +82,18 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   color: CustomColors.getThemeColor(context, 'primary'),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected ? Colors.greenAccent : Colors.white24,
+                    color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : Colors.white24,
                     width: 2,
                   ),
                   boxShadow: isSelected
                       ? [
                           BoxShadow(
-                            color: Colors.greenAccent.withValues(alpha: 0.6),
+                            color: CustomColors.getThemeColor(context, 'incomeColor').withValues(alpha: 0.6),
                             blurRadius: 12,
                             spreadRadius: 1,
                           ),
                           BoxShadow(
-                            color: Colors.greenAccent.withValues(alpha: 0.3),
+                            color: CustomColors.getThemeColor(context, 'incomeColor').withValues(alpha: 0.3),
                             blurRadius: 24,
                             spreadRadius: 4,
                           ),
@@ -105,14 +105,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   children: [
                     Icon(
                       category.icon,
-                      color: isSelected ? Colors.greenAccent : Colors.white70,
+                      color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : Colors.white70,
                       size: 28,
                     ),
                     const SizedBox(height: 6),
                     Text(
                       category.name,
                       style: TextStyle(
-                        color: isSelected ? Colors.greenAccent : Colors.white70,
+                        color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : Colors.white70,
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
                       ),

@@ -45,7 +45,7 @@ class _AddNewTransactionRecordPageState
   String? errorMessage;
 
   Color get accentColor =>
-      transactionType == 'Expense' ? Colors.redAccent : Colors.greenAccent;
+      transactionType == 'Expense' ? CustomColors.getThemeColor(context, 'expenseColor') : CustomColors.getThemeColor(context, 'incomeColor');
 
   @override
   void didChangeDependencies() {
@@ -251,8 +251,8 @@ class _AddNewTransactionRecordPageState
                 const SizedBox(height: 12),
                 Text(
                   errorMessage!,
-                  style: const TextStyle(
-                    color: Colors.redAccent,
+                  style: TextStyle(
+                    color: CustomColors.getThemeColor(context, 'expenseColor'),
                     fontWeight: FontWeight.bold,
                   ),
                 ),

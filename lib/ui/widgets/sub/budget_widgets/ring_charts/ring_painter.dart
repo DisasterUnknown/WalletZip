@@ -6,9 +6,13 @@ class RingPainter extends CustomPainter {
   final double percent;
   final bool isNegative;
   final Color baseColor; // stored directly, no late init
+  final Color expenseColor;
+  final Color incomeColor;
 
   RingPainter(this.percent, this.isNegative, BuildContext context)
-    : baseColor = CustomColors.getThemeColor(context, 'secondary');
+    : baseColor = CustomColors.getThemeColor(context, 'secondary'),
+      expenseColor = CustomColors.getThemeColor(context, 'expenseColor'),
+      incomeColor = CustomColors.getThemeColor(context, 'incomeColor');
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -22,7 +26,7 @@ class RingPainter extends CustomPainter {
       ..strokeWidth = stroke;
 
     final fgPaint = Paint()
-      ..color = isNegative ? Colors.redAccent : Colors.greenAccent
+      ..color = isNegative ? expenseColor : incomeColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = stroke
       ..strokeCap = StrokeCap.round;

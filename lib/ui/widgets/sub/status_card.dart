@@ -173,7 +173,7 @@ class _BudgetCardState extends State<BudgetCard> {
                         _buildBudgetItem(
                           "Income",
                           formatNumber(income, convertFromLength: 4),
-                          Colors.greenAccent,
+                          CustomColors.getThemeColor(context, 'incomeColor'),
                           Icons.arrow_upward_rounded,
                         ),
                         _buildBudgetItem(
@@ -185,7 +185,7 @@ class _BudgetCardState extends State<BudgetCard> {
                         _buildBudgetItem(
                           "Expense",
                           formatNumber(expense, convertFromLength: 4),
-                          Colors.redAccent,
+                          CustomColors.getThemeColor(context, 'expenseColor'),
                           Icons.arrow_downward_rounded,
                         ),
                       ],
@@ -201,9 +201,9 @@ class _BudgetCardState extends State<BudgetCard> {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          Colors.greenAccent.withValues(alpha: 0.8),
+                          CustomColors.getThemeColor(context, 'incomeColor').withValues(alpha: 0.8),
                           CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.4),
-                          Colors.redAccent.withValues(alpha: 0.8),
+                          CustomColors.getThemeColor(context, 'expenseColor').withValues(alpha: 0.8),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(2),

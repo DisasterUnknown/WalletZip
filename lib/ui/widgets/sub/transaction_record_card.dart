@@ -20,7 +20,7 @@ Widget transactionRecordCard(
   final time = DateFormat('hh:mm a').format(date);
 
   final isExpense = e.type.toLowerCase() == 'expense';
-  final borderColor = isExpense ? Colors.redAccent : Colors.greenAccent;
+  final borderColor = isExpense ? CustomColors.getThemeColor(context, 'expenseColor') : CustomColors.getThemeColor(context, 'incomeColor');
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: marginH, vertical: marginV),
@@ -92,7 +92,7 @@ Widget transactionRecordCard(
                     (match) => ',',
                   ),
               style: TextStyle(
-                color: isExpense ? Colors.redAccent : Colors.greenAccent,
+                color: isExpense ? CustomColors.getThemeColor(context, 'expenseColor') : CustomColors.getThemeColor(context, 'incomeColor'),
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

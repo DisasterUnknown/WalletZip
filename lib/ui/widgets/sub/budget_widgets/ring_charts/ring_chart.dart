@@ -1,3 +1,4 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'ring_painter.dart';
 
@@ -24,7 +25,7 @@ class RingChart extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: isNegative ? Colors.redAccent : Colors.greenAccent,
+                  color: isNegative ? CustomColors.getThemeColor(context, 'expenseColor') : CustomColors.getThemeColor(context, 'incomeColor'),
                 ),
               ),
             ],

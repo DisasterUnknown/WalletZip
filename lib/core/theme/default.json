@@ -1,4 +1,6 @@
 [
   {"name": "primary", "value": "0xFF000000"},
-  {"name": "secondary", "value": "0xFFFFFFFF"}
+  {"name": "secondary", "value": "0xFFFFFFFF"},
+  {"name": "expenseColor", "value": "0xFFFF5252"},
+  {"name": "incomeColor", "value": "0xFF69F0AE"}
 ]

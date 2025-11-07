@@ -151,7 +151,7 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                             border: Border(
                               left: BorderSide(
                                 color: isOngoing
-                                    ? Colors.greenAccent
+                                    ? CustomColors.getThemeColor(context, 'incomeColor')
                                     : Colors.blueGrey.withValues(alpha: 0.8),
                                 width: 4,
                               ),
@@ -177,7 +177,7 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                                       color: status == "Pending"
                                           ? Colors.orangeAccent
                                           : status == "Ongoing"
-                                              ? Colors.greenAccent
+                                              ? CustomColors.getThemeColor(context, 'incomeColor')
                                               : Colors.white54,
                                       fontSize: 12,
                                     ),
@@ -190,8 +190,8 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                                   color: total == 0
                                       ? Colors.white54
                                       : total < 0
-                                          ? Colors.redAccent
-                                          : Colors.greenAccent,
+                                          ? CustomColors.getThemeColor(context, 'expenseColor')
+                                          : CustomColors.getThemeColor(context, 'incomeColor'),
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
