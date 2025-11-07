@@ -62,4 +62,30 @@ class Expense {
         ? DateTime.tryParse(map['expectedDate'])
         : null,
   );
+
+  Expense copyWith({
+    int? id,
+    String? type,
+    double? price,
+    List<int>? categoryIds,
+    String? note,
+    DateTime? dateTime,
+    int? linkedTransactionId,
+    bool? isTemporary,
+    DateTime? expectedDate,
+    String? status,
+  }) {
+    return Expense(
+      id: id ?? this.id,
+      type: type ?? this.type,
+      price: price ?? this.price,
+      categoryIds: categoryIds ?? this.categoryIds,
+      note: note ?? this.note,
+      dateTime: dateTime ?? this.dateTime,
+      linkedTransactionId: linkedTransactionId ?? this.linkedTransactionId,
+      isTemporary: isTemporary ?? this.isTemporary,
+      expectedDate: expectedDate ?? this.expectedDate,
+      status: status ?? this.status,
+    );
+  }
 }

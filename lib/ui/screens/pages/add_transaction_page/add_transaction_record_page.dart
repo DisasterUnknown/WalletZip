@@ -119,60 +119,86 @@ class _AddNewTransactionRecordPageState
   }
 
   void _submitTransaction() async {
-    setState(() => errorMessage = null);
+  setState(() => errorMessage = null);
 
-    if (!_formKey.currentState!.validate()) return;
+  if (!_formKey.currentState!.validate()) return;
 
-    if (!superSetting && selectedCategoryId == null) {
-      setState(() => errorMessage = 'Please select a category!');
-      return;
-    }
-
-    if (superSetting && selectedMatchedTransaction == null) {
-      setState(() => errorMessage = 'Please select a linked transaction!');
-      return;
-    }
-
-    final amount = double.tryParse(amountController.text.replaceAll(',', ''));
-    if (amount == null || amount <= 0) {
-      setState(() => errorMessage = 'Please enter a valid amount!');
-      return;
-    }
-
-    bool finalIsTemporary = isTemporary;
-    String finalStatus = 'completed';
-
-    if (superSetting && selectedMatchedTransaction != null) {
-      finalIsTemporary = false;
-      finalStatus = 'completed';
-    } else if (!superSetting) {
-      finalStatus = isTemporary ? 'open' : 'completed';
-    }
-
-    final expense = Expense(
-      type: transactionType.toLowerCase(),
-      price: amount,
-      categoryIds: superSetting
-          ? selectedMatchedTransaction!.categoryIds
-          : [selectedCategoryId!],
-      note: descriptionController.text,
-      dateTime: DateTime(
-        selectedDate.year,
-        selectedDate.month,
-        selectedDate.day,
-        selectedTime.hour,
-        selectedTime.minute,
-      ),
-      linkedTransactionId: superSetting ? selectedMatchedTransaction!.id : null,
-      isTemporary: finalIsTemporary,
-      expectedDate: superSetting ? selectedMatchedTransaction?.dateTime : null,
-      status: finalStatus, 
-    );
-
-    await DBHelper().insertExpense(expense);
-    if (!mounted) return;
-    Navigator.of(context).pop(true);
+  // Validate category or linked transaction
+  if (!superSetting && selectedCategoryId == null) {
+    setState(() => errorMessage = 'Please select a category!');
+    return;
   }
+
+  if (superSetting && selectedMatchedTransaction == null) {
+    setState(() => errorMessage = 'Please select a linked transaction!');
+    return;
+  }
+
+  // Validate amount
+  final amount = double.tryParse(amountController.text.replaceAll(',', ''));
+  if (amount == null || amount <= 0) {
+    setState(() => errorMessage = 'Please enter a valid amount!');
+    return;
+  }
+
+  // Determine transaction status & temp flag
+  bool finalIsTemporary = isTemporary;
+  String finalStatus = 'completed';
+
+  if (superSetting && selectedMatchedTransaction != null) {
+    // If linked, both transactions become completed and permanent
+    finalIsTemporary = false;
+    finalStatus = 'completed';
+  } else if (!superSetting) {
+    finalStatus = isTemporary ? 'open' : 'completed';
+  }
+
+  // Create Expense object (new or updated)
+  final newExpense = Expense(
+    id: selectedMatchedTransaction?.id, // if you're editing existing expense
+    type: transactionType.toLowerCase(),
+    price: amount,
+    categoryIds: superSetting
+        ? selectedMatchedTransaction!.categoryIds
+        : [selectedCategoryId!],
+    note: descriptionController.text,
+    dateTime: DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+    ),
+    linkedTransactionId: superSetting ? selectedMatchedTransaction!.id : null,
+    isTemporary: finalIsTemporary,
+    expectedDate: superSetting ? selectedMatchedTransaction?.dateTime : null,
+    status: finalStatus,
+  );
+
+  final db = DBHelper();
+
+  // If editing existing transaction, update it
+  if (selectedMatchedTransaction != null) {
+    await db.updateExpense(newExpense);
+  } else {
+    // otherwise insert a new one
+    await db.insertExpense(newExpense);
+  }
+
+  // If linked transaction, also update the matched one
+  if (superSetting && selectedMatchedTransaction != null) {
+    final updatedLinked = selectedMatchedTransaction!.copyWith(
+      linkedTransactionId: newExpense.id,
+      status: 'completed',
+      isTemporary: false,
+    );
+    await db.updateExpense(updatedLinked);
+  }
+
+  if (!mounted) return;
+  Navigator.of(context).pop(true);
+}
+
 
   @override
   Widget build(BuildContext context) {
