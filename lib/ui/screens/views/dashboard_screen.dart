@@ -238,7 +238,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 TabBar(
                   controller: _tabController,
                   labelColor: CustomColors.getThemeColor(context, 'secondary'),
-                  unselectedLabelColor: Colors.white54,
+                  unselectedLabelColor: CustomColors.getThemeColor(context, 'secondary1'),
                   indicatorColor: CustomColors.getThemeColor(context, 'incomeColor'),
                   tabs: const [
                     Tab(text: 'Month'),
@@ -281,11 +281,11 @@ class _DashboardScreenState extends State<DashboardScreen>
                                   ),
                                   if (categoryTotalsExpenses.isEmpty &&
                                       categoryTotalsIncome.isEmpty)
-                                    const Padding(
+                                    Padding(
                                       padding: EdgeInsets.all(16.0),
                                       child: Text(
                                         'No categorized data found.',
-                                        style: TextStyle(color: Colors.white70),
+                                        style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary3')),
                                       ),
                                     ),
                                   SizedBox(height: 80),

@@ -92,7 +92,7 @@ Widget buildCategoryCard(
         const SizedBox(height: 4),
         Text(
           '${(percentage * 100).toStringAsFixed(1)}%',
-          style: const TextStyle(color: Colors.white70, fontSize: 12),
+          style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary3'), fontSize: 12),
         ),
       ],
     ),

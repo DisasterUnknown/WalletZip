@@ -39,7 +39,7 @@ class DateTimePickerRow extends StatelessWidget {
             colorScheme: ColorScheme.dark(
               primary: accentColor,
               onPrimary: CustomColors.getThemeColor(context, 'secondary'),
-              surface: Colors.black87,
+              surface: CustomColors.getThemeColor(context, 'primary1'),
               onSurface: CustomColors.getThemeColor(context, 'secondary'),
             ),
           ),
@@ -67,7 +67,7 @@ class DateTimePickerRow extends StatelessWidget {
             colorScheme: ColorScheme.dark(
               primary: accentColor,
               onPrimary: CustomColors.getThemeColor(context, 'secondary'),
-              surface: Colors.black87,
+              surface: CustomColors.getThemeColor(context, 'primary1'),
               onSurface: CustomColors.getThemeColor(context, 'secondary'),
             ),
           ),

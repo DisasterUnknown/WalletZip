@@ -12,7 +12,7 @@ class FloatingAddBtn extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white38, width: 1),
+        border: Border.all(color: CustomColors.getThemeColor(context, 'secondary4'), width: 1),
         gradient: const LinearGradient(
           colors: [Color(0xFF0D0D0D), Color(0xFF2B2B2B)],
           begin: Alignment.topLeft,
@@ -34,7 +34,7 @@ class FloatingAddBtn extends StatelessWidget {
       child: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: CustomColors.getThemeColor(context, 'transparent'),
         onPressed: () async {
           RoutingService().navigateTo(
             RoutingService.addUpdateTransaction,

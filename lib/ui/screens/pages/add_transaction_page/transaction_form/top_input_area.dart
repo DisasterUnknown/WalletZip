@@ -84,9 +84,9 @@ class TopInputArea extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Transaction Type:',
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary3')),
               ),
               const SizedBox(width: 12),
               Expanded(

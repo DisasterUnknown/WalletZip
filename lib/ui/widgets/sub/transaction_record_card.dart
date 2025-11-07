@@ -44,7 +44,7 @@ Widget transactionRecordCard(
                 children: [
                   Text(
                     weekday,
-                    style: const TextStyle(color: Colors.white70, fontSize: 12),
+                    style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary3'), fontSize: 12),
                   ),
                   Text(
                     day,
@@ -74,7 +74,7 @@ Widget transactionRecordCard(
                 const SizedBox(height: 4),
                 Text(
                   time,
-                  style: const TextStyle(color: Colors.white54, fontSize: 12),
+                  style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary1'), fontSize: 12),
                 ),
               ],
             ),
@@ -110,9 +110,9 @@ Widget transactionRecordCard(
                     ),
                   );
                 },
-                child: const Icon(
+                child: Icon(
                   Icons.delete_forever_rounded,
-                  color: Colors.white54,
+                  color: CustomColors.getThemeColor(context, 'secondary1'),
                   size: 22,
                 ),
               ),

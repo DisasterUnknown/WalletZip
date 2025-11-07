@@ -1,3 +1,4 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/sub/budget_widgets/add_budget_card.dart';
 import 'package:expenso/ui/widgets/sub/budget_widgets/budget_card.dart';
 import 'package:flutter/material.dart';
@@ -132,9 +133,9 @@ class _BudgetScreenState extends State<BudgetScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+              Text(
                 "No budget set for this month.",
-                style: TextStyle(color: Colors.white70, fontSize: 16),
+                style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary3'), fontSize: 16),
               ),
             ],
           ),

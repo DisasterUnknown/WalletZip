@@ -1,3 +1,4 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 
 class TransactionTypeToggle extends StatelessWidget {
@@ -28,14 +29,14 @@ class TransactionTypeToggle extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: isSelected ? accentColor : Colors.white24,
+                  color: isSelected ? accentColor : CustomColors.getThemeColor(context, 'secondary2'),
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
                 type,
                 style: TextStyle(
-                  color: isSelected ? accentColor : Colors.white70,
+                  color: isSelected ? accentColor : CustomColors.getThemeColor(context, 'secondary3'),
                 ),
               ),
             ),

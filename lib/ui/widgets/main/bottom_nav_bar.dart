@@ -18,7 +18,7 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color activeColor = CustomColors.getThemeColor(context, 'secondary');
-    const Color inactiveColor = Colors.white38;
+    Color inactiveColor = CustomColors.getThemeColor(context, 'secondary4');
 
     Widget buildTab(IconData icon, String route, int index) {
       bool isActive = index == tabIndex;
@@ -30,7 +30,7 @@ class BottomNavBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             color: isActive
                 ? CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.1)
-                : Colors.transparent,
+                : CustomColors.getThemeColor(context, 'transparent'),
           ),
           child: Icon(
             icon,
@@ -47,7 +47,7 @@ class BottomNavBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: CustomColors.getThemeColor(context, 'primary'),
         borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: Colors.white24, width: 1),
+        border: Border.all(color: CustomColors.getThemeColor(context, 'secondary2'), width: 1),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(25),
@@ -68,7 +68,7 @@ class BottomNavBar extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
-                      border: Border.all(color: Colors.white24, width: 1),
+                      border: Border.all(color: CustomColors.getThemeColor(context, 'secondary2'), width: 1),
                       boxShadow: [
                         BoxShadow(
                           color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),

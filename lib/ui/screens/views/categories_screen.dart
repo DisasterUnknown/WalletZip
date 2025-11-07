@@ -82,7 +82,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   color: CustomColors.getThemeColor(context, 'primary'),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : Colors.white24,
+                    color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : CustomColors.getThemeColor(context, 'secondary2'),
                     width: 2,
                   ),
                   boxShadow: isSelected
@@ -105,14 +105,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   children: [
                     Icon(
                       category.icon,
-                      color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : Colors.white70,
+                      color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : CustomColors.getThemeColor(context, 'secondary3'),
                       size: 28,
                     ),
                     const SizedBox(height: 6),
                     Text(
                       category.name,
                       style: TextStyle(
-                        color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : Colors.white70,
+                        color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : CustomColors.getThemeColor(context, 'secondary3'),
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
                       ),

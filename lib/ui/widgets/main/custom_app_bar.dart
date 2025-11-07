@@ -26,7 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     const double iconSize = 22.0;
 
     return Material(
-      color: Colors.transparent,
+      color: CustomColors.getThemeColor(context, 'transparent'),
       child: ClipRRect(
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),

@@ -18,9 +18,9 @@ class PickerBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.black87,
+        color: CustomColors.getThemeColor(context, 'primary1'),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white24),
+        border: Border.all(color: CustomColors.getThemeColor(context, 'secondary2')),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

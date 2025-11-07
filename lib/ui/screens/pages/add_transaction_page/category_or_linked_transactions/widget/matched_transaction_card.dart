@@ -1,4 +1,5 @@
 import 'package:expenso/data/models/expense.dart';
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/sub/transaction_record_card.dart';
 import 'package:flutter/material.dart';
 
@@ -22,10 +23,10 @@ class MatchedTransactionCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: isSelected ? accentColor.withValues(alpha: 0.2) : Colors.transparent,
+          color: isSelected ? accentColor.withValues(alpha: 0.2) : CustomColors.getThemeColor(context, 'transparent'),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected ? accentColor : Colors.transparent,
+            color: isSelected ? accentColor : CustomColors.getThemeColor(context, 'transparent'),
             width: 2,
           ),
         ),

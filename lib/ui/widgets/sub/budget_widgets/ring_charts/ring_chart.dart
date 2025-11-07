@@ -19,7 +19,7 @@ class RingChart extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("Balance", style: TextStyle(fontSize: 11, color: Colors.white70)),
+              Text("Balance", style: TextStyle(fontSize: 11, color: CustomColors.getThemeColor(context, 'secondary3'))),
               Text(
                 "${percent.toStringAsFixed(1)}%",
                 style: TextStyle(

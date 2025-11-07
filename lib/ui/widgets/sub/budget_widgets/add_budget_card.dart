@@ -109,7 +109,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
           child: Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.transparent,
+              color: CustomColors.getThemeColor(context, 'transparent'),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: accentColor.withAlpha(180), width: 1.5),
             ),
@@ -162,12 +162,12 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
                               margin: const EdgeInsets.symmetric(horizontal: 4),
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               decoration: BoxDecoration(
-                                color: Colors.transparent,
+                                color: CustomColors.getThemeColor(context, 'transparent'),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color: selected
                                       ? accentColor
-                                      : Colors.white54,
+                                      : CustomColors.getThemeColor(context, 'secondary1'),
                                   width: 1.5,
                                 ),
                               ),
@@ -177,7 +177,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
                                   style: TextStyle(
                                     color: selected
                                         ? accentColor
-                                        : Colors.white54,
+                                        : CustomColors.getThemeColor(context, 'secondary1'),
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -204,7 +204,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
                     ElevatedButton(
                       onPressed: _isSaving ? null : _saveBudget,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
+                        backgroundColor: CustomColors.getThemeColor(context, 'transparent'),
                         shape: RoundedRectangleBorder(
                           side: BorderSide(color: accentColor),
                           borderRadius: BorderRadius.circular(12),

@@ -93,13 +93,13 @@ class CategorySelector extends StatelessWidget {
           color: CustomColors.getThemeColor(context, 'primary'),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? accentColor : Colors.white24,
+            color: isSelected ? accentColor : CustomColors.getThemeColor(context, 'secondary2'),
             width: 2,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: accentColor.withOpacity(0.35),
+                    color: accentColor.withValues(alpha: 0.35),
                     blurRadius: 16,
                     spreadRadius: 2,
                     offset: const Offset(0, 4),
@@ -112,14 +112,14 @@ class CategorySelector extends StatelessWidget {
           children: [
             Icon(
               category.icon,
-              color: isSelected ? accentColor : Colors.white70,
+              color: isSelected ? accentColor : CustomColors.getThemeColor(context, 'secondary3'),
               size: 24,
             ),
             const SizedBox(height: 4),
             Text(
               category.name,
               style: TextStyle(
-                color: isSelected ? accentColor : Colors.white70,
+                color: isSelected ? accentColor : CustomColors.getThemeColor(context, 'secondary3'),
                 fontWeight: FontWeight.w600,
                 fontSize: 10,
               ),

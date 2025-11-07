@@ -65,7 +65,7 @@ class ToggleArea extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: isDisabled ? Colors.white38 : CustomColors.getThemeColor(context, 'secondary'), // 👈 dim when disabled
+            color: isDisabled ? CustomColors.getThemeColor(context, 'secondary4') : CustomColors.getThemeColor(context, 'secondary'), // 👈 dim when disabled
           ),
         ),
         const SizedBox(width: 8),
@@ -75,11 +75,11 @@ class ToggleArea extends StatelessWidget {
           activeThumbColor: accentColor,
           activeTrackColor: accentColor.withValues(alpha: 0.2),
           inactiveThumbColor: isDisabled
-              ? Colors.grey.withValues(alpha: 0.6) // 👈 subtle gray when disabled
+              ? CustomColors.getThemeColor(context, 'disabled').withValues(alpha: 0.6) // 👈 subtle gray when disabled
               : accentColor,
           inactiveTrackColor: isDisabled
-              ? Colors.grey.withValues(alpha: 0.2)
-              : Colors.transparent,
+              ? CustomColors.getThemeColor(context, 'disabled').withValues(alpha: 0.2)
+              : CustomColors.getThemeColor(context, 'transparent'),
         ),
       ],
     );

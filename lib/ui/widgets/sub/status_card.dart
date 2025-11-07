@@ -91,8 +91,8 @@ class _BudgetCardState extends State<BudgetCard> {
         const SizedBox(height: 6),
         Text(
           label,
-          style: const TextStyle(
-            color: Colors.white70,
+          style: TextStyle(
+            color: CustomColors.getThemeColor(context, 'secondary3'),
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
@@ -213,8 +213,8 @@ class _BudgetCardState extends State<BudgetCard> {
 
                   Text(
                     getBalanceMessage(),
-                    style: const TextStyle(
-                      color: Colors.white70,
+                    style: TextStyle(
+                      color: CustomColors.getThemeColor(context, 'secondary3'),
                       fontSize: 13,
                       letterSpacing: 0.3,
                     ),

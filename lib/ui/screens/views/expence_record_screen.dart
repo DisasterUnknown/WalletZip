@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               left: BorderSide(
                                 color: isOngoing
                                     ? CustomColors.getThemeColor(context, 'incomeColor')
-                                    : Colors.blueGrey.withValues(alpha: 0.8),
+                                    : CustomColors.getThemeColor(context, 'disabled2').withValues(alpha: 0.8),
                                 width: 4,
                               ),
                             ),
@@ -160,10 +160,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     status,
                                     style: TextStyle(
                                       color: status == "Pending"
-                                          ? Colors.orangeAccent
+                                          ? CustomColors.getThemeColor(context, 'pendingColor')
                                           : status == "Ongoing"
                                               ? CustomColors.getThemeColor(context, 'incomeColor')
-                                              : Colors.white54,
+                                              : CustomColors.getThemeColor(context, 'secondary1'),
                                       fontSize: 12,
                                     ),
                                   ),
@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 total.isEmpty ? "—" : total,
                                 style: TextStyle(
                                   color: total.isEmpty
-                                      ? Colors.white54
+                                      ? CustomColors.getThemeColor(context, 'secondary1')
                                       : totalValue < 0
                                           ? CustomColors.getThemeColor(context, 'expenseColor')
                                           : CustomColors.getThemeColor(context, 'incomeColor'),

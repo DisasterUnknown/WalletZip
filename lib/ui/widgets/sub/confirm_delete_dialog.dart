@@ -17,14 +17,17 @@ class ConfirmDeleteDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent, // make transparent for glass effect
+      backgroundColor: CustomColors.getThemeColor(context, 'transparent'), // make transparent for glass effect
       insetPadding: const EdgeInsets.symmetric(horizontal: 24),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            color: Colors.grey[900]!.withValues(alpha: 0.6), // semi-transparent dark
+          child: Container( // semi-transparent dark
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: CustomColors.getThemeColor(context, 'expenseColor')),
+            ),
             padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -51,8 +54,8 @@ class ConfirmDeleteDialog extends StatelessWidget {
                 // Message
                 Text(
                   message,
-                  style: const TextStyle(
-                    color: Colors.white70,
+                  style: TextStyle(
+                    color: CustomColors.getThemeColor(context, 'secondary3'),
                     fontSize: 14,
                   ),
                 ),
@@ -63,8 +66,8 @@ class ConfirmDeleteDialog extends StatelessWidget {
                   children: [
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.white24),
-                        foregroundColor: Colors.white60,
+                        side: BorderSide(color: CustomColors.getThemeColor(context, 'secondary2')),
+                        foregroundColor: CustomColors.getThemeColor(context, 'secondary5'),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12),
                       ),
