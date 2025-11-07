@@ -139,6 +139,16 @@ class _AddNewTransactionRecordPageState
       return;
     }
 
+    bool finalIsTemporary = isTemporary;
+    String finalStatus = 'completed';
+
+    if (superSetting && selectedMatchedTransaction != null) {
+      finalIsTemporary = false;
+      finalStatus = 'completed';
+    } else if (!superSetting) {
+      finalStatus = isTemporary ? 'open' : 'completed';
+    }
+
     final expense = Expense(
       type: transactionType.toLowerCase(),
       price: amount,
@@ -154,9 +164,9 @@ class _AddNewTransactionRecordPageState
         selectedTime.minute,
       ),
       linkedTransactionId: superSetting ? selectedMatchedTransaction!.id : null,
-      isTemporary: superSetting ? true : isTemporary,
+      isTemporary: finalIsTemporary,
       expectedDate: superSetting ? selectedMatchedTransaction?.dateTime : null,
-      status: superSetting ? 'open' : 'completed',
+      status: finalStatus, 
     );
 
     await DBHelper().insertExpense(expense);
@@ -208,12 +218,19 @@ class _AddNewTransactionRecordPageState
                 onCategoryTap: _selectCategory,
                 matchedTransactions: matchedTransactions,
                 selectedMatchedTransaction: selectedMatchedTransaction,
-                onSelectMatchedTransaction: (e) => setState(() => selectedMatchedTransaction = e),
+                onSelectMatchedTransaction: (e) =>
+                    setState(() => selectedMatchedTransaction = e),
                 accentColor: accentColor,
               ),
               if (errorMessage != null) ...[
                 const SizedBox(height: 12),
-                Text(errorMessage!, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+                Text(
+                  errorMessage!,
+                  style: const TextStyle(
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
               const SizedBox(height: 12),
               SubmitButton(

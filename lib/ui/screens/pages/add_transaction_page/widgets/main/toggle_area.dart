@@ -19,7 +19,7 @@ class ToggleArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
@@ -28,44 +28,56 @@ class ToggleArea extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Super Setting
-          Expanded(
-            child: Row(
-              children: [
-                const Text('Super Setting', style: TextStyle(color: Colors.white)),
-                const SizedBox(width: 8),
-                Switch.adaptive(
-                  value: superSetting,
-                  onChanged: onSuperSettingChanged,
-                  activeThumbColor: accentColor,
-                  activeTrackColor: accentColor.withValues(alpha: 0.2),
-                  inactiveThumbColor: accentColor,
-                  inactiveTrackColor: Colors.transparent,
-                ),
-              ],
-            ),
+          _buildToggle(
+            label: 'Super Setting',
+            value: superSetting,
+            onChanged: onSuperSettingChanged,
+            accentColor: accentColor,
           ),
 
-          // Temporary (only if not superSetting)
-          if (!superSetting)
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Text('Temporary', style: TextStyle(color: Colors.white)),
-                  const SizedBox(width: 8),
-                  Switch.adaptive(
-                    value: isTemporary,
-                    onChanged: onTemporaryChanged,
-                    activeThumbColor: accentColor,
-                    activeTrackColor: accentColor.withValues(alpha: 0.2),
-                    inactiveThumbColor: accentColor,
-                    inactiveTrackColor: Colors.transparent,
-                  ),
-                ],
-              ),
-            ),
+          // Temporary (always visible, disabled if superSetting is true)
+          _buildToggle(
+            label: 'Temporary',
+            value: isTemporary,
+            onChanged: superSetting ? null : onTemporaryChanged, // 👈 disabled when superSetting is true
+            accentColor: accentColor,
+            isDisabled: superSetting,
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _buildToggle({
+    required String label,
+    required bool value,
+    required Function(bool)? onChanged,
+    required Color accentColor,
+    bool isDisabled = false,
+  }) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: isDisabled ? Colors.white38 : Colors.white, // 👈 dim when disabled
+          ),
+        ),
+        const SizedBox(width: 8),
+        Switch.adaptive(
+          value: value,
+          onChanged: onChanged, // 👈 null disables the switch
+          activeThumbColor: accentColor,
+          activeTrackColor: accentColor.withValues(alpha: 0.2),
+          inactiveThumbColor: isDisabled
+              ? Colors.grey.withValues(alpha: 0.6) // 👈 subtle gray when disabled
+              : accentColor,
+          inactiveTrackColor: isDisabled
+              ? Colors.grey.withValues(alpha: 0.2)
+              : Colors.transparent,
+        ),
+      ],
     );
   }
 }

@@ -3,7 +3,7 @@ import 'package:expenso/data/models/category.dart';
 
 class CategorySelector extends StatelessWidget {
   final List<Category> userCategories;
-  final int? selectedCategoryId; // only one selected
+  final int? selectedCategoryId;
   final Color accentColor;
   final Function(Category) onCategoryTap;
 
@@ -17,8 +17,17 @@ class CategorySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Decide number of rows
+    final int numRows = userCategories.length > 20 ? 3 : 2;
+
+    // Split categories into chunks per row
+    final List<List<Category>> rows = _splitCategories(userCategories, numRows);
+
+    // Adjust height dynamically
+    final double totalHeight = numRows == 2 ? 150 : 220;
+
     return SizedBox(
-      height: 200,
+      height: totalHeight + 50,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,37 +41,26 @@ class CategorySelector extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           SizedBox(
-            height: 150, 
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Column(
-                      children: [
-                        Row(
-                          children: userCategories
-                              .asMap()
-                              .entries
-                              .where((e) => e.key.isEven)
-                              .map((e) => _categoryCard(e.value))
-                              .toList(),
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: userCategories
-                              .asMap()
-                              .entries
-                              .where((e) => e.key.isOdd)
-                              .map((e) => _categoryCard(e.value))
-                              .toList(),
-                        ),
-                      ],
-                    ),
-                  ],
+            height: totalHeight,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(rows.length, (rowIndex) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: rowIndex == rows.length - 1 ? 0 : 8),
+                      child: Row(
+                        children: rows[rowIndex]
+                            .map((cat) => _categoryCard(cat))
+                            .toList(),
+                      ),
+                    );
+                  }),
                 ),
-              ),
+              ],
             ),
           ),
         ],
@@ -70,10 +68,22 @@ class CategorySelector extends StatelessWidget {
     );
   }
 
+  // 🔹 Helper: Split list into n nearly equal parts
+  List<List<Category>> _splitCategories(List<Category> list, int n) {
+    int chunkSize = (list.length / n).ceil();
+    List<List<Category>> chunks = [];
+    for (var i = 0; i < list.length; i += chunkSize) {
+      chunks.add(list.sublist(i, i + chunkSize > list.length ? list.length : i + chunkSize));
+    }
+    return chunks;
+  }
+
   Widget _categoryCard(Category category) {
-    final isSelected = selectedCategoryId == category.id; // only one
-    return GestureDetector(
+    final isSelected = selectedCategoryId == category.id;
+
+    return InkWell(
       onTap: () => onCategoryTap(category),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         width: 80,
         height: 60,
@@ -88,14 +98,10 @@ class CategorySelector extends StatelessWidget {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: accentColor.withAlpha(150),
-                    blurRadius: 12,
-                    spreadRadius: 1,
-                  ),
-                  BoxShadow(
-                    color: accentColor.withAlpha(80),
-                    blurRadius: 24,
-                    spreadRadius: 4,
+                    color: accentColor.withOpacity(0.35),
+                    blurRadius: 16,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 4),
                   ),
                 ]
               : [],
