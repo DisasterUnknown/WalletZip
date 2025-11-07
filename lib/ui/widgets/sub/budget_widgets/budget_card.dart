@@ -123,7 +123,7 @@ class BudgetCardGlass extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: fontSize * 0.85,
-            color: CustomColors.getThemeColor(context, AppColorData.secondary),
+            color: CustomColors.getThemeColor(context, AppColorData.secondary3),
           ),
         ),
         Text(
@@ -131,7 +131,7 @@ class BudgetCardGlass extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: fontSize * 0.85,
-            color: CustomColors.getThemeColor(context, AppColorData.secondary),
+            color: CustomColors.getThemeColor(context, AppColorData.secondary3),
           ),
         ),
       ],
