@@ -1,3 +1,4 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/category_or_linked_transactions.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/toggle_area/toggle_area.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/top_input_area.dart';
@@ -201,7 +202,7 @@ class _AddNewTransactionRecordPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: CustomColors.getThemeColor(context, 'primary'),
       appBar: CustomAppBar(
         title: transactionType == 'Expense'
             ? 'Add Expense Record'
@@ -260,7 +261,7 @@ class _AddNewTransactionRecordPageState
               ElevatedButton(
                 onPressed: _submitTransaction,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: CustomColors.getThemeColor(context, 'primary'),
                   padding: const EdgeInsets.symmetric(
                     vertical: 14,
                     horizontal: 40,

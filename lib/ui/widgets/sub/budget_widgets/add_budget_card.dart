@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:expenso/services/startup_service.dart';
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/widgets/expense_text_field.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/helpers/thousands_formatter.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       child: Dialog(
-        backgroundColor: Colors.black.withValues(alpha: 0.6),
+        backgroundColor: CustomColors.getThemeColor(context, 'primary').withValues(alpha: 0.6),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Container(

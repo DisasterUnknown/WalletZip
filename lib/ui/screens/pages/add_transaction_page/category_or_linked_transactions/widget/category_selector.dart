@@ -1,3 +1,4 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:expenso/data/models/category.dart';
 
@@ -31,10 +32,10 @@ class CategorySelector extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Select Transaction Category',
             style: TextStyle(
-              color: Colors.white,
+              color: CustomColors.getThemeColor(context, 'secondary'),
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -54,7 +55,7 @@ class CategorySelector extends StatelessWidget {
                       padding: EdgeInsets.only(bottom: rowIndex == rows.length - 1 ? 0 : 8),
                       child: Row(
                         children: rows[rowIndex]
-                            .map((cat) => _categoryCard(cat))
+                            .map((cat) => _categoryCard(cat, context))
                             .toList(),
                       ),
                     );
@@ -78,7 +79,7 @@ class CategorySelector extends StatelessWidget {
     return chunks;
   }
 
-  Widget _categoryCard(Category category) {
+  Widget _categoryCard(Category category, BuildContext context) {
     final isSelected = selectedCategoryId == category.id;
 
     return InkWell(
@@ -89,7 +90,7 @@ class CategorySelector extends StatelessWidget {
         height: 60,
         margin: const EdgeInsets.symmetric(horizontal: 6),
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: CustomColors.getThemeColor(context, 'primary'),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected ? accentColor : Colors.white24,

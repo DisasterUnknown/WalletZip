@@ -1,0 +1,4 @@
+[
+  {"name": "primary", "value": "0xFF000000"},
+  {"name": "secondary", "value": "0xFFFFFFFF"}
+]

@@ -1,11 +1,14 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class RingPainter extends CustomPainter {
   final double percent;
   final bool isNegative;
+  final Color baseColor; // stored directly, no late init
 
-  RingPainter(this.percent, this.isNegative);
+  RingPainter(this.percent, this.isNegative, BuildContext context)
+    : baseColor = CustomColors.getThemeColor(context, 'secondary');
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -14,7 +17,7 @@ class RingPainter extends CustomPainter {
     final radius = (size.width - stroke) / 2;
 
     final bgPaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.1)
+      ..color = baseColor.withValues(alpha: 0.1)
       ..style = PaintingStyle.stroke
       ..strokeWidth = stroke;
 
@@ -24,10 +27,18 @@ class RingPainter extends CustomPainter {
       ..strokeWidth = stroke
       ..strokeCap = StrokeCap.round;
 
+    // Draw background ring
     canvas.drawCircle(center, radius, bgPaint);
 
+    // Draw progress arc
     final sweep = -(percent / 100) * 2 * math.pi;
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -math.pi / 2, sweep, false, fgPaint);
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      -math.pi / 2,
+      sweep,
+      false,
+      fgPaint,
+    );
   }
 
   @override

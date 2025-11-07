@@ -1,3 +1,4 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 
 class PickerBox extends StatelessWidget {
@@ -24,7 +25,7 @@ class PickerBox extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(color: Colors.white)),
+          Text(label, style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary'))),
           Icon(icon, color: accentColor),
         ],
       ),

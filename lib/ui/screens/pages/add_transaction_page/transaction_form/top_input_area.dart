@@ -1,3 +1,4 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/widgets/expense_text_field.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/widgets/transaction_type_toggle.dart';
 import 'package:flutter/material.dart';
@@ -32,16 +33,16 @@ class TopInputArea extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
+        color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Transaction Form',
             style: TextStyle(
-              color: Colors.white,
+              color: CustomColors.getThemeColor(context, 'secondary'),
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),

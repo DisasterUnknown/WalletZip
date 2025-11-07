@@ -1,5 +1,6 @@
 import 'package:expenso/data/db/db_helper.dart';
 import 'package:expenso/data/models/category.dart';
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/main/bottom_nav_bar.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:expenso/ui/widgets/sub/build_category_card.dart';
@@ -177,7 +178,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           child: Text(
             title,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.9),
+              color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.9),
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -196,6 +197,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
             child: buildCategoryCard(
+              context,
               e.key,
               type,
               e.value,
@@ -235,7 +237,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 // Tabs for filtering categories
                 TabBar(
                   controller: _tabController,
-                  labelColor: Colors.white,
+                  labelColor: CustomColors.getThemeColor(context, 'secondary'),
                   unselectedLabelColor: Colors.white54,
                   indicatorColor: Colors.greenAccent,
                   tabs: const [

@@ -1,6 +1,7 @@
 import 'package:expenso/core/constants/default_categories.dart';
 import 'package:expenso/core/shared_prefs/shared_pref_service.dart';
 import 'package:expenso/data/models/category.dart';
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/main/bottom_nav_bar.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +79,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               onTap: () => _toggleCategory(category),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: CustomColors.getThemeColor(context, 'primary'),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isSelected ? Colors.greenAccent : Colors.white24,

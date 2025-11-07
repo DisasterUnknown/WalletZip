@@ -1,4 +1,5 @@
 import 'package:expenso/data/db/db_helper.dart';
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/utils/number_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -120,11 +121,11 @@ class _BudgetCardState extends State<BudgetCard> {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
-          color: Colors.white.withValues(alpha: 0.05),
+          border: Border.all(color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.15)),
+          color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
           boxShadow: [
             BoxShadow(
-              color: Colors.white.withValues(alpha: 0.05),
+              color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
               blurRadius: 30,
               spreadRadius: 2,
               offset: const Offset(0, 10),
@@ -132,10 +133,10 @@ class _BudgetCardState extends State<BudgetCard> {
           ],
         ),
         child: isLoading
-            ? const Center(
+            ? Center(
                 child: Padding(
                   padding: EdgeInsets.all(20),
-                  child: CircularProgressIndicator(color: Colors.white),
+                  child: CircularProgressIndicator(color: CustomColors.getThemeColor(context, 'secondary')),
                 ),
               )
             : Column(
@@ -144,8 +145,8 @@ class _BudgetCardState extends State<BudgetCard> {
                   const SizedBox(height: 8),
                   Text(
                     widget.title,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: CustomColors.getThemeColor(context, 'secondary'),
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0.5,
@@ -161,9 +162,9 @@ class _BudgetCardState extends State<BudgetCard> {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      color: Colors.white.withValues(alpha: 0.05),
+                      color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.08),
+                        color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
                       ),
                     ),
                     child: Row(
@@ -178,7 +179,7 @@ class _BudgetCardState extends State<BudgetCard> {
                         _buildBudgetItem(
                           "Remaining",
                           formatNumber(remaining, convertFromLength: 4),
-                          Colors.white,
+                          CustomColors.getThemeColor(context, 'secondary'),
                           Icons.account_balance_wallet_outlined,
                         ),
                         _buildBudgetItem(
@@ -201,7 +202,7 @@ class _BudgetCardState extends State<BudgetCard> {
                       gradient: LinearGradient(
                         colors: [
                           Colors.greenAccent.withValues(alpha: 0.8),
-                          Colors.white.withValues(alpha: 0.4),
+                          CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.4),
                           Colors.redAccent.withValues(alpha: 0.8),
                         ],
                       ),

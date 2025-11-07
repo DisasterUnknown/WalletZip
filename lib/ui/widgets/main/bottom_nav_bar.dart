@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:expenso/services/routing_service.dart';
+import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -16,7 +17,7 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color activeColor = Colors.white;
+    Color activeColor = CustomColors.getThemeColor(context, 'secondary');
     const Color inactiveColor = Colors.white38;
 
     Widget buildTab(IconData icon, String route, int index) {
@@ -28,7 +29,7 @@ class BottomNavBar extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: isActive
-                ? Colors.white.withValues(alpha: 0.1)
+                ? CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.1)
                 : Colors.transparent,
           ),
           child: Icon(
@@ -44,7 +45,7 @@ class BottomNavBar extends StatelessWidget {
       height: 70,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: CustomColors.getThemeColor(context, 'primary'),
         borderRadius: BorderRadius.circular(25),
         border: Border.all(color: Colors.white24, width: 1),
       ),
@@ -66,27 +67,27 @@ class BottomNavBar extends StatelessWidget {
                     height: 64,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.08),
+                      color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
                       border: Border.all(color: Colors.white24, width: 1),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.white.withValues(alpha: 0.08),
+                          color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
                       ],
                       gradient: LinearGradient(
                         colors: [
-                          Colors.white.withValues(alpha: 0.05),
-                          Colors.white.withValues(alpha: 0.15),
+                          CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
+                          CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.15),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.add,
-                      color: Colors.white,
+                      color: CustomColors.getThemeColor(context, 'secondary'),
                       size: 32,
                     ),
                   ),

@@ -10,7 +10,7 @@ class RingChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: RingPainter(percent, isNegative),
+      painter: RingPainter(percent, isNegative, context),
       child: SizedBox(
         width: 80,
         height: 80,

@@ -1,8 +1,10 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/utils/number_formatter.dart';
 import 'package:flutter/material.dart';
 
 
 Widget buildCategoryCard(
+  BuildContext context,
   String category,
   String type,
   double amount,
@@ -17,12 +19,12 @@ Widget buildCategoryCard(
     margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: Colors.white.withValues(alpha: 0.08),
+      color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
       borderRadius: BorderRadius.circular(24),
-      border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+      border: Border.all(color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.15)),
       boxShadow: [
         BoxShadow(
-          color: Colors.white.withValues(alpha: 0.05),
+          color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
           blurRadius: 20,
           spreadRadius: 2,
           offset: const Offset(0, 8),
@@ -42,8 +44,8 @@ Widget buildCategoryCard(
                 const SizedBox(width: 8),
                 Text(
                   category,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: CustomColors.getThemeColor(context, 'secondary'),
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -68,7 +70,7 @@ Widget buildCategoryCard(
               height: 8,
               width: maxWidth,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.05),
+                color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(4),
               ),
             ),

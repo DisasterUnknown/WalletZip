@@ -1,10 +1,12 @@
 import 'package:expenso/services/startup_service.dart';
+import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'services/routing_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StartupService.checkAndAddBudgetIncome();
+  await CustomColors.loadThemes();
 
   runApp(const MyApp());
 }
@@ -19,7 +21,12 @@ class MyApp extends StatelessWidget {
     return SafeArea(
       child: MaterialApp(
         title: 'Expenso',
-        theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.black),
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: CustomColors.getThemeColor(
+            context,
+            'primary',
+          ),
+        ),
         debugShowCheckedModeBanner: false,
         navigatorKey: routing.navigatorKey,
         initialRoute: RoutingService.dashboard,

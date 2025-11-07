@@ -1,3 +1,4 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/sub/budget_widgets/ring_charts/ring_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For formatting numbers
@@ -34,12 +35,12 @@ class BudgetCardGlass extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: cardPadding, vertical: 10),
       padding: EdgeInsets.all(cardPadding),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
+        color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+        border: Border.all(color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.15)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
+            color: CustomColors.getThemeColor(context, 'primary').withValues(alpha: 0.03),
             blurRadius: 10,
             offset: const Offset(0, 6),
           ),

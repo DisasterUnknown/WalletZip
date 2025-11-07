@@ -1,4 +1,5 @@
 import 'package:expenso/services/routing_service.dart';
+import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 
 class FloatingAddBtn extends StatelessWidget {
@@ -19,12 +20,12 @@ class FloatingAddBtn extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.white.withValues(alpha: 0.1),
+            color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.5),
+            color: CustomColors.getThemeColor(context, 'primary').withValues(alpha: 0.5),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -40,7 +41,7 @@ class FloatingAddBtn extends StatelessWidget {
             arguments: {'month': month, 'year': year},
           );
         },
-        child: const Icon(Icons.add, size: 30, color: Colors.white),
+        child: Icon(Icons.add, size: 30, color: CustomColors.getThemeColor(context, 'secondary')),
       ),
     );
   }

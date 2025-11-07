@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmDeleteDialog extends StatelessWidget {
@@ -74,7 +75,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.redAccent,
-                        foregroundColor: Colors.white,
+                        foregroundColor: CustomColors.getThemeColor(context, 'secondary'),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12),
                         shape: RoundedRectangleBorder(

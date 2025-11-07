@@ -1,3 +1,4 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/helpers/thousands_formatter.dart';
 import 'package:flutter/material.dart';
 
@@ -61,7 +62,7 @@ class _ExpenseTextFieldState extends State<ExpenseTextField> {
       focusNode: _focusNode,
       keyboardType: widget.keyboardType,
       textAlign: isNumeric ? TextAlign.right : TextAlign.left,
-      style: const TextStyle(color: Colors.white),
+      style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary')),
       decoration: InputDecoration(
         labelText: widget.label,
         labelStyle: const TextStyle(color: Colors.white70),

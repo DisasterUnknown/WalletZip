@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/widget/picker_box.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -37,9 +38,9 @@ class DateTimePickerRow extends StatelessWidget {
             ),
             colorScheme: ColorScheme.dark(
               primary: accentColor,
-              onPrimary: Colors.white,
+              onPrimary: CustomColors.getThemeColor(context, 'secondary'),
               surface: Colors.black87,
-              onSurface: Colors.white,
+              onSurface: CustomColors.getThemeColor(context, 'secondary'),
             ),
           ),
           child: child!,
@@ -65,9 +66,9 @@ class DateTimePickerRow extends StatelessWidget {
             ),
             colorScheme: ColorScheme.dark(
               primary: accentColor,
-              onPrimary: Colors.white,
+              onPrimary: CustomColors.getThemeColor(context, 'secondary'),
               surface: Colors.black87,
-              onSurface: Colors.white,
+              onSurface: CustomColors.getThemeColor(context, 'secondary'),
             ),
           ),
           child: child!,

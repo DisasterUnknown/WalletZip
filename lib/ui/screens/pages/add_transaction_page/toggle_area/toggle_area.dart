@@ -1,3 +1,4 @@
+import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 
 class ToggleArea extends StatelessWidget {
@@ -21,7 +22,7 @@ class ToggleArea extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
+        color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -29,6 +30,7 @@ class ToggleArea extends StatelessWidget {
         children: [
           // Super Setting
           _buildToggle(
+            context: context,
             label: 'Super Setting',
             value: superSetting,
             onChanged: onSuperSettingChanged,
@@ -37,6 +39,7 @@ class ToggleArea extends StatelessWidget {
 
           // Temporary (always visible, disabled if superSetting is true)
           _buildToggle(
+            context: context,
             label: 'Temporary',
             value: isTemporary,
             onChanged: superSetting ? null : onTemporaryChanged, 
@@ -49,6 +52,7 @@ class ToggleArea extends StatelessWidget {
   }
 
   Widget _buildToggle({
+    required BuildContext context,
     required String label,
     required bool value,
     required Function(bool)? onChanged,
@@ -61,7 +65,7 @@ class ToggleArea extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: isDisabled ? Colors.white38 : Colors.white, // 👈 dim when disabled
+            color: isDisabled ? Colors.white38 : CustomColors.getThemeColor(context, 'secondary'), // 👈 dim when disabled
           ),
         ),
         const SizedBox(width: 8),

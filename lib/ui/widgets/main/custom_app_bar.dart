@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:expenso/services/routing_service.dart';
 
@@ -31,9 +32,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.black,
+              color: CustomColors.getThemeColor(context, 'primary'),
               border: Border(
-                bottom: BorderSide(color: Colors.white.withValues(alpha: 0.08)),
+                bottom: BorderSide(color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08)),
               ),
             ),
             child: SafeArea(
@@ -54,9 +55,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         ),
                         child: GestureDetector(
                           onTap: () => Navigator.of(context).maybePop(),
-                          child: const Icon(
+                          child: Icon(
                             Icons.arrow_back_ios_new_rounded,
-                            color: Colors.white,
+                            color: CustomColors.getThemeColor(context, 'secondary'),
                             size: iconSize,
                           ),
                         ),
@@ -72,8 +73,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: CustomColors.getThemeColor(context, 'secondary'),
                           fontSize: iconSize,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 0.3,
@@ -87,9 +88,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         child: GestureDetector(
                           onTap: () =>
                               RoutingService().navigateWithoutAnimationTo(RoutingService.settings),
-                          child: const Icon(
+                          child: Icon(
                             Icons.settings_outlined,
-                            color: Colors.white,
+                            color: CustomColors.getThemeColor(context, 'secondary'),
                             size: iconSize + 2,
                           ),
                         ),

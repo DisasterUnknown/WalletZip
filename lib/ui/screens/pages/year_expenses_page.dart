@@ -2,6 +2,7 @@ import 'package:expenso/data/db/db_helper.dart';
 import 'package:expenso/data/models/month_data.dart';
 import 'package:expenso/data/models/year_data.dart';
 import 'package:expenso/services/routing_service.dart';
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:expenso/ui/widgets/sub/status_card.dart';
 import 'package:expenso/utils/number_formatter.dart';
@@ -145,7 +146,7 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                             vertical: 10,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.08),
+                            color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
                             borderRadius: BorderRadius.circular(16),
                             border: Border(
                               left: BorderSide(
@@ -164,8 +165,8 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                                 children: [
                                   Text(
                                     month,
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                    style: TextStyle(
+                                      color: CustomColors.getThemeColor(context, 'secondary'),
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),

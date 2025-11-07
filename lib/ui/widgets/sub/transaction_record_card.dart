@@ -1,4 +1,5 @@
 import 'package:expenso/data/models/expense.dart';
+import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/sub/confirm_delete_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +26,7 @@ Widget transactionRecordCard(
     margin: EdgeInsets.symmetric(horizontal: marginH, vertical: marginV),
     padding: EdgeInsets.symmetric(horizontal: paddingH, vertical: paddingV),
     decoration: BoxDecoration(
-      color: Colors.white.withValues(alpha: 0.08),
+      color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
       borderRadius: BorderRadius.circular(16),
       border: Border(left: BorderSide(color: borderColor, width: 4)),
     ),
@@ -47,8 +48,8 @@ Widget transactionRecordCard(
                   ),
                   Text(
                     day,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: CustomColors.getThemeColor(context, 'secondary'),
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -68,7 +69,7 @@ Widget transactionRecordCard(
                             ? '${e.note!.substring(0, 20)}...'
                             : e.note!)
                       : '(No description)',
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                  style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary'), fontSize: 14),
                 ),
                 const SizedBox(height: 4),
                 Text(
