@@ -81,6 +81,7 @@ class TopInputArea extends StatelessWidget {
 
           // Transaction Type Toggle
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
                 'Transaction Type:',

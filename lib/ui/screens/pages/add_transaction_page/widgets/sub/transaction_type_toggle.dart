@@ -14,29 +14,34 @@ class TransactionTypeToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: ['Expense', 'Income'].map((type) {
-        final isSelected = transactionType == type;
-        return GestureDetector(
-          onTap: () => onTypeChange(type),
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: isSelected ? accentColor : Colors.white24,
+    final types = ['Expense', 'Income'];
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 30), 
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+        children: types.map((type) {
+          final isSelected = transactionType == type;
+          return GestureDetector(
+            onTap: () => onTypeChange(type),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: isSelected ? accentColor : Colors.white24,
+                ),
+                borderRadius: BorderRadius.circular(12),
               ),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              type,
-              style: TextStyle(
-                color: isSelected ? accentColor : Colors.white70,
+              child: Text(
+                type,
+                style: TextStyle(
+                  color: isSelected ? accentColor : Colors.white70,
+                ),
               ),
             ),
-          ),
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 }
