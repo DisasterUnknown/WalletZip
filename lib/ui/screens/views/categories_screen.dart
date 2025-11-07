@@ -40,7 +40,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   // Save selected categories
   Future<void> _saveSelectedCategories() async {
     final ids = selectedCategoryIds.join(',');
-    await LocalSharedPreferences.saveString('selected_categories', ids);
+    await LocalSharedPreferences.setString('selected_categories', ids);
   }
 
   void _toggleCategory(Category category) {

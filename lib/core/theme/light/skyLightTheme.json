@@ -1,0 +1,16 @@
+[
+  {"name": "primary", "value": "0xFFB3E5FC"},
+  {"name": "primary1", "value": "0xFF81D4FA"},
+  {"name": "secondary", "value": "0xFF000000"},
+  {"name": "secondary1", "value": "0xDD000000"},
+  {"name": "secondary2", "value": "0x8A000000"},
+  {"name": "secondary3", "value": "0x61000000"},
+  {"name": "secondary4", "value": "0x3D000000"},
+  {"name": "secondary5", "value": "0x1F000000"},
+  {"name": "expenseColor", "value": "0xFFD32F2F"},
+  {"name": "incomeColor", "value": "0xFF00C853"},
+  {"name": "pendingColor", "value": "0xFFFFA726"},
+  {"name": "transparent", "value": "0x00000000"},
+  {"name": "disabled", "value": "0xFF9E9E9E"},
+  {"name": "disabled1", "value": "0xFFB0BEC5"}
+]

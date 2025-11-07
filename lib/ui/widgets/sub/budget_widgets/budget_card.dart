@@ -82,7 +82,7 @@ class BudgetCardGlass extends StatelessWidget {
                       style: TextStyle(
                         fontSize: fontSize,
                         fontWeight: FontWeight.w600,
-                        color: CustomColors.getThemeColor(context, AppColorData.primary),
+                        color: CustomColors.getThemeColor(context, AppColorData.secondary),
                       ),
                     ),
                     if (budgetType?.toLowerCase() == type?.toLowerCase())
