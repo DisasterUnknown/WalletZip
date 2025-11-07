@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/data/models/expense.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/sub/confirm_delete_dialog.dart';
@@ -20,13 +21,13 @@ Widget transactionRecordCard(
   final time = DateFormat('hh:mm a').format(date);
 
   final isExpense = e.type.toLowerCase() == 'expense';
-  final borderColor = isExpense ? CustomColors.getThemeColor(context, 'expenseColor') : CustomColors.getThemeColor(context, 'incomeColor');
+  final borderColor = isExpense ? CustomColors.getThemeColor(context, AppColorData.expenseColor) : CustomColors.getThemeColor(context, AppColorData.incomeColor);
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: marginH, vertical: marginV),
     padding: EdgeInsets.symmetric(horizontal: paddingH, vertical: paddingV),
     decoration: BoxDecoration(
-      color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
+      color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08),
       borderRadius: BorderRadius.circular(16),
       border: Border(left: BorderSide(color: borderColor, width: 4)),
     ),
@@ -44,12 +45,12 @@ Widget transactionRecordCard(
                 children: [
                   Text(
                     weekday,
-                    style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary3'), fontSize: 12),
+                    style: TextStyle(color: CustomColors.getThemeColor(context, AppColorData.secondary3), fontSize: 12),
                   ),
                   Text(
                     day,
                     style: TextStyle(
-                      color: CustomColors.getThemeColor(context, 'secondary'),
+                      color: CustomColors.getThemeColor(context, AppColorData.secondary),
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -69,12 +70,12 @@ Widget transactionRecordCard(
                             ? '${e.note!.substring(0, 20)}...'
                             : e.note!)
                       : '(No description)',
-                  style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary'), fontSize: 14),
+                  style: TextStyle(color: CustomColors.getThemeColor(context, AppColorData.secondary), fontSize: 14),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   time,
-                  style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary1'), fontSize: 12),
+                  style: TextStyle(color: CustomColors.getThemeColor(context, AppColorData.secondary1), fontSize: 12),
                 ),
               ],
             ),
@@ -92,7 +93,7 @@ Widget transactionRecordCard(
                     (match) => ',',
                   ),
               style: TextStyle(
-                color: isExpense ? CustomColors.getThemeColor(context, 'expenseColor') : CustomColors.getThemeColor(context, 'incomeColor'),
+                color: isExpense ? CustomColors.getThemeColor(context, AppColorData.expenseColor) : CustomColors.getThemeColor(context, AppColorData.incomeColor),
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -112,7 +113,7 @@ Widget transactionRecordCard(
                 },
                 child: Icon(
                   Icons.delete_forever_rounded,
-                  color: CustomColors.getThemeColor(context, 'secondary1'),
+                  color: CustomColors.getThemeColor(context, AppColorData.secondary1),
                   size: 22,
                 ),
               ),

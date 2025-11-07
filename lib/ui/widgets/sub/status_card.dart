@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/data/db/db_helper.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/utils/number_formatter.dart';
@@ -92,7 +93,7 @@ class _BudgetCardState extends State<BudgetCard> {
         Text(
           label,
           style: TextStyle(
-            color: CustomColors.getThemeColor(context, 'secondary3'),
+            color: CustomColors.getThemeColor(context, AppColorData.secondary3),
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
@@ -121,11 +122,11 @@ class _BudgetCardState extends State<BudgetCard> {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.15)),
-          color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
+          border: Border.all(color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.15)),
+          color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.05),
           boxShadow: [
             BoxShadow(
-              color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
+              color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.05),
               blurRadius: 30,
               spreadRadius: 2,
               offset: const Offset(0, 10),
@@ -136,7 +137,7 @@ class _BudgetCardState extends State<BudgetCard> {
             ? Center(
                 child: Padding(
                   padding: EdgeInsets.all(20),
-                  child: CircularProgressIndicator(color: CustomColors.getThemeColor(context, 'secondary')),
+                  child: CircularProgressIndicator(color: CustomColors.getThemeColor(context, AppColorData.secondary)),
                 ),
               )
             : Column(
@@ -146,7 +147,7 @@ class _BudgetCardState extends State<BudgetCard> {
                   Text(
                     widget.title,
                     style: TextStyle(
-                      color: CustomColors.getThemeColor(context, 'secondary'),
+                      color: CustomColors.getThemeColor(context, AppColorData.secondary),
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0.5,
@@ -162,9 +163,9 @@ class _BudgetCardState extends State<BudgetCard> {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
+                      color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.05),
                       border: Border.all(
-                        color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
+                        color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08),
                       ),
                     ),
                     child: Row(
@@ -173,19 +174,19 @@ class _BudgetCardState extends State<BudgetCard> {
                         _buildBudgetItem(
                           "Income",
                           formatNumber(income, convertFromLength: 4),
-                          CustomColors.getThemeColor(context, 'incomeColor'),
+                          CustomColors.getThemeColor(context, AppColorData.incomeColor),
                           Icons.arrow_upward_rounded,
                         ),
                         _buildBudgetItem(
                           "Remaining",
                           formatNumber(remaining, convertFromLength: 4),
-                          CustomColors.getThemeColor(context, 'secondary'),
+                          CustomColors.getThemeColor(context, AppColorData.secondary),
                           Icons.account_balance_wallet_outlined,
                         ),
                         _buildBudgetItem(
                           "Expense",
                           formatNumber(expense, convertFromLength: 4),
-                          CustomColors.getThemeColor(context, 'expenseColor'),
+                          CustomColors.getThemeColor(context, AppColorData.expenseColor),
                           Icons.arrow_downward_rounded,
                         ),
                       ],
@@ -201,9 +202,9 @@ class _BudgetCardState extends State<BudgetCard> {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          CustomColors.getThemeColor(context, 'incomeColor').withValues(alpha: 0.8),
-                          CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.4),
-                          CustomColors.getThemeColor(context, 'expenseColor').withValues(alpha: 0.8),
+                          CustomColors.getThemeColor(context, AppColorData.incomeColor).withValues(alpha: 0.8),
+                          CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.4),
+                          CustomColors.getThemeColor(context, AppColorData.expenseColor).withValues(alpha: 0.8),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(2),
@@ -214,7 +215,7 @@ class _BudgetCardState extends State<BudgetCard> {
                   Text(
                     getBalanceMessage(),
                     style: TextStyle(
-                      color: CustomColors.getThemeColor(context, 'secondary3'),
+                      color: CustomColors.getThemeColor(context, AppColorData.secondary3),
                       fontSize: 13,
                       letterSpacing: 0.3,
                     ),

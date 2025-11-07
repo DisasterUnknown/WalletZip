@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/data/models/category.dart';
 import 'package:expenso/data/models/expense.dart';
 import 'package:expenso/services/theme_service.dart';
@@ -33,7 +34,7 @@ class CategoryOrLinkedTransactions extends StatelessWidget {
       return Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
+          color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
         ),
         child: CategorySelector(
@@ -50,7 +51,7 @@ class CategoryOrLinkedTransactions extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
+        color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -59,7 +60,7 @@ class CategoryOrLinkedTransactions extends StatelessWidget {
           Text(
             'Link to Previous Temporary Transaction',
             style: TextStyle(
-              color: CustomColors.getThemeColor(context, 'secondary'),
+              color: CustomColors.getThemeColor(context, AppColorData.secondary),
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),

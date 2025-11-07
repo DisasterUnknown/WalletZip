@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/core/constants/default_categories.dart';
 import 'package:expenso/core/shared_prefs/shared_pref_service.dart';
 import 'package:expenso/data/models/category.dart';
@@ -79,21 +80,21 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               onTap: () => _toggleCategory(category),
               child: Container(
                 decoration: BoxDecoration(
-                  color: CustomColors.getThemeColor(context, 'primary'),
+                  color: CustomColors.getThemeColor(context, AppColorData.primary),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : CustomColors.getThemeColor(context, 'secondary2'),
+                    color: isSelected ? CustomColors.getThemeColor(context, AppColorData.incomeColor) : CustomColors.getThemeColor(context, AppColorData.secondary2),
                     width: 2,
                   ),
                   boxShadow: isSelected
                       ? [
                           BoxShadow(
-                            color: CustomColors.getThemeColor(context, 'incomeColor').withValues(alpha: 0.6),
+                            color: CustomColors.getThemeColor(context, AppColorData.incomeColor).withValues(alpha: 0.6),
                             blurRadius: 12,
                             spreadRadius: 1,
                           ),
                           BoxShadow(
-                            color: CustomColors.getThemeColor(context, 'incomeColor').withValues(alpha: 0.3),
+                            color: CustomColors.getThemeColor(context, AppColorData.incomeColor).withValues(alpha: 0.3),
                             blurRadius: 24,
                             spreadRadius: 4,
                           ),
@@ -105,14 +106,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   children: [
                     Icon(
                       category.icon,
-                      color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : CustomColors.getThemeColor(context, 'secondary3'),
+                      color: isSelected ? CustomColors.getThemeColor(context, AppColorData.incomeColor) : CustomColors.getThemeColor(context, AppColorData.secondary3),
                       size: 28,
                     ),
                     const SizedBox(height: 6),
                     Text(
                       category.name,
                       style: TextStyle(
-                        color: isSelected ? CustomColors.getThemeColor(context, 'incomeColor') : CustomColors.getThemeColor(context, 'secondary3'),
+                        color: isSelected ? CustomColors.getThemeColor(context, AppColorData.incomeColor) : CustomColors.getThemeColor(context, AppColorData.secondary3),
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
                       ),

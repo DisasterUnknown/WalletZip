@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/data/db/db_helper.dart';
 import 'package:expenso/data/models/category.dart';
 import 'package:expenso/services/theme_service.dart';
@@ -178,7 +179,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           child: Text(
             title,
             style: TextStyle(
-              color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.9),
+              color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.9),
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -237,9 +238,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                 // Tabs for filtering categories
                 TabBar(
                   controller: _tabController,
-                  labelColor: CustomColors.getThemeColor(context, 'secondary'),
-                  unselectedLabelColor: CustomColors.getThemeColor(context, 'secondary1'),
-                  indicatorColor: CustomColors.getThemeColor(context, 'incomeColor'),
+                  labelColor: CustomColors.getThemeColor(context, AppColorData.secondary),
+                  unselectedLabelColor: CustomColors.getThemeColor(context, AppColorData.secondary1),
+                  indicatorColor: CustomColors.getThemeColor(context, AppColorData.incomeColor),
                   tabs: const [
                     Tab(text: 'Month'),
                     Tab(text: 'Year'),
@@ -285,7 +286,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                       padding: EdgeInsets.all(16.0),
                                       child: Text(
                                         'No categorized data found.',
-                                        style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary3')),
+                                        style: TextStyle(color: CustomColors.getThemeColor(context, AppColorData.secondary3)),
                                       ),
                                     ),
                                   SizedBox(height: 80),

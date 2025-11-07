@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class ToggleArea extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
       decoration: BoxDecoration(
-        color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
+        color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -65,7 +66,7 @@ class ToggleArea extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: isDisabled ? CustomColors.getThemeColor(context, 'secondary4') : CustomColors.getThemeColor(context, 'secondary'), // 👈 dim when disabled
+            color: isDisabled ? CustomColors.getThemeColor(context, AppColorData.secondary4) : CustomColors.getThemeColor(context, AppColorData.secondary), // 👈 dim when disabled
           ),
         ),
         const SizedBox(width: 8),
@@ -75,11 +76,11 @@ class ToggleArea extends StatelessWidget {
           activeThumbColor: accentColor,
           activeTrackColor: accentColor.withValues(alpha: 0.2),
           inactiveThumbColor: isDisabled
-              ? CustomColors.getThemeColor(context, 'disabled').withValues(alpha: 0.6) // 👈 subtle gray when disabled
+              ? CustomColors.getThemeColor(context, AppColorData.disabled).withValues(alpha: 0.6) // 👈 subtle gray when disabled
               : accentColor,
           inactiveTrackColor: isDisabled
-              ? CustomColors.getThemeColor(context, 'disabled').withValues(alpha: 0.2)
-              : CustomColors.getThemeColor(context, 'transparent'),
+              ? CustomColors.getThemeColor(context, AppColorData.disabled).withValues(alpha: 0.2)
+              : CustomColors.getThemeColor(context, AppColorData.transparent),
         ),
       ],
     );

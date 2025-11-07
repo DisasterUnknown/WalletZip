@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/routing_service.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,8 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color activeColor = CustomColors.getThemeColor(context, 'secondary');
-    Color inactiveColor = CustomColors.getThemeColor(context, 'secondary4');
+    Color activeColor = CustomColors.getThemeColor(context, AppColorData.secondary);
+    Color inactiveColor = CustomColors.getThemeColor(context, AppColorData.secondary4);
 
     Widget buildTab(IconData icon, String route, int index) {
       bool isActive = index == tabIndex;
@@ -29,8 +30,8 @@ class BottomNavBar extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: isActive
-                ? CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.1)
-                : CustomColors.getThemeColor(context, 'transparent'),
+                ? CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.1)
+                : CustomColors.getThemeColor(context, AppColorData.transparent),
           ),
           child: Icon(
             icon,
@@ -45,9 +46,9 @@ class BottomNavBar extends StatelessWidget {
       height: 70,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: CustomColors.getThemeColor(context, 'primary'),
+        color: CustomColors.getThemeColor(context, AppColorData.primary),
         borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: CustomColors.getThemeColor(context, 'secondary2'), width: 1),
+        border: Border.all(color: CustomColors.getThemeColor(context, AppColorData.secondary2), width: 1),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(25),
@@ -67,19 +68,19 @@ class BottomNavBar extends StatelessWidget {
                     height: 64,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
-                      border: Border.all(color: CustomColors.getThemeColor(context, 'secondary2'), width: 1),
+                      color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08),
+                      border: Border.all(color: CustomColors.getThemeColor(context, AppColorData.secondary2), width: 1),
                       boxShadow: [
                         BoxShadow(
-                          color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
+                          color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
                       ],
                       gradient: LinearGradient(
                         colors: [
-                          CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
-                          CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.15),
+                          CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.05),
+                          CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.15),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -87,7 +88,7 @@ class BottomNavBar extends StatelessWidget {
                     ),
                     child: Icon(
                       Icons.add,
-                      color: CustomColors.getThemeColor(context, 'secondary'),
+                      color: CustomColors.getThemeColor(context, AppColorData.secondary),
                       size: 32,
                     ),
                   ),

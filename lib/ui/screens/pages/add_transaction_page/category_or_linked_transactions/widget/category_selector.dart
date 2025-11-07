@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:expenso/data/models/category.dart';
@@ -35,7 +36,7 @@ class CategorySelector extends StatelessWidget {
           Text(
             'Select Transaction Category',
             style: TextStyle(
-              color: CustomColors.getThemeColor(context, 'secondary'),
+              color: CustomColors.getThemeColor(context, AppColorData.secondary),
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -90,10 +91,10 @@ class CategorySelector extends StatelessWidget {
         height: 60,
         margin: const EdgeInsets.symmetric(horizontal: 6),
         decoration: BoxDecoration(
-          color: CustomColors.getThemeColor(context, 'primary'),
+          color: CustomColors.getThemeColor(context, AppColorData.primary),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? accentColor : CustomColors.getThemeColor(context, 'secondary2'),
+            color: isSelected ? accentColor : CustomColors.getThemeColor(context, AppColorData.secondary2),
             width: 2,
           ),
           boxShadow: isSelected
@@ -112,14 +113,14 @@ class CategorySelector extends StatelessWidget {
           children: [
             Icon(
               category.icon,
-              color: isSelected ? accentColor : CustomColors.getThemeColor(context, 'secondary3'),
+              color: isSelected ? accentColor : CustomColors.getThemeColor(context, AppColorData.secondary3),
               size: 24,
             ),
             const SizedBox(height: 4),
             Text(
               category.name,
               style: TextStyle(
-                color: isSelected ? accentColor : CustomColors.getThemeColor(context, 'secondary3'),
+                color: isSelected ? accentColor : CustomColors.getThemeColor(context, AppColorData.secondary3),
                 fontWeight: FontWeight.w600,
                 fontSize: 10,
               ),

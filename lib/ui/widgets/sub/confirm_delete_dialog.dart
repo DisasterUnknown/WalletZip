@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: CustomColors.getThemeColor(context, 'transparent'), // make transparent for glass effect
+      backgroundColor: CustomColors.getThemeColor(context, AppColorData.transparent), // make transparent for glass effect
       insetPadding: const EdgeInsets.symmetric(horizontal: 24),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -26,7 +27,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
           child: Container( // semi-transparent dark
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: CustomColors.getThemeColor(context, 'expenseColor')),
+              border: Border.all(color: CustomColors.getThemeColor(context, AppColorData.expenseColor)),
             ),
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -36,13 +37,13 @@ class ConfirmDeleteDialog extends StatelessWidget {
                 Row(
                   children: [
                     Icon(Icons.warning_amber_rounded,
-                        color: CustomColors.getThemeColor(context, 'expenseColor'), size: 28),
+                        color: CustomColors.getThemeColor(context, AppColorData.expenseColor), size: 28),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         title,
                         style: TextStyle(
-                          color: CustomColors.getThemeColor(context, 'expenseColor'),
+                          color: CustomColors.getThemeColor(context, AppColorData.expenseColor),
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
@@ -55,7 +56,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
                 Text(
                   message,
                   style: TextStyle(
-                    color: CustomColors.getThemeColor(context, 'secondary3'),
+                    color: CustomColors.getThemeColor(context, AppColorData.secondary3),
                     fontSize: 14,
                   ),
                 ),
@@ -66,8 +67,8 @@ class ConfirmDeleteDialog extends StatelessWidget {
                   children: [
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: CustomColors.getThemeColor(context, 'secondary2')),
-                        foregroundColor: CustomColors.getThemeColor(context, 'secondary5'),
+                        side: BorderSide(color: CustomColors.getThemeColor(context, AppColorData.secondary2)),
+                        foregroundColor: CustomColors.getThemeColor(context, AppColorData.secondary5),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12),
                       ),
@@ -77,8 +78,8 @@ class ConfirmDeleteDialog extends StatelessWidget {
                     const SizedBox(width: 12),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: CustomColors.getThemeColor(context, 'expenseColor'),
-                        foregroundColor: CustomColors.getThemeColor(context, 'secondary'),
+                        backgroundColor: CustomColors.getThemeColor(context, AppColorData.expenseColor),
+                        foregroundColor: CustomColors.getThemeColor(context, AppColorData.secondary),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12),
                         shape: RoundedRectangleBorder(

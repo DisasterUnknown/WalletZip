@@ -6,7 +6,7 @@ import 'services/routing_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StartupService.checkAndAddBudgetIncome();
-  // await CustomColors.loadThemes();
+  await CustomColors.loadThemes();
 
   runApp(const MyApp());
 }

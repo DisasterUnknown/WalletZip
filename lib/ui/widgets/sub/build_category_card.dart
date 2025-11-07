@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/utils/number_formatter.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +20,12 @@ Widget buildCategoryCard(
     margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
+      color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08),
       borderRadius: BorderRadius.circular(24),
-      border: Border.all(color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.15)),
+      border: Border.all(color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.15)),
       boxShadow: [
         BoxShadow(
-          color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
+          color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.05),
           blurRadius: 20,
           spreadRadius: 2,
           offset: const Offset(0, 8),
@@ -40,12 +41,12 @@ Widget buildCategoryCard(
           children: [
             Row(
               children: [
-                Icon(icon, color: type == 'expense' ? CustomColors.getThemeColor(context, 'expenseColor') : CustomColors.getThemeColor(context, 'incomeColor'), size: 24),
+                Icon(icon, color: type == 'expense' ? CustomColors.getThemeColor(context, AppColorData.expenseColor) : CustomColors.getThemeColor(context, AppColorData.incomeColor), size: 24),
                 const SizedBox(width: 8),
                 Text(
                   category,
                   style: TextStyle(
-                    color: CustomColors.getThemeColor(context, 'secondary'),
+                    color: CustomColors.getThemeColor(context, AppColorData.secondary),
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -55,7 +56,7 @@ Widget buildCategoryCard(
             Text(
               formatNumber(amount, convertFromLength: 10, showTrailingZeros: true),
               style: TextStyle(
-                color: type == 'expense' ? CustomColors.getThemeColor(context, 'expenseColor') : CustomColors.getThemeColor(context, 'incomeColor'),
+                color: type == 'expense' ? CustomColors.getThemeColor(context, AppColorData.expenseColor) : CustomColors.getThemeColor(context, AppColorData.incomeColor),
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
@@ -70,7 +71,7 @@ Widget buildCategoryCard(
               height: 8,
               width: maxWidth,
               decoration: BoxDecoration(
-                color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.05),
+                color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(4),
               ),
             ),
@@ -80,8 +81,8 @@ Widget buildCategoryCard(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    type == 'expense' ? CustomColors.getThemeColor(context, 'expenseColor').withValues(alpha: 0.8) : CustomColors.getThemeColor(context, 'incomeColor').withValues(alpha: 0.8),
-                    type == 'expense' ? CustomColors.getThemeColor(context, 'expenseColor').withValues(alpha: 0.5) : CustomColors.getThemeColor(context, 'incomeColor').withValues(alpha: 0.5),
+                    type == 'expense' ? CustomColors.getThemeColor(context, AppColorData.expenseColor).withValues(alpha: 0.8) : CustomColors.getThemeColor(context, AppColorData.incomeColor).withValues(alpha: 0.8),
+                    type == 'expense' ? CustomColors.getThemeColor(context, AppColorData.expenseColor).withValues(alpha: 0.5) : CustomColors.getThemeColor(context, AppColorData.incomeColor).withValues(alpha: 0.5),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(4),
@@ -92,7 +93,7 @@ Widget buildCategoryCard(
         const SizedBox(height: 4),
         Text(
           '${(percentage * 100).toStringAsFixed(1)}%',
-          style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary3'), fontSize: 12),
+          style: TextStyle(color: CustomColors.getThemeColor(context, AppColorData.secondary3), fontSize: 12),
         ),
       ],
     ),

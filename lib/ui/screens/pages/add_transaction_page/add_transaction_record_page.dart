@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/category_or_linked_transactions.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/toggle_area/toggle_area.dart';
@@ -45,7 +46,7 @@ class _AddNewTransactionRecordPageState
   String? errorMessage;
 
   Color get accentColor =>
-      transactionType == 'Expense' ? CustomColors.getThemeColor(context, 'expenseColor') : CustomColors.getThemeColor(context, 'incomeColor');
+      transactionType == 'Expense' ? CustomColors.getThemeColor(context, AppColorData.expenseColor) : CustomColors.getThemeColor(context, AppColorData.incomeColor);
 
   @override
   void didChangeDependencies() {
@@ -202,7 +203,7 @@ class _AddNewTransactionRecordPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors.getThemeColor(context, 'primary'),
+      backgroundColor: CustomColors.getThemeColor(context, AppColorData.primary),
       appBar: CustomAppBar(
         title: transactionType == 'Expense'
             ? 'Add Expense Record'
@@ -252,7 +253,7 @@ class _AddNewTransactionRecordPageState
                 Text(
                   errorMessage!,
                   style: TextStyle(
-                    color: CustomColors.getThemeColor(context, 'expenseColor'),
+                    color: CustomColors.getThemeColor(context, AppColorData.expenseColor),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -261,7 +262,7 @@ class _AddNewTransactionRecordPageState
               ElevatedButton(
                 onPressed: _submitTransaction,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomColors.getThemeColor(context, 'primary'),
+                  backgroundColor: CustomColors.getThemeColor(context, AppColorData.primary),
                   padding: const EdgeInsets.symmetric(
                     vertical: 14,
                     horizontal: 40,

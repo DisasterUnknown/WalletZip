@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/data/db/db_helper.dart';
 import 'package:expenso/data/models/month_data.dart';
 import 'package:expenso/data/models/year_data.dart';
@@ -146,13 +147,13 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                             vertical: 10,
                           ),
                           decoration: BoxDecoration(
-                            color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
+                            color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08),
                             borderRadius: BorderRadius.circular(16),
                             border: Border(
                               left: BorderSide(
                                 color: isOngoing
-                                    ? CustomColors.getThemeColor(context, 'incomeColor')
-                                    : CustomColors.getThemeColor(context, 'disabled2').withValues(alpha: 0.8),
+                                    ? CustomColors.getThemeColor(context, AppColorData.incomeColor)
+                                    : CustomColors.getThemeColor(context, AppColorData.disabled1).withValues(alpha: 0.8),
                                 width: 4,
                               ),
                             ),
@@ -166,7 +167,7 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                                   Text(
                                     month,
                                     style: TextStyle(
-                                      color: CustomColors.getThemeColor(context, 'secondary'),
+                                      color: CustomColors.getThemeColor(context, AppColorData.secondary),
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -175,10 +176,10 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                                     status,
                                     style: TextStyle(
                                       color: status == "Pending"
-                                          ? CustomColors.getThemeColor(context, 'pendingColor')
+                                          ? CustomColors.getThemeColor(context, AppColorData.pendingColor)
                                           : status == "Ongoing"
-                                              ? CustomColors.getThemeColor(context, 'incomeColor')
-                                              : CustomColors.getThemeColor(context, 'secondary1'),
+                                              ? CustomColors.getThemeColor(context, AppColorData.incomeColor)
+                                              : CustomColors.getThemeColor(context, AppColorData.secondary1),
                                       fontSize: 12,
                                     ),
                                   ),
@@ -188,10 +189,10 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                                 priceText,
                                 style: TextStyle(
                                   color: total == 0
-                                      ? CustomColors.getThemeColor(context, 'secondary1')
+                                      ? CustomColors.getThemeColor(context, AppColorData.secondary1)
                                       : total < 0
-                                          ? CustomColors.getThemeColor(context, 'expenseColor')
-                                          : CustomColors.getThemeColor(context, 'incomeColor'),
+                                          ? CustomColors.getThemeColor(context, AppColorData.expenseColor)
+                                          : CustomColors.getThemeColor(context, AppColorData.incomeColor),
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),

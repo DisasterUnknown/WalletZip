@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/widgets/expense_text_field.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/widgets/transaction_type_toggle.dart';
@@ -33,7 +34,7 @@ class TopInputArea extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08),
+        color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -42,7 +43,7 @@ class TopInputArea extends StatelessWidget {
           Text(
             'Transaction Form',
             style: TextStyle(
-              color: CustomColors.getThemeColor(context, 'secondary'),
+              color: CustomColors.getThemeColor(context, AppColorData.secondary),
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -86,7 +87,7 @@ class TopInputArea extends StatelessWidget {
             children: [
               Text(
                 'Transaction Type:',
-                style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary3')),
+                style: TextStyle(color: CustomColors.getThemeColor(context, AppColorData.secondary3)),
               ),
               const SizedBox(width: 12),
               Expanded(

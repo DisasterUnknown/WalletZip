@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/helpers/thousands_formatter.dart';
 import 'package:flutter/material.dart';
@@ -62,19 +63,19 @@ class _ExpenseTextFieldState extends State<ExpenseTextField> {
       focusNode: _focusNode,
       keyboardType: widget.keyboardType,
       textAlign: isNumeric ? TextAlign.right : TextAlign.left,
-      style: TextStyle(color: CustomColors.getThemeColor(context, 'secondary')),
+      style: TextStyle(color: CustomColors.getThemeColor(context, AppColorData.secondary)),
       decoration: InputDecoration(
         labelText: widget.label,
-        labelStyle: TextStyle(color: CustomColors.getThemeColor(context, 'secondary3')),
+        labelStyle: TextStyle(color: CustomColors.getThemeColor(context, AppColorData.secondary3)),
         filled: true,
-        fillColor: CustomColors.getThemeColor(context, 'primary1'),
+        fillColor: CustomColors.getThemeColor(context, AppColorData.primary1),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: CustomColors.getThemeColor(context, 'secondary2')),
+          borderSide: BorderSide(color: CustomColors.getThemeColor(context, AppColorData.secondary2)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: CustomColors.getThemeColor(context, 'secondary2')),
+          borderSide: BorderSide(color: CustomColors.getThemeColor(context, AppColorData.secondary2)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),

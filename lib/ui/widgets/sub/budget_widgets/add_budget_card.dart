@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/startup_service.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/widgets/expense_text_field.dart';
@@ -22,7 +23,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
   bool _isSaving = false;
   String? errorMessage;
 
-  Color get accentColor => CustomColors.getThemeColor(context, 'expenseColor');
+  Color get accentColor => CustomColors.getThemeColor(context, AppColorData.expenseColor);
 
   @override
   void initState() {
@@ -103,13 +104,13 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       child: Dialog(
-        backgroundColor: CustomColors.getThemeColor(context, 'primary').withValues(alpha: 0.6),
+        backgroundColor: CustomColors.getThemeColor(context, AppColorData.primary).withValues(alpha: 0.6),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: CustomColors.getThemeColor(context, 'transparent'),
+              color: CustomColors.getThemeColor(context, AppColorData.transparent),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: accentColor.withAlpha(180), width: 1.5),
             ),
@@ -162,12 +163,12 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
                               margin: const EdgeInsets.symmetric(horizontal: 4),
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               decoration: BoxDecoration(
-                                color: CustomColors.getThemeColor(context, 'transparent'),
+                                color: CustomColors.getThemeColor(context, AppColorData.transparent),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color: selected
                                       ? accentColor
-                                      : CustomColors.getThemeColor(context, 'secondary1'),
+                                      : CustomColors.getThemeColor(context, AppColorData.secondary1),
                                   width: 1.5,
                                 ),
                               ),
@@ -177,7 +178,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
                                   style: TextStyle(
                                     color: selected
                                         ? accentColor
-                                        : CustomColors.getThemeColor(context, 'secondary1'),
+                                        : CustomColors.getThemeColor(context, AppColorData.secondary1),
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -194,7 +195,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
                       Text(
                         errorMessage!,
                         style: TextStyle(
-                          color: CustomColors.getThemeColor(context, 'expenseColor'),
+                          color: CustomColors.getThemeColor(context, AppColorData.expenseColor),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -204,7 +205,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
                     ElevatedButton(
                       onPressed: _isSaving ? null : _saveBudget,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: CustomColors.getThemeColor(context, 'transparent'),
+                        backgroundColor: CustomColors.getThemeColor(context, AppColorData.transparent),
                         shape: RoundedRectangleBorder(
                           side: BorderSide(color: accentColor),
                           borderRadius: BorderRadius.circular(12),

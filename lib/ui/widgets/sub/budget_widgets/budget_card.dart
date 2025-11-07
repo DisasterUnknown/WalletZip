@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/sub/budget_widgets/ring_charts/ring_chart.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +82,7 @@ class BudgetCardGlass extends StatelessWidget {
                       style: TextStyle(
                         fontSize: fontSize,
                         fontWeight: FontWeight.w600,
-                        color: CustomColors.getThemeColor(context, 'primary'),
+                        color: CustomColors.getThemeColor(context, AppColorData.primary),
                       ),
                     ),
                     if (budgetType?.toLowerCase() == type?.toLowerCase())
@@ -122,7 +123,7 @@ class BudgetCardGlass extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: fontSize * 0.85,
-            color: CustomColors.getThemeColor(context, 'secondary'),
+            color: CustomColors.getThemeColor(context, AppColorData.secondary),
           ),
         ),
         Text(
@@ -130,7 +131,7 @@ class BudgetCardGlass extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: fontSize * 0.85,
-            color: CustomColors.getThemeColor(context, 'secondary'),
+            color: CustomColors.getThemeColor(context, AppColorData.secondary),
           ),
         ),
       ],
@@ -140,6 +141,6 @@ class BudgetCardGlass extends StatelessWidget {
   Widget _divider(BuildContext context) => Container(
     height: 1,
     margin: const EdgeInsets.symmetric(vertical: 4),
-    color: CustomColors.getThemeColor(context, 'secondary2'),
+    color: CustomColors.getThemeColor(context, AppColorData.secondary2),
   );
 }

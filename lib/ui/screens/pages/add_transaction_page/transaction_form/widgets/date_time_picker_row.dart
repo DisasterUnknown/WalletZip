@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/widget/picker_box.dart';
 import 'package:flutter/material.dart';
@@ -38,9 +39,9 @@ class DateTimePickerRow extends StatelessWidget {
             ),
             colorScheme: ColorScheme.dark(
               primary: accentColor,
-              onPrimary: CustomColors.getThemeColor(context, 'secondary'),
-              surface: CustomColors.getThemeColor(context, 'primary1'),
-              onSurface: CustomColors.getThemeColor(context, 'secondary'),
+              onPrimary: CustomColors.getThemeColor(context, AppColorData.secondary),
+              surface: CustomColors.getThemeColor(context, AppColorData.primary1),
+              onSurface: CustomColors.getThemeColor(context, AppColorData.secondary),
             ),
           ),
           child: child!,
@@ -66,9 +67,9 @@ class DateTimePickerRow extends StatelessWidget {
             ),
             colorScheme: ColorScheme.dark(
               primary: accentColor,
-              onPrimary: CustomColors.getThemeColor(context, 'secondary'),
-              surface: CustomColors.getThemeColor(context, 'primary1'),
-              onSurface: CustomColors.getThemeColor(context, 'secondary'),
+              onPrimary: CustomColors.getThemeColor(context, AppColorData.secondary),
+              surface: CustomColors.getThemeColor(context, AppColorData.primary1),
+              onSurface: CustomColors.getThemeColor(context, AppColorData.secondary),
             ),
           ),
           child: child!,

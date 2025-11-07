@@ -1,3 +1,4 @@
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -10,9 +11,9 @@ class RingPainter extends CustomPainter {
   final Color incomeColor;
 
   RingPainter(this.percent, this.isNegative, BuildContext context)
-    : baseColor = CustomColors.getThemeColor(context, 'secondary'),
-      expenseColor = CustomColors.getThemeColor(context, 'expenseColor'),
-      incomeColor = CustomColors.getThemeColor(context, 'incomeColor');
+    : baseColor = CustomColors.getThemeColor(context, AppColorData.secondary),
+      expenseColor = CustomColors.getThemeColor(context, AppColorData.expenseColor),
+      incomeColor = CustomColors.getThemeColor(context, AppColorData.incomeColor);
 
   @override
   void paint(Canvas canvas, Size size) {

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'package:expenso/services/routing_service.dart';
@@ -26,15 +27,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     const double iconSize = 22.0;
 
     return Material(
-      color: CustomColors.getThemeColor(context, 'transparent'),
+      color: CustomColors.getThemeColor(context, AppColorData.transparent),
       child: ClipRRect(
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
           child: Container(
             decoration: BoxDecoration(
-              color: CustomColors.getThemeColor(context, 'primary'),
+              color: CustomColors.getThemeColor(context, AppColorData.primary),
               border: Border(
-                bottom: BorderSide(color: CustomColors.getThemeColor(context, 'secondary').withValues(alpha: 0.08)),
+                bottom: BorderSide(color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08)),
               ),
             ),
             child: SafeArea(
@@ -57,7 +58,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           onTap: () => Navigator.of(context).maybePop(),
                           child: Icon(
                             Icons.arrow_back_ios_new_rounded,
-                            color: CustomColors.getThemeColor(context, 'secondary'),
+                            color: CustomColors.getThemeColor(context, AppColorData.secondary),
                             size: iconSize,
                           ),
                         ),
@@ -74,7 +75,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: CustomColors.getThemeColor(context, 'secondary'),
+                          color: CustomColors.getThemeColor(context, AppColorData.secondary),
                           fontSize: iconSize,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 0.3,
@@ -90,7 +91,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               RoutingService().navigateWithoutAnimationTo(RoutingService.settings),
                           child: Icon(
                             Icons.settings_outlined,
-                            color: CustomColors.getThemeColor(context, 'secondary'),
+                            color: CustomColors.getThemeColor(context, AppColorData.secondary),
                             size: iconSize + 2,
                           ),
                         ),
