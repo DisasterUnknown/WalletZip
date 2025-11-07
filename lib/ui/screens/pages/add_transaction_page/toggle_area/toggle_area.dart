@@ -21,7 +21,7 @@ class ToggleArea extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
+        color: Colors.white.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -39,7 +39,7 @@ class ToggleArea extends StatelessWidget {
           _buildToggle(
             label: 'Temporary',
             value: isTemporary,
-            onChanged: superSetting ? null : onTemporaryChanged, // 👈 disabled when superSetting is true
+            onChanged: superSetting ? null : onTemporaryChanged, 
             accentColor: accentColor,
             isDisabled: superSetting,
           ),

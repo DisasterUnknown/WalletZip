@@ -32,7 +32,7 @@ class CategoryOrLinkedTransactions extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.05),
+          color: Colors.white.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
         ),
         child: CategorySelector(
@@ -49,7 +49,7 @@ class CategoryOrLinkedTransactions extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
+        color: Colors.white.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -57,23 +57,34 @@ class CategoryOrLinkedTransactions extends StatelessWidget {
         children: [
           const Text(
             'Link to Previous Temporary Transaction',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
           ),
           const SizedBox(height: 12),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: matchedTransactions.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 6),
-            itemBuilder: (_, index) {
-              final expense = matchedTransactions[index];
-              return MatchedTransactionCard(
-                expense: expense,
-                isSelected: selectedMatchedTransaction == expense,
-                accentColor: accentColor,
-                onTap: () => onSelectMatchedTransaction(expense),
-              );
-            },
+
+          // Limited-height scrollable list that hides overflow
+          SizedBox(
+            height: matchedTransactions.length > 3
+                ? 250
+                : matchedTransactions.length * 70.0 + 20,
+            child: ListView.separated(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.only(right: 4),
+              itemCount: matchedTransactions.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 6),
+              itemBuilder: (_, index) {
+                final expense = matchedTransactions[index];
+                return MatchedTransactionCard(
+                  expense: expense,
+                  isSelected: selectedMatchedTransaction == expense,
+                  accentColor: accentColor,
+                  onTap: () => onSelectMatchedTransaction(expense),
+                );
+              },
+            ),
           ),
         ],
       ),
