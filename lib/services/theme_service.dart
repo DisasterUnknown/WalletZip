@@ -75,7 +75,7 @@ class CustomColors {
   static Future<void> _loadPreference() async {
     final prefTheme =
         await LocalSharedPreferences.getString(SharedPrefValues.prefTheme);
-    _prefTheme = prefTheme ?? 'darkGray';
+    _prefTheme = prefTheme ?? 'oceanBlue';
   }
 
   /// Save theme preference
