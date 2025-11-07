@@ -1,9 +1,8 @@
-import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/main/category_or_linked_transactions.dart';
-import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/main/toggle_area.dart';
-import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/main/top_input_area.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/category_or_linked_transactions.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/toggle_area/toggle_area.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/top_input_area.dart';
 import 'package:flutter/material.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
-import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/submit_button.dart';
 import 'package:intl/intl.dart';
 import 'package:expenso/core/constants/default_categories.dart';
 import 'package:expenso/core/shared_prefs/shared_pref_service.dart';
@@ -119,86 +118,85 @@ class _AddNewTransactionRecordPageState
   }
 
   void _submitTransaction() async {
-  setState(() => errorMessage = null);
+    setState(() => errorMessage = null);
 
-  if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) return;
 
-  // Validate category or linked transaction
-  if (!superSetting && selectedCategoryId == null) {
-    setState(() => errorMessage = 'Please select a category!');
-    return;
-  }
+    // Validate category or linked transaction
+    if (!superSetting && selectedCategoryId == null) {
+      setState(() => errorMessage = 'Please select a category!');
+      return;
+    }
 
-  if (superSetting && selectedMatchedTransaction == null) {
-    setState(() => errorMessage = 'Please select a linked transaction!');
-    return;
-  }
+    if (superSetting && selectedMatchedTransaction == null) {
+      setState(() => errorMessage = 'Please select a linked transaction!');
+      return;
+    }
 
-  // Validate amount
-  final amount = double.tryParse(amountController.text.replaceAll(',', ''));
-  if (amount == null || amount <= 0) {
-    setState(() => errorMessage = 'Please enter a valid amount!');
-    return;
-  }
+    // Validate amount
+    final amount = double.tryParse(amountController.text.replaceAll(',', ''));
+    if (amount == null || amount <= 0) {
+      setState(() => errorMessage = 'Please enter a valid amount!');
+      return;
+    }
 
-  // Determine transaction status & temp flag
-  bool finalIsTemporary = isTemporary;
-  String finalStatus = 'completed';
+    // Determine transaction status & temp flag
+    bool finalIsTemporary = isTemporary;
+    String finalStatus = 'completed';
 
-  if (superSetting && selectedMatchedTransaction != null) {
-    // If linked, both transactions become completed and permanent
-    finalIsTemporary = false;
-    finalStatus = 'completed';
-  } else if (!superSetting) {
-    finalStatus = isTemporary ? 'open' : 'completed';
-  }
+    if (superSetting && selectedMatchedTransaction != null) {
+      // If linked, both transactions become completed and permanent
+      finalIsTemporary = false;
+      finalStatus = 'completed';
+    } else if (!superSetting) {
+      finalStatus = isTemporary ? 'open' : 'completed';
+    }
 
-  // Create Expense object (new or updated)
-  final newExpense = Expense(
-    id: selectedMatchedTransaction?.id, // if you're editing existing expense
-    type: transactionType.toLowerCase(),
-    price: amount,
-    categoryIds: superSetting
-        ? selectedMatchedTransaction!.categoryIds
-        : [selectedCategoryId!],
-    note: descriptionController.text,
-    dateTime: DateTime(
-      selectedDate.year,
-      selectedDate.month,
-      selectedDate.day,
-      selectedTime.hour,
-      selectedTime.minute,
-    ),
-    linkedTransactionId: superSetting ? selectedMatchedTransaction!.id : null,
-    isTemporary: finalIsTemporary,
-    expectedDate: superSetting ? selectedMatchedTransaction?.dateTime : null,
-    status: finalStatus,
-  );
-
-  final db = DBHelper();
-
-  // If editing existing transaction, update it
-  if (selectedMatchedTransaction != null) {
-    await db.updateExpense(newExpense);
-  } else {
-    // otherwise insert a new one
-    await db.insertExpense(newExpense);
-  }
-
-  // If linked transaction, also update the matched one
-  if (superSetting && selectedMatchedTransaction != null) {
-    final updatedLinked = selectedMatchedTransaction!.copyWith(
-      linkedTransactionId: newExpense.id,
-      status: 'completed',
-      isTemporary: false,
+    // Create Expense object (new or updated)
+    final newExpense = Expense(
+      id: selectedMatchedTransaction?.id, // if you're editing existing expense
+      type: transactionType.toLowerCase(),
+      price: amount,
+      categoryIds: superSetting
+          ? selectedMatchedTransaction!.categoryIds
+          : [selectedCategoryId!],
+      note: descriptionController.text,
+      dateTime: DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        selectedTime.hour,
+        selectedTime.minute,
+      ),
+      linkedTransactionId: superSetting ? selectedMatchedTransaction!.id : null,
+      isTemporary: finalIsTemporary,
+      expectedDate: superSetting ? selectedMatchedTransaction?.dateTime : null,
+      status: finalStatus,
     );
-    await db.updateExpense(updatedLinked);
+
+    final db = DBHelper();
+
+    // If editing existing transaction, update it
+    if (selectedMatchedTransaction != null) {
+      await db.updateExpense(newExpense);
+    } else {
+      // otherwise insert a new one
+      await db.insertExpense(newExpense);
+    }
+
+    // If linked transaction, also update the matched one
+    if (superSetting && selectedMatchedTransaction != null) {
+      final updatedLinked = selectedMatchedTransaction!.copyWith(
+        linkedTransactionId: newExpense.id,
+        status: 'completed',
+        isTemporary: false,
+      );
+      await db.updateExpense(updatedLinked);
+    }
+
+    if (!mounted) return;
+    Navigator.of(context).pop(true);
   }
-
-  if (!mounted) return;
-  Navigator.of(context).pop(true);
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -259,10 +257,23 @@ class _AddNewTransactionRecordPageState
                 ),
               ],
               const SizedBox(height: 12),
-              SubmitButton(
-                label: 'Save Record',
-                accentColor: accentColor,
+              ElevatedButton(
                 onPressed: _submitTransaction,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 14,
+                    horizontal: 40,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: accentColor, width: 2),
+                  ),
+                ),
+                child: Text(
+                  'Save Record',
+                  style: TextStyle(color: accentColor),
+                ),
               ),
               const SizedBox(height: 50),
             ],

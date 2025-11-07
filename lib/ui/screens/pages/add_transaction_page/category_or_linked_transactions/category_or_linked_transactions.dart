@@ -1,7 +1,7 @@
 import 'package:expenso/data/models/category.dart';
 import 'package:expenso/data/models/expense.dart';
-import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/category_selector.dart';
-import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/matched_transaction_card.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/widget/category_selector.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/widget/matched_transaction_card.dart';
 import 'package:flutter/material.dart';
 
 class CategoryOrLinkedTransactions extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/picker_box.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/widget/picker_box.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

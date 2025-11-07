@@ -1,7 +1,7 @@
-import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/expense_text_field.dart';
-import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/transaction_type_toggle.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/widgets/expense_text_field.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/widgets/transaction_type_toggle.dart';
 import 'package:flutter/material.dart';
-import '../sub/date_time_picker_row.dart';
+import 'widgets/date_time_picker_row.dart';
 
 class TopInputArea extends StatelessWidget {
   final DateTime selectedDate;

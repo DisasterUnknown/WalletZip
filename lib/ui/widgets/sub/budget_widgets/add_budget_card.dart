@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:expenso/services/startup_service.dart';
-import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/expense_text_field.dart';
-import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/sub/thousands_formatter.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/widgets/expense_text_field.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/helpers/thousands_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:expenso/data/db/db_helper.dart';
 import 'package:expenso/data/models/budget.dart';
