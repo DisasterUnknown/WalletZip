@@ -17,6 +17,6 @@
   {"name": "disabled", "value": "0xFF78909C"},
   {"name": "disabled1", "value": "0xFF455A64"},
 
-  {"name": "floatingbtn1", "value": "0xFFE3F2FD"},
-  {"name": "floatingbtn2", "value": "0xFFB3E5FC"}
+  {"name": "floatingbtn1", "value": "0xFF0A0F2F"},
+  {"name": "floatingbtn2", "value": "0xFF1A234F"}
 ]

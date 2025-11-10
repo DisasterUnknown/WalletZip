@@ -14,10 +14,10 @@ class AppColorThemePage extends StatefulWidget {
 class _AppColorThemePageState extends State<AppColorThemePage> {
   final List<Map<String, dynamic>> themes = [
     {"name": "Default", "color": Color(0xFF000000), "prefValue": "default"},
+    {"name": "Ocean Blue", "color": Color(0xFF0A0F2F), "prefValue": "oceanBlue"},
     {"name": "Dark Gray", "color": Color(0xFF121212), "prefValue": "darkGray"},
     {"name": "Deep Purple", "color": Color(0xFF311B92), "prefValue": "deepPurple"},
     {"name": "Forest Green", "color": Color(0xFF1B5E20), "prefValue": "forestGreen"},
-    {"name": "Ocean Blue", "color": Color(0xFF0A0F2F), "prefValue": "oceanBlue"},
     {"name": "Sky Light", "color": Color(0xFFB3E5FC), "prefValue": "skyLight"},
     {"name": "Aqua Light", "color": Color(0xFFE0F7FA), "prefValue": "aquaLight"},
     {"name": "Blush Pink", "color": Color(0xFFF8BBD0), "prefValue": "blushPink"},
