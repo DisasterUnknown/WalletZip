@@ -2,6 +2,7 @@ import 'package:expenso/data/db/db_helper.dart';
 import 'package:expenso/data/models/expense.dart';
 import 'package:expenso/data/models/month_data.dart';
 import 'package:expenso/data/models/year_data.dart';
+import 'package:expenso/services/log_service.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:expenso/ui/widgets/sub/floating_action_btn.dart';
 import 'package:expenso/ui/widgets/sub/status_card.dart';
@@ -73,6 +74,7 @@ class _MonthlyExpensesPageState extends State<MonthlyExpensesPage> {
 
   Future<void> _deleteExpense(int id) async {
     await DBHelper().deleteExpense(id);
+    LogService.log("Expense deleted: $id");
     _checkAndLoadExpenses();
   }
 

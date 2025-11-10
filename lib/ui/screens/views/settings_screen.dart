@@ -117,16 +117,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            shadows: [
-                              Shadow(
-                                color: CustomColors.getThemeColor(
-                                  context,
-                                  AppColorData.primary,
-                                ),
-                                blurRadius: 4,
-                                offset: const Offset(2, 2),
-                              ),
-                            ],
                           ),
                         ),
                       ],
@@ -225,16 +215,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            shadows: [
-                              Shadow(
-                                color: CustomColors.getThemeColor(
-                                  context,
-                                  AppColorData.primary,
-                                ),
-                                blurRadius: 4,
-                                offset: const Offset(2, 2),
-                              ),
-                            ],
                           ),
                         ),
                       ],
