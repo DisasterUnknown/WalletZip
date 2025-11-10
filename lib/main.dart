@@ -3,7 +3,7 @@ import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
 import 'services/routing_service.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StartupService.checkAndAddBudgetIncome();
   await CustomColors.init();
@@ -11,8 +11,22 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Listen to theme changes
+    CustomColors.themeNotifier.addListener(() {
+      setState(() {}); // rebuild MaterialApp when theme changes
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +36,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Expenso',
         theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: CustomColors.getThemeColor(
-            context,
-            'primary',
-          ),
+          scaffoldBackgroundColor:
+              CustomColors.getColorSync('primary'),
         ),
         debugShowCheckedModeBanner: false,
         navigatorKey: routing.navigatorKey,

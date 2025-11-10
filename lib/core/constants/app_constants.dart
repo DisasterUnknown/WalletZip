@@ -17,4 +17,6 @@ class AppColorData {
   static const String transparent = 'transparent';
   static const String disabled = 'disabled';
   static const String disabled1 = 'disabled1';
+  static const String floatingbtn1 = 'floatingbtn1';
+  static const String floatingbtn2 = 'floatingbtn2';
 }

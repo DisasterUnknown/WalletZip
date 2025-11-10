@@ -1,4 +1,5 @@
 import 'package:expenso/ui/screens/pages/add_transaction_page/add_transaction_record_page.dart';
+import 'package:expenso/ui/screens/pages/settings/color_theme_page.dart';
 import 'package:flutter/material.dart';
 import '../ui/screens/views/expence_record_screen.dart';
 import '../ui/screens/pages/year_expenses_page.dart';
@@ -22,6 +23,7 @@ class RoutingService {
   static const String monthlyExpenses = '/monthly-expenses';
   static const String categories = '/categories';
   static const String settings = '/settings';
+  static const String colorTheme = '/color-theme';
   static const String budget = '/budget';
 
   Future<dynamic>? navigateTo(String routeName, {Object? arguments}) {
@@ -53,6 +55,7 @@ class RoutingService {
         monthlyExpenses: (context) => const MonthlyExpensesPage(),
         categories: (context) => const CategoriesScreen(),
         settings: (context) => const SettingsScreen(),
+        colorTheme: (context) => const AppColorThemePage(),
         budget: (context) => const BudgetScreen(),
         dashboard: (context) => const DashboardScreen(),
       };

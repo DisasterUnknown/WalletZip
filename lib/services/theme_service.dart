@@ -7,6 +7,7 @@ import 'package:flutter/services.dart' show rootBundle;
 class CustomColors {
   static final Map<String, List<Map<String, dynamic>>> _themes = {};
   static String _prefTheme = 'default';
+  static final ValueNotifier<String> themeNotifier = ValueNotifier(_prefTheme);
 
   /// Initialize all themes and preference once at startup
   static Future<void> init() async {
@@ -75,13 +76,14 @@ class CustomColors {
   static Future<void> _loadPreference() async {
     final prefTheme =
         await LocalSharedPreferences.getString(SharedPrefValues.prefTheme);
-    _prefTheme = prefTheme ?? 'oceanBlue';
+    _prefTheme = prefTheme ?? 'default';
   }
 
   /// Save theme preference
   static Future<void> setTheme(String themeKey) async {
     _prefTheme = themeKey;
     await LocalSharedPreferences.setString(SharedPrefValues.prefTheme, themeKey);
+    themeNotifier.value = _prefTheme;
   }
 
   /// Get theme color using BuildContext (still works!)
@@ -93,7 +95,6 @@ class CustomColors {
       debugPrint('⚠️ Theme not loaded, using fallback.');
       return const Color(0xFFFFA500); // fallback orange
     }
-    print(_prefTheme);
 
     try {
       final colorMap = theme.firstWhere(

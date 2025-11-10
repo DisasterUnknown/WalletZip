@@ -14,8 +14,8 @@ class FloatingAddBtn extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: CustomColors.getThemeColor(context, AppColorData.secondary4), width: 1),
-        gradient: const LinearGradient(
-          colors: [Color(0xFF0D0D0D), Color(0xFF2B2B2B)],
+        gradient: LinearGradient(
+          colors: [CustomColors.getThemeColor(context, AppColorData.floatingbtn1), CustomColors.getThemeColor(context, AppColorData.floatingbtn2)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
