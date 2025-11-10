@@ -1,6 +1,7 @@
 import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'ring_painter.dart';
 
 class RingChart extends StatelessWidget {
@@ -20,15 +21,48 @@ class RingChart extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Balance", style: TextStyle(fontSize: 11, color: CustomColors.getThemeColor(context, AppColorData.secondary3))),
               Text(
-                "${percent.toStringAsFixed(1)}%",
+                "Balance",
                 style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: isNegative ? CustomColors.getThemeColor(context, AppColorData.expenseColor) : CustomColors.getThemeColor(context, AppColorData.incomeColor),
+                  fontSize: 11,
+                  color: CustomColors.getThemeColor(
+                    context,
+                    AppColorData.secondary3,
+                  ),
                 ),
               ),
+
+              // Use ternary operator correctly
+              percent.toStringAsFixed(1).length <= 5
+                  ? Text(
+                      "${percent.toStringAsFixed(1)}%",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: isNegative
+                            ? CustomColors.getThemeColor(
+                                context,
+                                AppColorData.expenseColor,
+                              )
+                            : CustomColors.getThemeColor(
+                                context,
+                                AppColorData.incomeColor,
+                              ),
+                      ),
+                    )
+                  : FaIcon(
+                      FontAwesomeIcons.skull,
+                      size: 20,
+                      color: isNegative
+                          ? CustomColors.getThemeColor(
+                              context,
+                              AppColorData.expenseColor,
+                            )
+                          : CustomColors.getThemeColor(
+                              context,
+                              AppColorData.incomeColor,
+                            ),
+                    ),
             ],
           ),
         ),

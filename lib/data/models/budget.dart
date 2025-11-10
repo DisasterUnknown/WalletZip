@@ -13,6 +13,9 @@ class Budget {
     this.type = "monthly", // default to Monthly
   });
 
+  @override
+  String toString() => "Budget(id: $id, amount: $amount, month: $month, year: $year, type: $type)";
+
   Map<String, dynamic> toMap() {
     return {
       "id": id,

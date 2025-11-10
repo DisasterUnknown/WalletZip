@@ -182,11 +182,11 @@ class _AddNewTransactionRecordPageState
     // If editing existing transaction, update it
     if (selectedMatchedTransaction != null) {
       await db.updateExpense(newExpense);
-      LogService.log("Updated transaction ID: ${newExpense.id}");
+      LogService.log("Updated transaction: ${newExpense.toString()}");
     } else {
       // otherwise insert a new one
       await db.insertExpense(newExpense);
-      LogService.log("Inserted new transaction ID: ${newExpense.id}");
+      LogService.log("Inserted new transaction: ${newExpense.toString()}");
     }
 
     // If linked transaction, also update the matched one
@@ -197,7 +197,7 @@ class _AddNewTransactionRecordPageState
         isTemporary: false,
       );
       await db.updateExpense(updatedLinked);
-      LogService.log("Updated linked transaction ID: ${updatedLinked.id}");
+      LogService.log("Updated linked transaction: ${updatedLinked.toString()}");
     }
 
     if (!mounted) return;

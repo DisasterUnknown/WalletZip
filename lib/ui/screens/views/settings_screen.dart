@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/log_service.dart';
 import 'package:expenso/services/routing_service.dart';
@@ -14,6 +16,37 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  void showAppSnackBar(
+    BuildContext context, {
+    required String message,
+    Duration duration = const Duration(seconds: 3),
+    Color? backgroundColor,
+    Color? textColor,
+    bool floating = true,
+  }) {
+    final messenger = ScaffoldMessenger.of(context);
+
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(
+            color:
+                textColor ??
+                CustomColors.getThemeColor(context, AppColorData.primary),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor:
+            backgroundColor ??
+            CustomColors.getThemeColor(context, AppColorData.secondary),
+        duration: duration,
+        behavior: floating ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,37 +141,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // Download Logs Button
             GestureDetector(
               onTap: () async {
-                final messenger = ScaffoldMessenger.of(context);
+                final currentContext = context; // capture context
+
                 try {
                   final path =
                       await LogService.downloadLogToUserSelectedLocation();
-                  if (!mounted) return;
+
+                  if (!mounted) return; 
 
                   if (path != null) {
-                    messenger.showSnackBar(
-                      SnackBar(
-                        content: Text('Log downloaded to: $path'),
-                        duration: const Duration(seconds: 3),
-                      ),
+                    showAppSnackBar(
+                      currentContext, 
+                      message: 'Log downloaded to: $path',
                     );
                   } else {
-                    messenger.showSnackBar(
-                      const SnackBar(
-                        content: Text('Log download canceled or failed.'),
-                        duration: Duration(seconds: 3),
-                      ),
+                    showAppSnackBar(
+                      currentContext,
+                      message: 'Log download canceled or failed.',
+                      backgroundColor: Colors.orange,
+                      textColor: Colors.white,
                     );
                   }
                 } catch (e) {
                   if (!mounted) return;
-                  messenger.showSnackBar(
-                    SnackBar(
-                      content: Text('Error saving log: $e'),
-                      duration: const Duration(seconds: 3),
-                    ),
+                  showAppSnackBar(
+                    currentContext,
+                    message: 'Error saving log: $e',
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
                   );
                 }
               },
+
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: ClipRRect(

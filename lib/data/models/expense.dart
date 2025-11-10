@@ -27,6 +27,23 @@ class Expense {
     this.expectedDate,
   });
 
+  @override
+  String toString() {
+    return 'Expense('
+        'id: $id, '
+        'type: $type, '
+        'price: $price, '
+        'categoryIds: ${categoryIds.join(',')}, '
+        'note: $note, '
+        'dateTime: $dateTime, '
+        'isBudgetEntry: $isBudgetEntry, '
+        'isTemporary: $isTemporary, '
+        'status: $status, '
+        'linkedTransactionId: $linkedTransactionId, '
+        'expectedDate: $expectedDate'
+        ')';
+  }
+
   Map<String, dynamic> toMap() => {
     'id': id,
     'type': type,
