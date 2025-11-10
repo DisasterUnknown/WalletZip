@@ -1,5 +1,6 @@
 import 'package:expenso/data/db/db_helper.dart';
 import 'package:expenso/data/models/expense.dart';
+import 'package:expenso/services/log_service.dart';
 
 class StartupService {
   static Future<void> checkAndAddBudgetIncome() async {
@@ -49,23 +50,30 @@ class StartupService {
           incomeAmount = budget.amount / 12;
           break;
         case "daily":
-          final daysInMonth = DateTime(startMonth.year, startMonth.month + 1, 0).day;
+          final daysInMonth = DateTime(
+            startMonth.year,
+            startMonth.month + 1,
+            0,
+          ).day;
           incomeAmount = budget.amount * daysInMonth;
           break;
         default:
           incomeAmount = budget.amount;
       }
 
-      await db.insertExpense(Expense(
-        type: "Income",
-        price: incomeAmount,
-        categoryIds: [-1],
-        dateTime: DateTime(startMonth.year, startMonth.month, 1),
-        isBudgetEntry: true,
-      ));
+      await db.insertExpense(
+        Expense(
+          type: "Income",
+          price: incomeAmount,
+          categoryIds: [-1],
+          dateTime: DateTime(startMonth.year, startMonth.month, 1),
+          isBudgetEntry: true,
+        ),
+      );
 
       // move to next month
       startMonth = DateTime(startMonth.year, startMonth.month + 1, 1);
+      LogService.log("Added budget income for ${startMonth.month - 1}/${startMonth.year}");
     }
   }
 }

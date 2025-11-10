@@ -1,3 +1,4 @@
+import 'package:expenso/services/log_service.dart';
 import 'package:expenso/services/startup_service.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StartupService.checkAndAddBudgetIncome();
   await CustomColors.init();
+
+  await LogService.init();
+  LogService.log("App started");
 
   runApp(const MyApp());
 }
@@ -24,7 +28,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     // Listen to theme changes
     CustomColors.themeNotifier.addListener(() {
-      setState(() {}); // rebuild MaterialApp when theme changes
+      setState(() {});
     });
   }
 
@@ -36,8 +40,7 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Expenso',
         theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor:
-              CustomColors.getColorSync('primary'),
+          scaffoldBackgroundColor: CustomColors.getColorSync('primary'),
         ),
         debugShowCheckedModeBanner: false,
         navigatorKey: routing.navigatorKey,

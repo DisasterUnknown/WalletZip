@@ -1,5 +1,6 @@
 import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/core/shared_prefs/shared_pref_service.dart';
+import 'package:expenso/services/log_service.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class _AppColorThemePageState extends State<AppColorThemePage> {
   Future<void> _loadSelectedTheme() async {
     final savedPref = await LocalSharedPreferences.getString(SharedPrefValues.prefTheme) ?? "default";
     final index = themes.indexWhere((theme) => theme['prefValue'] == savedPref);
+    LogService.log("Loaded selected theme: $savedPref");
 
     if (index != -1) {
       setState(() {

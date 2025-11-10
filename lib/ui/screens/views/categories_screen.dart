@@ -6,6 +6,7 @@ import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/main/bottom_nav_bar.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:expenso/services/log_service.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -26,6 +27,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   // Load saved selected categories
   Future<void> _loadSelectedCategories() async {
     final saved = await LocalSharedPreferences.getString('selected_categories');
+    LogService.log("Loaded selected categories: $saved");
     if (saved != null && saved.isNotEmpty) {
       setState(() {
         selectedCategoryIds = saved
@@ -40,6 +42,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   // Save selected categories
   Future<void> _saveSelectedCategories() async {
     final ids = selectedCategoryIds.join(',');
+    LogService.log("Saving selected categories: $ids");
     await LocalSharedPreferences.setString('selected_categories', ids);
   }
 

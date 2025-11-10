@@ -1,4 +1,5 @@
 import 'package:expenso/core/constants/app_constants.dart';
+import 'package:expenso/services/log_service.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/category_or_linked_transactions.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/toggle_area/toggle_area.dart';
@@ -181,9 +182,11 @@ class _AddNewTransactionRecordPageState
     // If editing existing transaction, update it
     if (selectedMatchedTransaction != null) {
       await db.updateExpense(newExpense);
+      LogService.log("Updated transaction ID: ${newExpense.id}");
     } else {
       // otherwise insert a new one
       await db.insertExpense(newExpense);
+      LogService.log("Inserted new transaction ID: ${newExpense.id}");
     }
 
     // If linked transaction, also update the matched one
@@ -194,6 +197,7 @@ class _AddNewTransactionRecordPageState
         isTemporary: false,
       );
       await db.updateExpense(updatedLinked);
+      LogService.log("Updated linked transaction ID: ${updatedLinked.id}");
     }
 
     if (!mounted) return;

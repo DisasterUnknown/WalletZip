@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:expenso/core/constants/app_constants.dart';
+import 'package:expenso/services/log_service.dart';
 import 'package:expenso/services/startup_service.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/widgets/expense_text_field.dart';
@@ -89,6 +90,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
     );
 
     await DBHelper().insertBudget(budget);
+    LogService.log("Saved budget: $budget");
 
     // This only call the add the budget to the db in the startupService nothing else
     StartupService.checkAndAddBudgetIncome();
