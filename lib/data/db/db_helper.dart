@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 import '../models/category.dart';
-import '../models/expense.dart';
+import '../models/transaction.dart';
 import '../models/day_data.dart';
 import '../models/month_data.dart';
 import '../models/year_data.dart';
@@ -138,7 +138,7 @@ class DBHelper {
 
   // ------------------ EXPENSE METHODS ------------------
 
-  Future<int> insertExpense(Expense expense) async {
+  Future<int> insertExpense(TransactionRecord expense) async {
     final db = await database;
     final id = await db.insert(
       'expenses',
@@ -150,7 +150,7 @@ class DBHelper {
     return id;
   }
 
-  Future<int> updateExpense(Expense expense) async {
+  Future<int> updateExpense(TransactionRecord expense) async {
     final db = await database;
     final result = await db.update(
       'expenses',
@@ -175,13 +175,13 @@ class DBHelper {
     return result;
   }
 
-  Future<List<Expense>> getAllExpenses() async {
+  Future<List<TransactionRecord>> getAllExpenses() async {
     final db = await database;
     final res = await db.query('expenses');
-    return res.map((e) => Expense.fromMap(e)).toList();
+    return res.map((e) => TransactionRecord.fromMap(e)).toList();
   }
 
-  Future<List<Expense>> getExpensesByDate(DateTime date) async {
+  Future<List<TransactionRecord>> getExpensesByDate(DateTime date) async {
     final db = await database;
     final start = DateTime(date.year, date.month, date.day);
     final end = start.add(const Duration(days: 1));
@@ -192,7 +192,7 @@ class DBHelper {
       whereArgs: [start.toIso8601String(), end.toIso8601String()],
     );
 
-    return res.map((e) => Expense.fromMap(e)).toList();
+    return res.map((e) => TransactionRecord.fromMap(e)).toList();
   }
 
   // ------------------ STRUCTURED DATA ------------------

@@ -1,4 +1,4 @@
-class Expense {
+class TransactionRecord {
   final int? id;
   final String type; // "income" or "expense"
   final double price;
@@ -13,7 +13,7 @@ class Expense {
   final int? linkedTransactionId; // ID of the related transaction if completed
   final DateTime? expectedDate; // optional expected date for reimbursement
 
-  Expense({
+  TransactionRecord({
     this.id,
     required this.type,
     required this.price,
@@ -58,7 +58,7 @@ class Expense {
     'expectedDate': expectedDate?.toIso8601String(),
   };
 
-  factory Expense.fromMap(Map<String, dynamic> map) => Expense(
+  factory TransactionRecord.fromMap(Map<String, dynamic> map) => TransactionRecord(
     id: map['id'],
     type: map['type'],
     price: map['price'],
@@ -80,7 +80,7 @@ class Expense {
         : null,
   );
 
-  Expense copyWith({
+  TransactionRecord copyWith({
     int? id,
     String? type,
     double? price,
@@ -92,7 +92,7 @@ class Expense {
     DateTime? expectedDate,
     String? status,
   }) {
-    return Expense(
+    return TransactionRecord(
       id: id ?? this.id,
       type: type ?? this.type,
       price: price ?? this.price,

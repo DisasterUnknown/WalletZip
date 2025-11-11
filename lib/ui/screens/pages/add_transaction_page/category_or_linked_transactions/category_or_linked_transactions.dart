@@ -1,6 +1,6 @@
 import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/data/models/category.dart';
-import 'package:expenso/data/models/expense.dart';
+import 'package:expenso/data/models/transaction.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/widget/category_selector.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/widget/matched_transaction_card.dart';
@@ -11,9 +11,9 @@ class CategoryOrLinkedTransactions extends StatelessWidget {
   final List<Category> userCategories;
   final int? selectedCategoryId;
   final Function(Category) onCategoryTap;
-  final List<Expense> matchedTransactions;
-  final Expense? selectedMatchedTransaction;
-  final Function(Expense) onSelectMatchedTransaction;
+  final List<TransactionRecord> matchedTransactions;
+  final TransactionRecord? selectedMatchedTransaction;
+  final Function(TransactionRecord) onSelectMatchedTransaction;
   final Color accentColor;
 
   const CategoryOrLinkedTransactions({

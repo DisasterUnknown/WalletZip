@@ -1,5 +1,5 @@
 import 'package:expenso/data/db/db_helper.dart';
-import 'package:expenso/data/models/expense.dart';
+import 'package:expenso/data/models/transaction.dart';
 import 'package:expenso/services/log_service.dart';
 
 class StartupService {
@@ -62,7 +62,7 @@ class StartupService {
       }
 
       await db.insertExpense(
-        Expense(
+        TransactionRecord(
           type: "Income",
           price: incomeAmount,
           categoryIds: [-1],

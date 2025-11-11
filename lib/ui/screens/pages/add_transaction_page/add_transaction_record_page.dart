@@ -4,13 +4,14 @@ import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/category_or_linked_transactions/category_or_linked_transactions.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/toggle_area/toggle_area.dart';
 import 'package:expenso/ui/screens/pages/add_transaction_page/transaction_form/top_input_area.dart';
+import 'package:expenso/ui/screens/pages/add_transaction_page/widgets/transaction_confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:expenso/core/constants/default_categories.dart';
 import 'package:expenso/core/shared_prefs/shared_pref_service.dart';
 import 'package:expenso/data/db/db_helper.dart';
-import 'package:expenso/data/models/expense.dart';
+import 'package:expenso/data/models/transaction.dart';
 import 'package:expenso/data/models/category.dart';
 
 class AddNewTransactionRecordPage extends StatefulWidget {
@@ -38,8 +39,8 @@ class _AddNewTransactionRecordPageState
   List<Category> userCategories = [];
   int? selectedCategoryId;
 
-  List<Expense> matchedTransactions = [];
-  Expense? selectedMatchedTransaction;
+  List<TransactionRecord> matchedTransactions = [];
+  TransactionRecord? selectedMatchedTransaction;
 
   final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -149,53 +150,68 @@ class _AddNewTransactionRecordPageState
     // ------------------ SUPER SETTING LOGIC ------------------
     if (superSetting && selectedMatchedTransaction != null) {
       final temp = selectedMatchedTransaction!;
-      double newPrice = 0;
-      String newType = temp.type; // default is the original type
+      double netPrice = 0;
+      String netType = temp.type;
 
       if (transactionType.toLowerCase() == temp.type.toLowerCase()) {
-        // Same type → just add amounts
-        newPrice = temp.price + amount;
-        newType = temp.type;
+        netPrice = temp.price + amount;
+        netType = temp.type;
       } else {
-        // Different type → calculate net difference
         final difference =
             (transactionType.toLowerCase() == 'income' ? amount : -amount) +
             (temp.type.toLowerCase() == 'income' ? temp.price : -temp.price);
 
         if (difference > 0) {
-          newType = 'income';
-          newPrice = difference;
+          netType = 'income';
+          netPrice = difference;
         } else if (difference < 0) {
-          newType = 'expense';
-          newPrice = -difference; // make positive
+          netType = 'expense';
+          netPrice = -difference;
         } else {
-          // fully neutralized
-          newType = 'expense';
-          newPrice = 0;
+          netPrice = 0;
+          netType = 'expense';
         }
       }
 
-      // Update the existing temporary transaction with net result
-      final updatedExpense = temp.copyWith(
-        type: newType,
-        price: newPrice,
-        status: 'completed',
-        isTemporary: false,
-        linkedTransactionId: temp.id,
-        expectedDate: temp.dateTime,
-      );
+      // If netPrice != 0, show confirmation dialog
+      if (netPrice != 0) {
+        final proceed = await showSuperTransactionConfirmDialog(
+          context: context,
+          type: netType,
+          amount: netPrice,
+        );
+        if (!proceed) return; // user cancelled
+      }
 
-      await db.updateExpense(updatedExpense);
-      LogService.log(
-        "Info",
-        "Updated linked transaction: ${updatedExpense.toString()}",
-      );
+      if (netPrice == 0) {
+        // Fully neutralized → delete the temporary transaction
+        await db.deleteExpense(temp.id!);
+        LogService.log(
+          "Info",
+          "Deleted fully neutralized transaction: ${temp.toString()}",
+        );
+      } else {
+        // Update the temporary transaction with the remaining net result
+        final updatedExpense = temp.copyWith(
+          type: netType,
+          price: netPrice,
+          status: 'completed',
+          isTemporary: false,
+          linkedTransactionId: temp.id,
+          expectedDate: temp.dateTime,
+        );
+        await db.updateExpense(updatedExpense);
+        LogService.log(
+          "Info",
+          "Updated linked transaction: ${updatedExpense.toString()}",
+        );
+      }
     } else {
       // ------------------ NORMAL TRANSACTION ------------------
       bool finalIsTemporary = isTemporary;
       String finalStatus = isTemporary ? 'open' : 'completed';
 
-      final newExpense = Expense(
+      final newExpense = TransactionRecord(
         type: transactionType.toLowerCase(),
         price: amount,
         categoryIds: [selectedCategoryId!],

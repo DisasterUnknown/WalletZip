@@ -1,12 +1,12 @@
 import 'package:expenso/core/constants/app_constants.dart';
-import 'package:expenso/data/models/expense.dart';
+import 'package:expenso/data/models/transaction.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/sub/confirm_delete_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 Widget transactionRecordCard(
-  Expense e,
+  TransactionRecord e,
   BuildContext context, {
   double marginH = 16,
   double marginV = 6,

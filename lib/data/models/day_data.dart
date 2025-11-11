@@ -1,8 +1,8 @@
-import 'expense.dart';
+import 'transaction.dart';
 
 class DayData {
   final String day; // e.g., "23"
-  final List<Expense> expenses;
+  final List<TransactionRecord> expenses;
 
   DayData({required this.day, required this.expenses});
 
@@ -14,7 +14,7 @@ class DayData {
   factory DayData.fromMap(Map<String, dynamic> map) => DayData(
         day: map['day'],
         expenses: (map['expenses'] as List)
-            .map((e) => Expense.fromMap(e))
+            .map((e) => TransactionRecord.fromMap(e))
             .toList(),
       );
 }

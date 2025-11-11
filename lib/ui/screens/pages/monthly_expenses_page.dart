@@ -1,5 +1,5 @@
 import 'package:expenso/data/db/db_helper.dart';
-import 'package:expenso/data/models/expense.dart';
+import 'package:expenso/data/models/transaction.dart';
 import 'package:expenso/data/models/month_data.dart';
 import 'package:expenso/data/models/year_data.dart';
 import 'package:expenso/services/log_service.dart';
@@ -20,7 +20,7 @@ class MonthlyExpensesPage extends StatefulWidget {
 class _MonthlyExpensesPageState extends State<MonthlyExpensesPage> {
   late String year;
   late String month;
-  List<Expense> expenses = [];
+  List<TransactionRecord> expenses = [];
   bool isLoading = true;
   String _dataHash = '';
 
@@ -51,7 +51,7 @@ class _MonthlyExpensesPageState extends State<MonthlyExpensesPage> {
       orElse: () => MonthData(month: monthIndex.toString(), days: []),
     );
 
-    final monthExpenses = <Expense>[];
+    final monthExpenses = <TransactionRecord>[];
     for (var day in monthData.days) {
       monthExpenses.addAll(day.expenses);
     }

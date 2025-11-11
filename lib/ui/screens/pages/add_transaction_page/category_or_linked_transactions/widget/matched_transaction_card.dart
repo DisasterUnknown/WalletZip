@@ -1,11 +1,11 @@
 import 'package:expenso/core/constants/app_constants.dart';
-import 'package:expenso/data/models/expense.dart';
+import 'package:expenso/data/models/transaction.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/sub/transaction_record_card.dart';
 import 'package:flutter/material.dart';
 
 class MatchedTransactionCard extends StatelessWidget {
-  final Expense expense;
+  final TransactionRecord expense;
   final bool isSelected;
   final Color accentColor;
   final VoidCallback onTap;
