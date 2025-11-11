@@ -32,7 +32,7 @@ class ToggleArea extends StatelessWidget {
           // Super Setting
           _buildToggle(
             context: context,
-            label: 'Super Setting',
+            label: 'Linked',
             value: superSetting,
             onChanged: onSuperSettingChanged,
             accentColor: accentColor,

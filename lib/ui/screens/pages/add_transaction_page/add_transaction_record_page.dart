@@ -104,6 +104,7 @@ class _AddNewTransactionRecordPageState
     setState(() {
       superSetting = value;
       if (superSetting) _loadMatchedTransactions();
+      if (superSetting) isTemporary = false;
     });
   }
 
@@ -258,6 +259,38 @@ class _AddNewTransactionRecordPageState
           key: _formKey,
           child: Column(
             children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  color: CustomColors.getThemeColor(
+                    context,
+                    AppColorData.secondary,
+                  ).withAlpha(50),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: CustomColors.getThemeColor(
+                      context,
+                      AppColorData.secondary1,
+                    ).withAlpha(120),
+                    width: 1.2,
+                  ),
+                ),
+                child: Text(
+                  'Here you can add a new transaction record. '
+                  'Enable "Linked" mode to associate this transaction with an existing temporary/open transaction. '
+                  'Otherwise, simply categorize it as a regular income or expense.',
+                  style: TextStyle(
+                    color: CustomColors.getThemeColor(
+                      context,
+                      AppColorData.secondary,
+                    ),
+                    fontSize: 13,
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+              ),
               TopInputArea(
                 selectedDate: selectedDate,
                 selectedTime: selectedTime,
