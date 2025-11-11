@@ -14,7 +14,7 @@ class LogService {
     if (!_logFile!.existsSync()) {
       _logFile!.createSync(recursive: true);
     }
-    LogService.log("Sucess", 'Log file initialized at: ${_logFile!.path}');
+    LogService.log("Success", 'Log file initialized at: ${_logFile!.path}');
   }
 
   /// Write log entry
@@ -66,15 +66,27 @@ class LogService {
 
     try {
       final String? dirPath = await getDirectoryPath();
-      if (dirPath == null) return null; 
+      if (dirPath == null) return null;
 
       final file = File('$dirPath/app_logs.log');
       await file.writeAsBytes(await _logFile!.readAsBytes(), flush: true);
-      LogService.log("Sucess", 'Log saved to: ${file.path}');
+      LogService.log("Success", 'Log saved to: ${file.path}');
       return file.path;
     } catch (e) {
       LogService.log("Error", 'Error saving log: $e');
       return null;
+    }
+  }
+
+  /// Clear all logs
+  static Future<void> clearLogs() async {
+    if (_logFile == null || !_logFile!.existsSync()) return;
+    try {
+      await _logFile!.writeAsString('', flush: true);
+      debugPrint('All logs cleared.');
+      log("Success", "Log file cleared.");
+    } catch (e) {
+      log("Error", 'Error clearing log file: $e');
     }
   }
 

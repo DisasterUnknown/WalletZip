@@ -145,6 +145,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
 
+            // Appearance
+            _buildSettingsTile(
+              context: context,
+              icon: Icons.developer_board,
+              title: "View Logs",
+              onTap: () {
+                RoutingService().navigateTo(RoutingService.viewLogs);
+              },
+            ),
+
             // Logs download
             _buildSettingsTile(
               context: context,

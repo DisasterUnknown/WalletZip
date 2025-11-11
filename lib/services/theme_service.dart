@@ -74,7 +74,7 @@ class CustomColors {
       _themes['mintGreen'] = _toMapList(mintGreenJson);
       _themes['sunnyYellow'] = _toMapList(sunnyYellowJson);
 
-      LogService.log("Sucess", 'Loaded ${_themes.keys.length} theme sets');
+      LogService.log("Success", 'Loaded ${_themes.keys.length} theme sets');
     } catch (e) {
       LogService.log("Error", 'Error loading themes: $e');
     }

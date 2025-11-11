@@ -74,7 +74,7 @@ class _MonthlyExpensesPageState extends State<MonthlyExpensesPage> {
 
   Future<void> _deleteExpense(int id) async {
     await DBHelper().deleteExpense(id);
-    LogService.log("Sucess", "Expense deleted: $id");
+    LogService.log("Success", "Expense deleted: $id");
     _checkAndLoadExpenses();
   }
 
