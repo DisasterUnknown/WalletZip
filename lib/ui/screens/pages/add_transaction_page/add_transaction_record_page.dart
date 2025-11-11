@@ -46,8 +46,9 @@ class _AddNewTransactionRecordPageState
   final _formKey = GlobalKey<FormState>();
   String? errorMessage;
 
-  Color get accentColor =>
-      transactionType == 'Expense' ? CustomColors.getThemeColor(context, AppColorData.expenseColor) : CustomColors.getThemeColor(context, AppColorData.incomeColor);
+  Color get accentColor => transactionType == 'Expense'
+      ? CustomColors.getThemeColor(context, AppColorData.expenseColor)
+      : CustomColors.getThemeColor(context, AppColorData.incomeColor);
 
   @override
   void didChangeDependencies() {
@@ -143,61 +144,78 @@ class _AddNewTransactionRecordPageState
       return;
     }
 
-    // Determine transaction status & temp flag
-    bool finalIsTemporary = isTemporary;
-    String finalStatus = 'completed';
-
-    if (superSetting && selectedMatchedTransaction != null) {
-      // If linked, both transactions become completed and permanent
-      finalIsTemporary = false;
-      finalStatus = 'completed';
-    } else if (!superSetting) {
-      finalStatus = isTemporary ? 'open' : 'completed';
-    }
-
-    // Create Expense object (new or updated)
-    final newExpense = Expense(
-      id: selectedMatchedTransaction?.id, // if you're editing existing expense
-      type: transactionType.toLowerCase(),
-      price: amount,
-      categoryIds: superSetting
-          ? selectedMatchedTransaction!.categoryIds
-          : [selectedCategoryId!],
-      note: descriptionController.text,
-      dateTime: DateTime(
-        selectedDate.year,
-        selectedDate.month,
-        selectedDate.day,
-        selectedTime.hour,
-        selectedTime.minute,
-      ),
-      linkedTransactionId: superSetting ? selectedMatchedTransaction!.id : null,
-      isTemporary: finalIsTemporary,
-      expectedDate: superSetting ? selectedMatchedTransaction?.dateTime : null,
-      status: finalStatus,
-    );
-
     final db = DBHelper();
 
-    // If editing existing transaction, update it
-    if (selectedMatchedTransaction != null) {
-      await db.updateExpense(newExpense);
-      LogService.log("Info", "Updated transaction: ${newExpense.toString()}");
-    } else {
-      // otherwise insert a new one
-      await db.insertExpense(newExpense);
-      LogService.log("Info", "Inserted new transaction: ${newExpense.toString()}");
-    }
-
-    // If linked transaction, also update the matched one
+    // ------------------ SUPER SETTING LOGIC ------------------
     if (superSetting && selectedMatchedTransaction != null) {
-      final updatedLinked = selectedMatchedTransaction!.copyWith(
-        linkedTransactionId: newExpense.id,
+      final temp = selectedMatchedTransaction!;
+      double newPrice = 0;
+      String newType = temp.type; // default is the original type
+
+      if (transactionType.toLowerCase() == temp.type.toLowerCase()) {
+        // Same type → just add amounts
+        newPrice = temp.price + amount;
+        newType = temp.type;
+      } else {
+        // Different type → calculate net difference
+        final difference =
+            (transactionType.toLowerCase() == 'income' ? amount : -amount) +
+            (temp.type.toLowerCase() == 'income' ? temp.price : -temp.price);
+
+        if (difference > 0) {
+          newType = 'income';
+          newPrice = difference;
+        } else if (difference < 0) {
+          newType = 'expense';
+          newPrice = -difference; // make positive
+        } else {
+          // fully neutralized
+          newType = 'expense';
+          newPrice = 0;
+        }
+      }
+
+      // Update the existing temporary transaction with net result
+      final updatedExpense = temp.copyWith(
+        type: newType,
+        price: newPrice,
         status: 'completed',
         isTemporary: false,
+        linkedTransactionId: temp.id,
+        expectedDate: temp.dateTime,
       );
-      await db.updateExpense(updatedLinked);
-      LogService.log("Info", "Updated linked transaction: ${updatedLinked.toString()}");
+
+      await db.updateExpense(updatedExpense);
+      LogService.log(
+        "Info",
+        "Updated linked transaction: ${updatedExpense.toString()}",
+      );
+    } else {
+      // ------------------ NORMAL TRANSACTION ------------------
+      bool finalIsTemporary = isTemporary;
+      String finalStatus = isTemporary ? 'open' : 'completed';
+
+      final newExpense = Expense(
+        type: transactionType.toLowerCase(),
+        price: amount,
+        categoryIds: [selectedCategoryId!],
+        note: descriptionController.text,
+        dateTime: DateTime(
+          selectedDate.year,
+          selectedDate.month,
+          selectedDate.day,
+          selectedTime.hour,
+          selectedTime.minute,
+        ),
+        isTemporary: finalIsTemporary,
+        status: finalStatus,
+      );
+
+      await db.insertExpense(newExpense);
+      LogService.log(
+        "Info",
+        "Inserted new transaction: ${newExpense.toString()}",
+      );
     }
 
     if (!mounted) return;
@@ -207,7 +225,10 @@ class _AddNewTransactionRecordPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColors.getThemeColor(context, AppColorData.primary),
+      backgroundColor: CustomColors.getThemeColor(
+        context,
+        AppColorData.primary,
+      ),
       appBar: CustomAppBar(
         title: transactionType == 'Expense'
             ? 'Add Expense Record'
@@ -257,7 +278,10 @@ class _AddNewTransactionRecordPageState
                 Text(
                   errorMessage!,
                   style: TextStyle(
-                    color: CustomColors.getThemeColor(context, AppColorData.expenseColor),
+                    color: CustomColors.getThemeColor(
+                      context,
+                      AppColorData.expenseColor,
+                    ),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -266,7 +290,10 @@ class _AddNewTransactionRecordPageState
               ElevatedButton(
                 onPressed: _submitTransaction,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomColors.getThemeColor(context, AppColorData.primary),
+                  backgroundColor: CustomColors.getThemeColor(
+                    context,
+                    AppColorData.primary,
+                  ),
                   padding: const EdgeInsets.symmetric(
                     vertical: 14,
                     horizontal: 40,

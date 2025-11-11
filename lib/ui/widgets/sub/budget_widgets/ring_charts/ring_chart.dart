@@ -33,7 +33,7 @@ class RingChart extends StatelessWidget {
               ),
 
               // Use ternary operator correctly
-              percent.toStringAsFixed(1).length <= 5
+              percent.toStringAsFixed(1).length <= 6
                   ? Text(
                       "${percent.toStringAsFixed(1)}%",
                       style: TextStyle(
