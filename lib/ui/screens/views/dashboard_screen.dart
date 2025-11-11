@@ -88,7 +88,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
     for (var e in filteredExpenses) {
       // If the entry has categories
-      if (e.categoryIds.isNotEmpty) {
+      if (e.categoryIds.isNotEmpty && e.categoryIds[0] > 0) {
         final distributedAmount = e.price / e.categoryIds.length;
         for (var id in e.categoryIds) {
           final cat = allCategories.firstWhere(

@@ -1,16 +1,22 @@
 [
-  {"name": "primary", "value": "0xFF311B92"},
-  {"name": "primary1", "value": "0xDD311B92"},
-  {"name": "secondary", "value": "0xFFEDE7F6"},
-  {"name": "secondary1", "value": "0x8AEDE7F6"},
-  {"name": "secondary2", "value": "0x3DEDE7F6"},
-  {"name": "secondary3", "value": "0xB3EDE7F6"},
-  {"name": "secondary4", "value": "0x61EDE7F6"},
-  {"name": "secondary5", "value": "0x99EDE7F6"},
-  {"name": "expenseColor", "value": "0xFFF44336"},
+  {"name": "primary", "value": "0xFF0A0A3F"},
+  {"name": "primary1", "value": "0xDD0A0A3F"},
+
+  {"name": "secondary", "value": "0xFFE3E0FF"},
+  {"name": "secondary1", "value": "0x8AE3E0FF"},
+  {"name": "secondary2", "value": "0x3DE3E0FF"},
+  {"name": "secondary3", "value": "0xB3E3E0FF"},
+  {"name": "secondary4", "value": "0x61E3E0FF"},
+  {"name": "secondary5", "value": "0x99E3E0FF"},
+
+  {"name": "expenseColor", "value": "0xFFFF6B6B"},
   {"name": "incomeColor", "value": "0xFF00E676"},
-  {"name": "pendingColor", "value": "0xFFFFB74D"},
+  {"name": "pendingColor", "value": "0xFFFFC107"},
+
   {"name": "transparent", "value": "0x00000000"},
-  {"name": "disabled", "value": "0xFF9E9E9E"},
-  {"name": "disabled1", "value": "0xFF5E35B1"}
+  {"name": "disabled", "value": "0xFF78909C"},
+  {"name": "disabled1", "value": "0xFF4B3DA6"},
+
+  {"name": "floatingbtn1", "value": "0xFF0A0A3F"},
+  {"name": "floatingbtn2", "value": "0xFF1A0F5F"}
 ]
