@@ -70,7 +70,7 @@ class LogService {
 
       final file = File('$dirPath/app_logs.log');
       await file.writeAsBytes(await _logFile!.readAsBytes(), flush: true);
-      debugPrint('✅ Log saved to: ${file.path}');
+      LogService.log('[Sucess]: Log saved to: ${file.path}');
       return file.path;
     } catch (e) {
       debugPrint('❌ Error saving log: $e');
