@@ -1,10 +1,13 @@
+import 'package:expenso/data/models/budget.dart';
+
 import 'day_data.dart';
 
 class MonthData {
   final String month; // e.g., "January"
   final List<DayData> days;
+  Budget? budget;
 
-  MonthData({required this.month, required this.days});
+  MonthData({required this.month, required this.days, this.budget});
 
   Map<String, dynamic> toMap() => {
         'month': month,

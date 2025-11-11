@@ -93,9 +93,13 @@ class DBHelper {
   /// Upgrade DB safely without breaking old data
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      await db.execute('ALTER TABLE expenses ADD COLUMN isTemporary INTEGER DEFAULT 0');
+      await db.execute(
+        'ALTER TABLE expenses ADD COLUMN isTemporary INTEGER DEFAULT 0',
+      );
       await db.execute('ALTER TABLE expenses ADD COLUMN status TEXT');
-      await db.execute('ALTER TABLE expenses ADD COLUMN linkedTransactionId INTEGER');
+      await db.execute(
+        'ALTER TABLE expenses ADD COLUMN linkedTransactionId INTEGER',
+      );
       await db.execute('ALTER TABLE expenses ADD COLUMN expectedDate TEXT');
     }
   }
@@ -199,8 +203,20 @@ class DBHelper {
 
   Future<List<YearData>> getAllDataStructured() async {
     final expenses = await getAllExpenses();
+    final budgets = await getAllBudgets();
+
     Map<String, YearData> yearsMap = {};
 
+    // Map budgets by year and month for quick lookup
+    final Map<String, Map<String, Budget>> budgetsMap = {};
+    for (var b in budgets) {
+      final y = b.year.toString();
+      final m = b.month.toString().padLeft(2, '0');
+      budgetsMap.putIfAbsent(y, () => {});
+      budgetsMap[y]![m] = b; // assume one budget per month
+    }
+
+    // 1️⃣ Process expenses into structured YearData -> MonthData -> DayData
     for (var e in expenses) {
       final y = e.dateTime.year.toString();
       final m = e.dateTime.month.toString().padLeft(2, '0');
@@ -212,11 +228,14 @@ class DBHelper {
       var monthData = yearData.months.firstWhere(
         (month) => month.month == m,
         orElse: () {
-          final md = MonthData(month: m, days: []);
+          final md = MonthData(month: m, days: [], budget: budgetsMap[y]?[m]);
           yearData.months.add(md);
           return md;
         },
       );
+
+      // Ensure budget is attached if month exists
+      monthData.budget ??= budgetsMap[y]?[m];
 
       var dayData = monthData.days.firstWhere(
         (day) => day.day == d,
@@ -228,6 +247,27 @@ class DBHelper {
       );
 
       dayData.expenses.add(e);
+    }
+
+    // 2️⃣ Ensure months with only budgets (no expenses) exist
+    for (var y in budgetsMap.keys) {
+      final yearData = yearsMap.putIfAbsent(
+        y,
+        () => YearData(year: y, months: []),
+      );
+      for (var m in budgetsMap[y]!.keys) {
+        final monthData = yearData.months.firstWhere(
+          (month) => month.month == m,
+          orElse: () {
+            final md = MonthData(month: m, days: [], budget: budgetsMap[y]![m]);
+            yearData.months.add(md);
+            return md;
+          },
+        );
+        if (monthData.budget == null) {
+          monthData.budget = budgetsMap[y]![m];
+        }
+      }
     }
 
     return yearsMap.values.toList();

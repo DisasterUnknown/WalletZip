@@ -63,6 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
             total -= e.price;
           } else if (e.type == "income") {
             total += e.price;
+          } else {
+            total += e.price;
           }
         }
       }

@@ -51,6 +51,8 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
             totals[i] = totals[i]! + e.price;
           } else if (e.type == "expense") {
             totals[i] = totals[i]! - e.price;
+          } else {
+            totals[i] = totals[i]! + e.price;
           }
         }
       }
@@ -93,11 +95,7 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
               children: [
                 const SizedBox(height: 5),
                 // 🔹 Shrunk summary card like in MonthlyExpensesScreen
-                BudgetCard(
-                  title: "Yearly Summary",
-                  type: "year",
-                  year: year,
-                ),
+                BudgetCard(title: "Yearly Summary", type: "year", year: year),
                 const SizedBox(height: 10),
 
                 // 🔹 Scrollable list (like your monthly screen)
@@ -112,11 +110,18 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                       final monthIndex = index + 1;
                       final month = months[index];
                       final total = monthlyTotals[monthIndex] ?? 0.0;
-                      final priceText = total == 0 ? "—" : formatNumber(total, convertFromLength: 10, showTrailingZeros: true);
+                      final priceText = total == 0
+                          ? "—"
+                          : formatNumber(
+                              total,
+                              convertFromLength: 10,
+                              showTrailingZeros: true,
+                            );
 
                       final currentMonthIndex = DateTime.now().month;
                       final currentYear = DateTime.now().year;
-                      final isOngoing = monthIndex == currentMonthIndex &&
+                      final isOngoing =
+                          monthIndex == currentMonthIndex &&
                           int.parse(year) == currentYear;
 
                       String status;
@@ -147,13 +152,22 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                             vertical: 10,
                           ),
                           decoration: BoxDecoration(
-                            color: CustomColors.getThemeColor(context, AppColorData.secondary).withValues(alpha: 0.08),
+                            color: CustomColors.getThemeColor(
+                              context,
+                              AppColorData.secondary,
+                            ).withValues(alpha: 0.08),
                             borderRadius: BorderRadius.circular(16),
                             border: Border(
                               left: BorderSide(
                                 color: isOngoing
-                                    ? CustomColors.getThemeColor(context, AppColorData.incomeColor)
-                                    : CustomColors.getThemeColor(context, AppColorData.disabled1).withValues(alpha: 0.8),
+                                    ? CustomColors.getThemeColor(
+                                        context,
+                                        AppColorData.incomeColor,
+                                      )
+                                    : CustomColors.getThemeColor(
+                                        context,
+                                        AppColorData.disabled1,
+                                      ).withValues(alpha: 0.8),
                                 width: 4,
                               ),
                             ),
@@ -167,7 +181,10 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                                   Text(
                                     month,
                                     style: TextStyle(
-                                      color: CustomColors.getThemeColor(context, AppColorData.secondary),
+                                      color: CustomColors.getThemeColor(
+                                        context,
+                                        AppColorData.secondary,
+                                      ),
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -176,10 +193,19 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                                     status,
                                     style: TextStyle(
                                       color: status == "Pending"
-                                          ? CustomColors.getThemeColor(context, AppColorData.pendingColor)
+                                          ? CustomColors.getThemeColor(
+                                              context,
+                                              AppColorData.pendingColor,
+                                            )
                                           : status == "Ongoing"
-                                              ? CustomColors.getThemeColor(context, AppColorData.incomeColor)
-                                              : CustomColors.getThemeColor(context, AppColorData.secondary1),
+                                          ? CustomColors.getThemeColor(
+                                              context,
+                                              AppColorData.incomeColor,
+                                            )
+                                          : CustomColors.getThemeColor(
+                                              context,
+                                              AppColorData.secondary1,
+                                            ),
                                       fontSize: 12,
                                     ),
                                   ),
@@ -189,10 +215,19 @@ class _YearExpensesPageState extends State<YearExpensesPage> {
                                 priceText,
                                 style: TextStyle(
                                   color: total == 0
-                                      ? CustomColors.getThemeColor(context, AppColorData.secondary1)
+                                      ? CustomColors.getThemeColor(
+                                          context,
+                                          AppColorData.secondary1,
+                                        )
                                       : total < 0
-                                          ? CustomColors.getThemeColor(context, AppColorData.expenseColor)
-                                          : CustomColors.getThemeColor(context, AppColorData.incomeColor),
+                                      ? CustomColors.getThemeColor(
+                                          context,
+                                          AppColorData.expenseColor,
+                                        )
+                                      : CustomColors.getThemeColor(
+                                          context,
+                                          AppColorData.incomeColor,
+                                        ),
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
