@@ -14,20 +14,20 @@ class LogService {
     if (!_logFile!.existsSync()) {
       _logFile!.createSync(recursive: true);
     }
-    debugPrint('✅ Log file initialized at: ${_logFile!.path}');
+    LogService.log("Sucess", 'Log file initialized at: ${_logFile!.path}');
   }
 
   /// Write log entry
-  static void log(String message) {
+  static void log(String tag, String message) {
     if (_logFile == null) return;
     try {
       final timestamp = DateTime.now().toIso8601String();
-      final logLine = "[$timestamp] $message\n";
+      final logLine = "[$timestamp] [$tag]: $message\n\n";
       _logFile!.writeAsStringSync(logLine, mode: FileMode.append, flush: true);
       _trimFileIfNeeded();
       debugPrint(logLine);
     } catch (e) {
-      debugPrint('❌ Error writing log: $e');
+      LogService.log("Error", 'Error writing log: $e');
     }
   }
 
@@ -50,7 +50,7 @@ class LogService {
       final newLines = lines.sublist(startIndex);
       _logFile!.writeAsStringSync('${newLines.join('\n')}\n', flush: true);
     } catch (e) {
-      debugPrint('❌ Error trimming log file: $e');
+      LogService.log("Error", 'Error trimming log file: $e');
     }
   }
 
@@ -70,10 +70,10 @@ class LogService {
 
       final file = File('$dirPath/app_logs.log');
       await file.writeAsBytes(await _logFile!.readAsBytes(), flush: true);
-      LogService.log('[Sucess]: Log saved to: ${file.path}');
+      LogService.log("Sucess", 'Log saved to: ${file.path}');
       return file.path;
     } catch (e) {
-      debugPrint('❌ Error saving log: $e');
+      LogService.log("Error", 'Error saving log: $e');
       return null;
     }
   }

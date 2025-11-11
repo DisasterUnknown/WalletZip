@@ -26,10 +26,10 @@ class DBSyncService {
       final file = File(join(dirPath, 'expenso_backup.silverFoxDb'));
       await file.writeAsBytes(encrypted, flush: true);
 
-      LogService.log('[Sucess]: Database exported to: ${file.path}');
+      LogService.log("Sucess", 'Database exported to: ${file.path}');
       return file.path;
     } catch (e, st) {
-      LogService.log('[Error]: Error exporting database: $e\n$st');
+      LogService.log("Error", 'Error exporting database: $e\n$st');
       return null;
     }
   }
@@ -60,10 +60,10 @@ class DBSyncService {
       final dbFile = File(dbPath);
       await dbFile.writeAsBytes(decryptedBytes, flush: true);
 
-      LogService.log('[Sucess]: Database imported successfully.');
+      LogService.log("Sucess", 'Database imported successfully.');
       return true;
     } catch (e, st) {
-      LogService.log('[Error]: Error importing database: $e\n$st');
+      LogService.log("Error", 'Error importing database: $e\n$st');
       return false;
     }
   }
@@ -88,9 +88,9 @@ class DBSyncService {
         });
       }
 
-      LogService.log('[Sucess]: Database cleared successfully.');
+      LogService.log("Sucess", 'Database cleared successfully.');
     } catch (e, st) {
-      LogService.log('[Error]: Error clearing database: $e\n$st');
+      LogService.log("Error", 'Error clearing database: $e\n$st');
     }
   }
 }

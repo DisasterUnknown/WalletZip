@@ -73,7 +73,7 @@ class StartupService {
 
       // move to next month
       startMonth = DateTime(startMonth.year, startMonth.month + 1, 1);
-      LogService.log("Added budget income for ${startMonth.month - 1}/${startMonth.year}");
+      LogService.log("StartupService", "Added budget income for ${startMonth.month - 1}/${startMonth.year}");
     }
   }
 }

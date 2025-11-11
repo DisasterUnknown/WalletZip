@@ -38,7 +38,7 @@ class _AppColorThemePageState extends State<AppColorThemePage> {
   Future<void> _loadSelectedTheme() async {
     final savedPref = await LocalSharedPreferences.getString(SharedPrefValues.prefTheme) ?? "default";
     final index = themes.indexWhere((theme) => theme['prefValue'] == savedPref);
-    LogService.log("Loaded selected theme: $savedPref");
+    LogService.log("Info", "Loaded selected theme: $savedPref");
 
     if (index != -1) {
       setState(() {

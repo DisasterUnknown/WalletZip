@@ -10,7 +10,7 @@ void main() async {
   await CustomColors.init();
 
   await LogService.init();
-  LogService.log("App started");
+  LogService.log("Info", "App started");
 
   runApp(const MyApp());
 }

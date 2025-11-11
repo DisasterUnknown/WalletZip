@@ -27,7 +27,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   // Load saved selected categories
   Future<void> _loadSelectedCategories() async {
     final saved = await LocalSharedPreferences.getString('selected_categories');
-    LogService.log("Loaded selected categories: $saved");
+    LogService.log("Info", "Loaded selected categories: $saved");
     if (saved != null && saved.isNotEmpty) {
       setState(() {
         selectedCategoryIds = saved
@@ -42,7 +42,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   // Save selected categories
   Future<void> _saveSelectedCategories() async {
     final ids = selectedCategoryIds.join(',');
-    LogService.log("Saving selected categories: $ids");
+    LogService.log("Info", "Saving selected categories: $ids");
     await LocalSharedPreferences.setString('selected_categories', ids);
   }
 

@@ -90,7 +90,7 @@ class _AddBudgetCardState extends State<AddBudgetCard> {
     );
 
     await DBHelper().insertBudget(budget);
-    LogService.log("Saved budget: ${budget.toString()}");
+    LogService.log("Info", "Saved budget: ${budget.toString()}");
 
     // This only call the add the budget to the db in the startupService nothing else
     StartupService.checkAndAddBudgetIncome();

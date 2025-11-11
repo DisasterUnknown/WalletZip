@@ -14,7 +14,7 @@ class CustomColors {
   static Future<void> init() async {
     await _loadThemes();
     await _loadPreference();
-    LogService.log("CustomColors initialized with theme: $_prefTheme");
+    LogService.log("Info", "CustomColors initialized with theme: $_prefTheme");
   }
 
   /// Load all theme JSONs only once
@@ -74,10 +74,9 @@ class CustomColors {
       _themes['mintGreen'] = _toMapList(mintGreenJson);
       _themes['sunnyYellow'] = _toMapList(sunnyYellowJson);
 
-      debugPrint('✅ Loaded ${_themes.keys.length} theme sets');
-      LogService.log("Loaded ${_themes.keys.length} theme sets");
+      LogService.log("Sucess", 'Loaded ${_themes.keys.length} theme sets');
     } catch (e) {
-      debugPrint('❌ Error loading themes: $e');
+      LogService.log("Error", 'Error loading themes: $e');
     }
   }
 
@@ -102,7 +101,7 @@ class CustomColors {
       themeKey,
     );
     themeNotifier.value = _prefTheme;
-    LogService.log("Theme changed to: $_prefTheme");
+    LogService.log("Info", "Theme changed to: $_prefTheme");
   }
 
   /// Get theme color using BuildContext (still works!)
@@ -111,8 +110,7 @@ class CustomColors {
     final theme = _themes[_prefTheme] ?? _themes['default'];
 
     if (theme == null) {
-      debugPrint('⚠️ Theme not loaded, using fallback.');
-      LogService.log("Theme not loaded, using fallback.");
+      LogService.log("Warning", 'Theme not loaded, using fallback.');
       return const Color(0xFFFFA500); // fallback orange
     }
 
@@ -123,15 +121,13 @@ class CustomColors {
       );
 
       if (colorMap['value'] == null) {
-        debugPrint('⚠️ Color "$colorName" not found in $_prefTheme theme.');
-        LogService.log("Color '$colorName' not found in $_prefTheme theme.");
+        LogService.log("Warning", "Color '$colorName' not found in $_prefTheme theme.");
         return const Color(0xFFFF0000); // fallback red
       }
 
       return Color(int.parse(colorMap['value']));
     } catch (e) {
-      debugPrint('❌ Error loading "$colorName": $e');
-      LogService.log("Error loading '$colorName': $e");
+      LogService.log("Error", 'Error loading "$colorName": $e');
       return const Color(0xFFFF0000);
     }
   }
