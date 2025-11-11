@@ -203,7 +203,7 @@ class _AddNewTransactionRecordPageState
         );
         await db.updateExpense(updatedExpense);
         LogService.log(
-          "Info",
+          "Success",
           "Updated linked transaction: ${updatedExpense.toString()}",
         );
       }
@@ -230,7 +230,7 @@ class _AddNewTransactionRecordPageState
 
       await db.insertExpense(newExpense);
       LogService.log(
-        "Info",
+        "Success",
         "Inserted new transaction: ${newExpense.toString()}",
       );
     }
