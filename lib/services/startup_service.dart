@@ -1,8 +1,17 @@
+import 'package:expenso/core/constants/app_constants.dart';
+import 'package:expenso/core/shared_prefs/shared_pref_service.dart';
 import 'package:expenso/data/db/db_helper.dart';
 import 'package:expenso/data/models/transaction.dart';
 import 'package:expenso/services/log_service.dart';
 
 class StartupService {
+  static Future<bool> shouldOpenCurrentMonth() async {
+    final saved = await LocalSharedPreferences.getString(
+      SharedPrefValues.openCurrentMonth,
+    );
+    return saved == 'true';
+  }
+
   static Future<void> checkAndAddBudgetIncome() async {
     final db = DBHelper();
 
@@ -73,7 +82,10 @@ class StartupService {
 
       // move to next month
       startMonth = DateTime(startMonth.year, startMonth.month + 1, 1);
-      LogService.log("StartupService", "Added budget income for ${startMonth.month - 1}/${startMonth.year}");
+      LogService.log(
+        "StartupService",
+        "Added budget income for ${startMonth.month - 1}/${startMonth.year}",
+      );
     }
   }
 }

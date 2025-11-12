@@ -67,66 +67,143 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: GridView.builder(
-          itemCount: categories.length,
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 80,
-            childAspectRatio: 0.9,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-          ),
-          itemBuilder: (context, index) {
-            final category = categories[index];
-            final isSelected = selectedCategoryIds.contains(category.id);
-
-            return GestureDetector(
-              onTap: () => _toggleCategory(category),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: CustomColors.getThemeColor(context, AppColorData.primary),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isSelected ? CustomColors.getThemeColor(context, AppColorData.incomeColor) : CustomColors.getThemeColor(context, AppColorData.secondary2),
-                    width: 2,
-                  ),
-                  boxShadow: isSelected
-                      ? [
-                          BoxShadow(
-                            color: CustomColors.getThemeColor(context, AppColorData.incomeColor).withValues(alpha: 0.6),
-                            blurRadius: 12,
-                            spreadRadius: 1,
-                          ),
-                          BoxShadow(
-                            color: CustomColors.getThemeColor(context, AppColorData.incomeColor).withValues(alpha: 0.3),
-                            blurRadius: 24,
-                            spreadRadius: 4,
-                          ),
-                        ]
-                      : [],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      category.icon,
-                      color: isSelected ? CustomColors.getThemeColor(context, AppColorData.incomeColor) : CustomColors.getThemeColor(context, AppColorData.secondary3),
-                      size: 28,
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      category.name,
-                      style: TextStyle(
-                        color: isSelected ? CustomColors.getThemeColor(context, AppColorData.incomeColor) : CustomColors.getThemeColor(context, AppColorData.secondary3),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+        child: ListView(
+          children: [
+            SizedBox(height: 4),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: CustomColors.getThemeColor(
+                  context,
+                  AppColorData.secondary,
+                ).withAlpha(50),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: CustomColors.getThemeColor(
+                    context,
+                    AppColorData.secondary1,
+                  ).withAlpha(120),
+                  width: 1.2,
                 ),
               ),
-            );
-          },
+              child: Text(
+                "Select the categories you want to use regularly. "
+                "Only the categories you select here will appear when adding a new transaction. "
+                "If you don't select any, all categories will be available by default.",
+                style: TextStyle(
+                  color: CustomColors.getThemeColor(
+                    context,
+                    AppColorData.secondary,
+                  ),
+                  fontSize: 13,
+                ),
+                textAlign: TextAlign.justify,
+              ),
+            ),
+
+            SizedBox(height: 4),
+
+            // Grid of categories
+            GridView.builder(
+              physics:
+                  const NeverScrollableScrollPhysics(), // Disable GridView scroll
+              shrinkWrap: true, // Let GridView take only needed space
+              itemCount: categories.length,
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 80,
+                childAspectRatio: 0.9,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+              ),
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                final isSelected = selectedCategoryIds.contains(category.id);
+
+                return GestureDetector(
+                  onTap: () => _toggleCategory(category),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: CustomColors.getThemeColor(
+                        context,
+                        AppColorData.primary,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: isSelected
+                            ? CustomColors.getThemeColor(
+                                context,
+                                AppColorData.incomeColor,
+                              )
+                            : CustomColors.getThemeColor(
+                                context,
+                                AppColorData.secondary2,
+                              ),
+                        width: 2,
+                      ),
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: CustomColors.getThemeColor(
+                                  context,
+                                  AppColorData.incomeColor,
+                                ).withValues(alpha: 0.6),
+                                blurRadius: 12,
+                                spreadRadius: 1,
+                              ),
+                              BoxShadow(
+                                color: CustomColors.getThemeColor(
+                                  context,
+                                  AppColorData.incomeColor,
+                                ).withValues(alpha: 0.3),
+                                blurRadius: 24,
+                                spreadRadius: 4,
+                              ),
+                            ]
+                          : [],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          category.icon,
+                          color: isSelected
+                              ? CustomColors.getThemeColor(
+                                  context,
+                                  AppColorData.incomeColor,
+                                )
+                              : CustomColors.getThemeColor(
+                                  context,
+                                  AppColorData.secondary3,
+                                ),
+                          size: 28,
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          category.name,
+                          style: TextStyle(
+                            color: isSelected
+                                ? CustomColors.getThemeColor(
+                                    context,
+                                    AppColorData.incomeColor,
+                                  )
+                                : CustomColors.getThemeColor(
+                                    context,
+                                    AppColorData.secondary3,
+                                  ),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: const BottomNavBar(tabIndex: 2, showAdd: false),

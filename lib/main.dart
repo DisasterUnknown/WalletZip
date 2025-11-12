@@ -23,12 +23,42 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
   @override
   void initState() {
     super.initState();
     // Listen to theme changes
     CustomColors.themeNotifier.addListener(() {
       setState(() {});
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final openCurrentMonth = await StartupService.shouldOpenCurrentMonth();
+      if (openCurrentMonth) {
+        final now = DateTime.now();
+        final year = now.year.toString();
+        final monthNumber = now.month;
+        final month = months[monthNumber - 1];
+
+        RoutingService().navigateTo(
+          RoutingService.monthlyExpenses,
+          arguments: [year, month],
+        );
+      }
     });
   }
 

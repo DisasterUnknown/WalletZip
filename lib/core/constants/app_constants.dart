@@ -1,5 +1,6 @@
 class SharedPrefValues {
   static const String prefTheme = 'default';
+  static const String openCurrentMonth = 'open_current_month';
 }
 
 class AppColorData {

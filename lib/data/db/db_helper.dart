@@ -264,9 +264,7 @@ class DBHelper {
             return md;
           },
         );
-        if (monthData.budget == null) {
-          monthData.budget = budgetsMap[y]![m];
-        }
+        monthData.budget ??= budgetsMap[y]![m];
       }
     }
 

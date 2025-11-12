@@ -3,12 +3,16 @@
 import 'dart:ui';
 
 import 'package:expenso/core/constants/app_constants.dart';
+import 'package:expenso/core/shared_prefs/shared_pref_service.dart';
 import 'package:expenso/data/backup/backup_service.dart';
 import 'package:expenso/services/log_service.dart';
 import 'package:expenso/services/routing_service.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/main/bottom_nav_bar.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
+import 'package:expenso/ui/widgets/sub/settings_widgets/settings_snack_bar.dart';
+import 'package:expenso/ui/widgets/sub/settings_widgets/settings_tile.dart';
+import 'package:expenso/ui/widgets/sub/settings_widgets/settings_toggle_tile.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -19,107 +23,22 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  void showAppSnackBar(
-    BuildContext context, {
-    required String message,
-    Duration duration = const Duration(seconds: 3),
-    Color? backgroundColor,
-    Color? textColor,
-    bool floating = true,
-  }) {
-    final messenger = ScaffoldMessenger.of(context);
+  bool openCurrentMonthOnStart = true;
 
-    messenger.showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: TextStyle(
-            color:
-                textColor ??
-                CustomColors.getThemeColor(context, AppColorData.primary),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor:
-            backgroundColor ??
-            CustomColors.getThemeColor(context, AppColorData.secondary),
-        duration: duration,
-        behavior: floating ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
   }
 
-  Widget _buildSettingsTile({
-    required BuildContext context,
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: Container(
-            height: 60,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  CustomColors.getThemeColor(
-                    context,
-                    AppColorData.secondary,
-                  ).withValues(alpha: 0.2),
-                  CustomColors.getThemeColor(
-                    context,
-                    AppColorData.secondary,
-                  ).withValues(alpha: 0.1),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: CustomColors.getThemeColor(
-                  context,
-                  AppColorData.secondary,
-                ).withValues(alpha: 0.2),
-                width: 1.5,
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(width: 10),
-                Icon(
-                  icon,
-                  color: CustomColors.getThemeColor(
-                    context,
-                    AppColorData.secondary,
-                  ),
-                  size: 28,
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      color: CustomColors.getThemeColor(
-                        context,
-                        AppColorData.secondary,
-                      ),
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+  Future<void> _loadPreferences() async {
+    final saved = await LocalSharedPreferences.getString(
+      SharedPrefValues.openCurrentMonth,
     );
+
+    setState(() {
+      openCurrentMonthOnStart = saved == 'true';
+    });
   }
 
   @override
@@ -136,27 +55,60 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(height: 20),
 
             // Appearance
-            _buildSettingsTile(
+            buildSettingsTile(
               context: context,
               icon: Icons.palette,
               title: "Appearances",
+              isNavigate: true,
               onTap: () {
                 RoutingService().navigateTo(RoutingService.colorTheme);
               },
             ),
 
-            // Appearance
-            _buildSettingsTile(
+            // Open app on current month
+            buildToggleTile(
+              context: context,
+              icon: Icons.calendar_today,
+              title: "Open app on current month",
+              value: openCurrentMonthOnStart,
+              onChanged: (val) async {
+                setState(() => openCurrentMonthOnStart = val);
+                await LocalSharedPreferences.setString(
+                  SharedPrefValues.openCurrentMonth,
+                  val.toString(),
+                );
+                showAppSnackBar(
+                  context,
+                  message: val
+                      ? "App will now open on the current month"
+                      : "App will open where you last left off",
+                  backgroundColor: CustomColors.getThemeColor(
+                    context,
+                    AppColorData.incomeColor,
+                  ),
+                  textColor: CustomColors.getThemeColor(
+                    context,
+                    AppColorData.primary,
+                  ),
+                );
+              },
+            ),
+
+            const Divider(height: 40, thickness: 1),
+
+            // View logs
+            buildSettingsTile(
               context: context,
               icon: Icons.developer_board,
               title: "View Logs",
+              isNavigate: true,
               onTap: () {
                 RoutingService().navigateTo(RoutingService.viewLogs);
               },
             ),
 
             // Logs download
-            _buildSettingsTile(
+            buildSettingsTile(
               context: context,
               icon: Icons.download,
               title: "Download Logs",
@@ -214,7 +166,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const Divider(height: 40, thickness: 1),
 
             // 🧭 DB: Export
-            _buildSettingsTile(
+            buildSettingsTile(
               context: context,
               icon: Icons.cloud_download,
               title: "Download Backup (.silverFoxDb)",
@@ -252,7 +204,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
 
             // 🔁 DB: Import
-            _buildSettingsTile(
+            buildSettingsTile(
               context: context,
               icon: Icons.cloud_upload,
               title: "Import Backup (.silverFoxDb)",
@@ -290,7 +242,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
 
             // 🧹 DB: Clear
-            _buildSettingsTile(
+            buildSettingsTile(
               context: context,
               icon: Icons.delete_forever,
               title: "Clear All Data",
