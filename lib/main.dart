@@ -58,6 +58,8 @@ class _MyAppState extends State<MyApp> {
           RoutingService.monthlyExpenses,
           arguments: [year, month],
         );
+
+        LogService.log("Info", "Opening current month: $month");
       }
     });
   }

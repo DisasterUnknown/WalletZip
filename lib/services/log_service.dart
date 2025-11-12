@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 class LogService {
-  static const int maxFileSizeBytes = 100 * 1024 * 1024; // 100MB
+  static const int maxFileSizeBytes = 50 * 1024 * 1024; // 50MB
   static File? _logFile;
 
   /// Initialize log file (call in main)
