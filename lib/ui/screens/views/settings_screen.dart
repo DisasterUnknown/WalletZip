@@ -23,7 +23,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool openCurrentMonthOnStart = true;
+  bool openCurrentMonthOnStart = false;
 
   @override
   void initState() {
