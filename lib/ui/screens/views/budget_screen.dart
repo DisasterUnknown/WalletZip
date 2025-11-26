@@ -2,6 +2,7 @@ import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/sub/budget_widgets/add_budget_card.dart';
 import 'package:expenso/ui/widgets/sub/budget_widgets/budget_card.dart';
+import 'package:expenso/ui/widgets/sub/budget_widgets/budget_usage_projection.dart';
 import 'package:flutter/material.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:expenso/ui/widgets/main/bottom_nav_bar.dart';
@@ -23,6 +24,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
   double monthlySpent = 0.0;
   double weeklySpent = 0.0;
   double todaySpent = 0.0;
+
+  double pastMonthlySpent = 0.0;
 
   bool isLoading = true;
 
@@ -70,10 +73,19 @@ class _BudgetScreenState extends State<BudgetScreen> {
     final startOfWeek = startOfToday.subtract(const Duration(days: 6));
     final endOfWeek = endOfToday;
 
+    final pastMonthDate = DateTime(now.year, now.month - 1, 1);
+    final startOfPastMonth = DateTime(
+      pastMonthDate.year,
+      pastMonthDate.month,
+      1,
+    );
+    final endOfPastMonth = DateTime(now.year, now.month, 1);
+
     double sumYear = 0;
     double sumMonth = 0;
     double sumWeek = 0;
     double sumToday = 0;
+    double sumPastMonth = 0;
 
     for (var e in realExpenses) {
       final dt = e.dateTime;
@@ -89,6 +101,9 @@ class _BudgetScreenState extends State<BudgetScreen> {
       if (!dt.isBefore(startOfToday) && dt.isBefore(endOfToday)) {
         sumToday += e.price;
       }
+      if (!dt.isBefore(startOfPastMonth) && dt.isBefore(endOfPastMonth)) {
+        sumPastMonth += e.price;
+      }
     }
 
     if (!mounted) return;
@@ -98,6 +113,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
       monthlySpent = sumMonth;
       weeklySpent = sumWeek;
       todaySpent = sumToday;
+      pastMonthlySpent = sumPastMonth;
       isLoading = false;
     });
   }
@@ -184,6 +200,9 @@ class _BudgetScreenState extends State<BudgetScreen> {
         yearlyBudget = dailyBudget * (isLeapYear ? 366 : 365);
     }
 
+    final daysInCurrentMonth = DateTime(now.year, now.month + 1, 0).day;
+    final remainingDays = daysInCurrentMonth - now.day;
+
     return Scaffold(
       appBar: const CustomAppBar(
         title: "Budget",
@@ -194,6 +213,15 @@ class _BudgetScreenState extends State<BudgetScreen> {
         padding: const EdgeInsets.symmetric(vertical: 16),
         child: Column(
           children: [
+            BudgetUsageProjection(
+              monthlyBudget: monthlyBudget,
+              monthlySpent: monthlySpent,
+              pastMonthlySpent: pastMonthlySpent,
+              remainingDays: remainingDays,
+            ),
+
+            const SizedBox(height: 20),
+
             // pass spent values that match the timeframe
             BudgetCardGlass(
               title: "Yearly Budget",
