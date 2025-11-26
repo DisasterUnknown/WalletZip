@@ -1,4 +1,4 @@
-package com.example.expenso
+package com.walletzip.app
 
 import io.flutter.embedding.android.FlutterActivity
 

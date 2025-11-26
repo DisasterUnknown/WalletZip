@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:expenso/core/constants/default_categories.dart';
 import 'package:expenso/data/backup/encryption_service.dart';
 import 'package:expenso/data/db/db_helper.dart';
+import 'package:expenso/data/permission/external_storage_permission.dart';
 import 'package:expenso/services/log_service.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:path/path.dart';
@@ -11,6 +12,7 @@ class DBSyncService {
 
   static Future<String?> exportDatabase() async {
     try {
+      await requestManageExternalStoragePermission();
       final db = await _dbHelper.database;
       final dbPath = db.path;
 

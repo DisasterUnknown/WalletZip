@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.expenso"
+    namespace = "com.walletzip.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
