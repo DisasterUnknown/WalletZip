@@ -6,7 +6,8 @@ import 'package:expenso/services/log_service.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
 import 'package:expenso/ui/widgets/sub/floating_action_btn.dart';
 import 'package:expenso/ui/widgets/sub/status_card.dart';
-import 'package:expenso/ui/widgets/sub/transaction_record_card.dart';
+import 'package:expenso/ui/widgets/sub/transaction_widgets/show_transaction_details_popup.dart';
+import 'package:expenso/ui/widgets/sub/transaction_widgets/transaction_record_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -117,6 +118,9 @@ class _MonthlyExpensesPageState extends State<MonthlyExpensesPage> {
                         context,
                         showDelete: true,
                         onDeletePress: (id) => _deleteExpense(id),
+                        onTap: () {
+                          showTransactionDetailsPopup(context, expense);
+                        },
                       );
                     },
                   ),

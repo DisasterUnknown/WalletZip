@@ -47,7 +47,7 @@ Future<bool> showSuperTransactionConfirmDialog({
                 const SizedBox(height: 16),
                 Flexible(
                   child: Text(
-                    'This super-setting transaction will result in a $type of '
+                    'This transaction compleation will result in a $type of '
                     '${amount.toStringAsFixed(2)}. Do you want to proceed?',
                     style: TextStyle(color: CustomColors.getThemeColor(context, AppColorData.secondary3), fontSize: 16),
                     textAlign: TextAlign.center,
