@@ -163,6 +163,148 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
             ),
 
+            // Remove logs
+            buildSettingsTile(
+              context: context,
+              icon: Icons.developer_board,
+              title: "Delete Logs",
+              isNavigate: false,
+              onTap: () async {
+                final confirm = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Dialog(
+                      backgroundColor: CustomColors.getThemeColor(
+                        context,
+                        AppColorData.transparent,
+                      ).withAlpha(220),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: CustomColors.getThemeColor(
+                              context,
+                              AppColorData.primary,
+                            ).withAlpha(180),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: CustomColors.getThemeColor(
+                                context,
+                                AppColorData.expenseColor,
+                              ).withAlpha(180),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "Confirm Log Clear",
+                                style: TextStyle(
+                                  color: CustomColors.getThemeColor(
+                                    context,
+                                    AppColorData.expenseColor,
+                                  ),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                "Are you sure you want to permanently delete all app Logs? This action cannot be undone.",
+                                style: TextStyle(
+                                  color: CustomColors.getThemeColor(
+                                    context,
+                                    AppColorData.secondary,
+                                  ),
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 24),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, false),
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(
+                                        color: CustomColors.getThemeColor(
+                                          context,
+                                          AppColorData.expenseColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, true),
+
+                                    style: TextButton.styleFrom(
+                                      backgroundColor:
+                                          CustomColors.getThemeColor(
+                                            context,
+                                            AppColorData.transparent,
+                                          ),
+                                      side: BorderSide(
+                                        color: CustomColors.getThemeColor(
+                                          context,
+                                          AppColorData.expenseColor,
+                                        ), // border color
+                                        width: 1.5,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 10,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Clear",
+                                      style: TextStyle(
+                                        color: CustomColors.getThemeColor(
+                                          context,
+                                          AppColorData.expenseColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+
+                if (confirm != true) return;
+
+                await LogService.clearLogs();
+                if (!mounted) return;
+                showAppSnackBar(
+                  context,
+                  message: 'All Logs cleared successfully.',
+                  backgroundColor: CustomColors.getThemeColor(
+                    context,
+                    AppColorData.expenseColor,
+                  ),
+                  textColor: CustomColors.getThemeColor(
+                    context,
+                    AppColorData.secondary,
+                  ),
+                );
+              },
+            ),
+
             const Divider(height: 40, thickness: 1),
 
             // 🧭 DB: Export

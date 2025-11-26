@@ -19,12 +19,12 @@ class _AppColorThemePageState extends State<AppColorThemePage> {
     {"name": "Ocean Blue", "color": Color.fromARGB(255, 3, 12, 67), "prefValue": "oceanBlue"},
     {"name": "Deep Purple", "color": Color.fromARGB(255, 73, 18, 98), "prefValue": "deepPurple"},
     {"name": "Forest Green", "color": Color.fromARGB(255, 19, 68, 23), "prefValue": "forestGreen"},
-    {"name": "Sky Light", "color": Color(0xFFB3E5FC), "prefValue": "skyLight"},
-    {"name": "Aqua Light", "color": Color(0xFFE0F7FA), "prefValue": "aquaLight"},
-    {"name": "Blush Pink", "color": Color(0xFFF8BBD0), "prefValue": "blushPink"},
-    {"name": "Classic Light", "color": Color(0xFFFFFFFF), "prefValue": "classicLight"},
-    {"name": "Mint Green", "color": Color(0xFFB2DFDB), "prefValue": "mintGreen"},
-    {"name": "Sunny Yellow", "color": Color(0xFFFFF9C4), "prefValue": "sunnyYellow"},
+    // {"name": "Sky Light", "color": Color(0xFFB3E5FC), "prefValue": "skyLight"},
+    // {"name": "Aqua Light", "color": Color(0xFFE0F7FA), "prefValue": "aquaLight"},
+    // {"name": "Blush Pink", "color": Color(0xFFF8BBD0), "prefValue": "blushPink"},
+    // {"name": "Classic Light", "color": Color(0xFFFFFFFF), "prefValue": "classicLight"},
+    // {"name": "Mint Green", "color": Color(0xFFB2DFDB), "prefValue": "mintGreen"},
+    // {"name": "Sunny Yellow", "color": Color(0xFFFFF9C4), "prefValue": "sunnyYellow"},
   ];
 
   int selectedIndex = -1;
@@ -79,7 +79,7 @@ class _AppColorThemePageState extends State<AppColorThemePage> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                         decoration: BoxDecoration(
-                          color: theme['color'].withValues(alpha: 0.3),
+                          color: theme['color'].withValues(alpha: 0.8),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
                             color: isSelected
