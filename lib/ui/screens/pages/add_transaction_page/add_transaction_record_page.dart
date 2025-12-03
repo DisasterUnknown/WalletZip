@@ -89,13 +89,7 @@ class _AddNewTransactionRecordPageState
   Future<void> _loadMatchedTransactions() async {
     final all = await DBHelper().getAllExpenses();
     setState(() {
-      matchedTransactions = all
-          .where(
-            (e) =>
-                e.isTemporary &&
-                e.type.toLowerCase() != transactionType.toLowerCase(),
-          )
-          .toList();
+      matchedTransactions = all.where((e) => e.isTemporary).toList();
       selectedMatchedTransaction = null;
     });
   }
@@ -155,7 +149,7 @@ class _AddNewTransactionRecordPageState
       String netType = temp.type;
 
       if (transactionType.toLowerCase() == temp.type.toLowerCase()) {
-        netPrice = temp.price + amount;
+        netPrice = amount;
         netType = temp.type;
       } else {
         final difference =
