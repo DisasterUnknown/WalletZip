@@ -85,7 +85,7 @@ class DBSyncService {
           'id': category.id,
           'name': category.name,
           'iconCodePoint': category.icon.codePoint,
-          'fontFamily': category.icon.fontFamily,
+          'fontFamily': category.icon.fontFamily ?? 'MaterialIcons',
           'state': category.state,
         });
       }

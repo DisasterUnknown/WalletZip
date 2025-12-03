@@ -179,7 +179,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
         monthlyBudget = currentBudget!.amount;
         dailyBudget = monthlyBudget / daysInMonth;
         weeklyBudget = dailyBudget * 7;
-        yearlyBudget = dailyBudget * (isLeapYear ? 366 : 365);
+        yearlyBudget = monthlyBudget * 12;
         break;
       case "yearly":
         yearlyBudget = currentBudget!.amount;
