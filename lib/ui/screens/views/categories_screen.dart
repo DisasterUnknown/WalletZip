@@ -17,6 +17,7 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   Set<int> selectedCategoryIds = {};
+  String searchQuery = "";
 
   @override
   void initState() {
@@ -59,17 +60,25 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // FILTER LIST
+    final filteredCategories = categories
+        .where((c) => c.name.toLowerCase().contains(searchQuery.toLowerCase()))
+        .toList();
+
     return Scaffold(
       appBar: const CustomAppBar(
         title: "Categories",
         showBackButton: false,
         showHomeButton: true,
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: ListView(
           children: [
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
+
+            // INFO BOX
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(12),
@@ -103,14 +112,62 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               ),
             ),
 
-            SizedBox(height: 4),
+            const SizedBox(height: 6),
 
-            // Grid of categories
+            // 🔍 SEARCH BAR
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: CustomColors.getThemeColor(
+                  context,
+                  AppColorData.primary,
+                ),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: CustomColors.getThemeColor(
+                    context,
+                    AppColorData.secondary2,
+                  ),
+                  width: 1.2,
+                ),
+              ),
+              child: TextField(
+                onChanged: (value) {
+                  setState(() => searchQuery = value);
+                },
+                style: TextStyle(
+                  color: CustomColors.getThemeColor(
+                    context,
+                    AppColorData.secondary,
+                  ),
+                ),
+                decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.search,
+                    color: CustomColors.getThemeColor(
+                      context,
+                      AppColorData.secondary,
+                    ),
+                  ),
+                  hintText: "Search categories...",
+                  hintStyle: TextStyle(
+                    color: CustomColors.getThemeColor(
+                      context,
+                      AppColorData.secondary3,
+                    ),
+                  ),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // GRID
             GridView.builder(
-              physics:
-                  const NeverScrollableScrollPhysics(), // Disable GridView scroll
-              shrinkWrap: true, // Let GridView take only needed space
-              itemCount: categories.length,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: filteredCategories.length,
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 80,
                 childAspectRatio: 0.9,
@@ -118,7 +175,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 mainAxisSpacing: 12,
               ),
               itemBuilder: (context, index) {
-                final category = categories[index];
+                final category = filteredCategories[index];
                 final isSelected = selectedCategoryIds.contains(category.id);
 
                 return GestureDetector(
@@ -206,6 +263,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           ],
         ),
       ),
+
       bottomNavigationBar: const BottomNavBar(tabIndex: 2, showAdd: false),
     );
   }
