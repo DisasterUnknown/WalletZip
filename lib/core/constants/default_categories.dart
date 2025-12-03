@@ -14,7 +14,7 @@ final List<Category> categories = [
   Category(id: 16, name: 'Pizza', icon: Icons.local_pizza_outlined, state: 'inactive'),
   Category(id: 18, name: 'Dessert', icon: Icons.cake_outlined, state: 'inactive'),
   Category(id: 20, name: 'Seafood', icon: Icons.set_meal_outlined, state: 'inactive'),
-  Category(id: 21, name: 'Meat', icon: Icons.set_meal_outlined, state: 'inactive'),
+  Category(id: 21, name: 'Meat', icon: Icons.egg_alt_outlined, state: 'inactive'),
 
   // Transport
   Category(id: 22, name: 'Bus', icon: Icons.directions_bus_outlined, state: 'inactive'),
