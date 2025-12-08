@@ -70,6 +70,31 @@ class DBSyncService {
     }
   }
 
+  /// Restore DB to default categories
+  static Future<void> restoreDefaultCategories() async {
+    try {
+      final db = await _dbHelper.database;
+
+      // Clear existing categories
+      await db.delete('categories');
+
+      // Insert default categories
+      for (var category in categories) {
+        await db.insert('categories', {
+          'id': category.id,
+          'name': category.name,
+          'iconCodePoint': category.icon.codePoint,
+          'fontFamily': category.icon.fontFamily ?? 'MaterialIcons',
+          'state': category.state,
+        });
+      }
+
+      LogService.log("Success", 'Default categories restored successfully.');
+    } catch (e, st) {
+      LogService.log("Error", 'Error restoring default categories: $e\n$st');
+    }
+  }
+
   /// ✅ Clears all tables in the DB
   static Future<void> clearDatabase() async {
     try {

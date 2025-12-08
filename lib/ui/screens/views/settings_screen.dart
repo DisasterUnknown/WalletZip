@@ -307,41 +307,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             const Divider(height: 40, thickness: 1),
 
-            // 🧭 DB: Export
+            // Restore DB Categories
             buildSettingsTile(
               context: context,
-              icon: Icons.cloud_download,
-              title: "Download Backup (.silverFoxDb)",
+              icon: Icons.restore,
+              title: "Restore System Categories",
               onTap: () async {
-                final path = await DBSyncService.exportDatabase();
+                await DBSyncService.restoreDefaultCategories();
                 if (!mounted) return;
-                if (path != null) {
-                  showAppSnackBar(
+                showAppSnackBar(
+                  context,
+                  message: 'Default categories restored successfully.',
+                  backgroundColor: CustomColors.getThemeColor(
                     context,
-                    message: 'Database saved to: $path',
-                    backgroundColor: CustomColors.getThemeColor(
-                      context,
-                      AppColorData.incomeColor,
-                    ),
-                    textColor: CustomColors.getThemeColor(
-                      context,
-                      AppColorData.primary,
-                    ),
-                  );
-                } else {
-                  showAppSnackBar(
+                    AppColorData.incomeColor,
+                  ),
+                  textColor: CustomColors.getThemeColor(
                     context,
-                    message: 'Backup canceled or failed.',
-                    backgroundColor: CustomColors.getThemeColor(
-                      context,
-                      AppColorData.pendingColor,
-                    ),
-                    textColor: CustomColors.getThemeColor(
-                      context,
-                      AppColorData.primary,
-                    ),
-                  );
-                }
+                    AppColorData.primary,
+                  ),
+                );
               },
             ),
 
@@ -370,6 +355,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   showAppSnackBar(
                     context,
                     message: 'Restore canceled or failed.',
+                    backgroundColor: CustomColors.getThemeColor(
+                      context,
+                      AppColorData.pendingColor,
+                    ),
+                    textColor: CustomColors.getThemeColor(
+                      context,
+                      AppColorData.primary,
+                    ),
+                  );
+                }
+              },
+            ),
+
+            // 🧭 DB: Export
+            buildSettingsTile(
+              context: context,
+              icon: Icons.cloud_download,
+              title: "Download Backup (.silverFoxDb)",
+              onTap: () async {
+                final path = await DBSyncService.exportDatabase();
+                if (!mounted) return;
+                if (path != null) {
+                  showAppSnackBar(
+                    context,
+                    message: 'Database saved to: $path',
+                    backgroundColor: CustomColors.getThemeColor(
+                      context,
+                      AppColorData.incomeColor,
+                    ),
+                    textColor: CustomColors.getThemeColor(
+                      context,
+                      AppColorData.primary,
+                    ),
+                  );
+                } else {
+                  showAppSnackBar(
+                    context,
+                    message: 'Backup canceled or failed.',
                     backgroundColor: CustomColors.getThemeColor(
                       context,
                       AppColorData.pendingColor,

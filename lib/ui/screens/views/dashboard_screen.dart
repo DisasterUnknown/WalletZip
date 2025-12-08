@@ -1,6 +1,7 @@
 import 'package:expenso/core/constants/app_constants.dart';
 import 'package:expenso/data/db/db_helper.dart';
 import 'package:expenso/data/models/category.dart';
+import 'package:expenso/services/log_service.dart';
 import 'package:expenso/services/theme_service.dart';
 import 'package:expenso/ui/widgets/main/bottom_nav_bar.dart';
 import 'package:expenso/ui/widgets/main/custom_app_bar.dart';
@@ -93,12 +94,19 @@ class _DashboardScreenState extends State<DashboardScreen>
         for (var id in e.categoryIds) {
           final cat = allCategories.firstWhere(
             (c) => c.id == id,
-            orElse: () => Category(
-              id: 0,
-              name: 'Uncategorized',
-              state: 'active',
-              icon: Icons.category,
-            ),
+            orElse: () {
+              LogService.log(
+                "Warning",
+                "Category with ID $id not found for expense ID ${e.id}",
+              );
+
+              return Category(
+                id: 0,
+                name: 'Uncategorized',
+                state: 'active',
+                icon: Icons.category,
+              );
+            },
           );
           _addToTotals(
             e.type,
