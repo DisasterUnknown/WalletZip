@@ -24,8 +24,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
   double monthlySpent = 0.0;
   double weeklySpent = 0.0;
   double todaySpent = 0.0;
-
-  double pastMonthlySpent = 0.0;
+  
 
   bool isLoading = true;
 
@@ -73,19 +72,10 @@ class _BudgetScreenState extends State<BudgetScreen> {
     final startOfWeek = startOfToday.subtract(const Duration(days: 6));
     final endOfWeek = endOfToday;
 
-    final pastMonthDate = DateTime(now.year, now.month - 1, 1);
-    final startOfPastMonth = DateTime(
-      pastMonthDate.year,
-      pastMonthDate.month,
-      1,
-    );
-    final endOfPastMonth = DateTime(now.year, now.month, 1);
-
     double sumYear = 0;
     double sumMonth = 0;
     double sumWeek = 0;
     double sumToday = 0;
-    double sumPastMonth = 0;
 
     for (var e in realExpenses) {
       final dt = e.dateTime;
@@ -101,9 +91,6 @@ class _BudgetScreenState extends State<BudgetScreen> {
       if (!dt.isBefore(startOfToday) && dt.isBefore(endOfToday)) {
         sumToday += e.price;
       }
-      if (!dt.isBefore(startOfPastMonth) && dt.isBefore(endOfPastMonth)) {
-        sumPastMonth += e.price;
-      }
     }
 
     if (!mounted) return;
@@ -113,7 +100,6 @@ class _BudgetScreenState extends State<BudgetScreen> {
       monthlySpent = sumMonth;
       weeklySpent = sumWeek;
       todaySpent = sumToday;
-      pastMonthlySpent = sumPastMonth;
       isLoading = false;
     });
   }
@@ -216,7 +202,6 @@ class _BudgetScreenState extends State<BudgetScreen> {
             BudgetUsageProjection(
               monthlyBudget: monthlyBudget,
               monthlySpent: monthlySpent,
-              pastMonthlySpent: pastMonthlySpent,
               remainingDays: remainingDays,
             ),
 

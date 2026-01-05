@@ -6,32 +6,22 @@ import 'package:flutter/material.dart';
 class BudgetUsageProjection extends StatelessWidget {
   final double monthlyBudget;
   final double monthlySpent;
-  final double pastMonthlySpent;
   final int remainingDays;
 
   const BudgetUsageProjection({
     super.key,
     required this.monthlyBudget,
     required this.monthlySpent,
-    required this.pastMonthlySpent,
     required this.remainingDays,
   });
 
   @override
   Widget build(BuildContext context) {
-    // --- Projection Logic with Fallback ---
-    const double daysInPastMonthForAvg = 30.0;
-    
     // Get current day number for fallback calculation
     final double daysPassed = DateTime.now().day.toDouble(); 
-    final bool hasPastData = pastMonthlySpent > 0;
-
-    final double pastMonthDailyAvg = pastMonthlySpent / daysInPastMonthForAvg;
 
     // Fallback Logic: If no past data, use current month's average daily spend
-    final double effectiveDailyAvg = hasPastData 
-        ? pastMonthDailyAvg 
-        : (monthlySpent > 0 && daysPassed > 0 ? monthlySpent / daysPassed : 0.0);
+    final double effectiveDailyAvg = (monthlySpent > 0 && daysPassed > 0 ? monthlySpent / daysPassed : 0.0);
 
     final double projectedFutureExpense = effectiveDailyAvg * remainingDays;
     final double totalProjectedExpense = monthlySpent + projectedFutureExpense;
@@ -40,9 +30,7 @@ class BudgetUsageProjection extends StatelessWidget {
     final double projectedPercentage = totalProjectedExpense / monthlyBudget;
 
     // Determine the source of the projection for the explanation text
-    final String projectionSource = hasPastData 
-        ? "based on last month" 
-        : "based on current month";
+    final String projectionSource = "based on current month";
     // ------------------------------------
 
     // --- Responsive Sizing (from BudgetCardGlass) ---

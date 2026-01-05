@@ -75,6 +75,7 @@ class StartupService {
           type: "Income",
           price: incomeAmount,
           categoryIds: [-1],
+          note: "Budget Income",
           dateTime: DateTime(startMonth.year, startMonth.month, 1),
           isBudgetEntry: true,
         ),
