@@ -24,7 +24,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
   double monthlySpent = 0.0;
   double weeklySpent = 0.0;
   double todaySpent = 0.0;
-  
+  double thisLastMonthSpent = 0.0;
 
   bool isLoading = true;
 
@@ -72,10 +72,14 @@ class _BudgetScreenState extends State<BudgetScreen> {
     final startOfWeek = startOfToday.subtract(const Duration(days: 6));
     final endOfWeek = endOfToday;
 
+    final startOfLastMonth = DateTime(now.year, now.month - 1, 1);
+    final endOfLastMonth = DateTime(now.year, now.month, 1);
+
     double sumYear = 0;
     double sumMonth = 0;
     double sumWeek = 0;
     double sumToday = 0;
+    double lastMonthSpent = 0;
 
     for (var e in realExpenses) {
       final dt = e.dateTime;
@@ -91,6 +95,9 @@ class _BudgetScreenState extends State<BudgetScreen> {
       if (!dt.isBefore(startOfToday) && dt.isBefore(endOfToday)) {
         sumToday += e.price;
       }
+      if (!dt.isBefore(startOfLastMonth) && dt.isBefore(endOfLastMonth)) {
+        lastMonthSpent += e.price;
+      }
     }
 
     if (!mounted) return;
@@ -100,6 +107,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
       monthlySpent = sumMonth;
       weeklySpent = sumWeek;
       todaySpent = sumToday;
+      thisLastMonthSpent = lastMonthSpent;
       isLoading = false;
     });
   }
@@ -188,6 +196,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
 
     final daysInCurrentMonth = DateTime(now.year, now.month + 1, 0).day;
     final remainingDays = daysInCurrentMonth - now.day;
+    final daysSpent = now.day;
 
     return Scaffold(
       appBar: const CustomAppBar(
@@ -202,7 +211,9 @@ class _BudgetScreenState extends State<BudgetScreen> {
             BudgetUsageProjection(
               monthlyBudget: monthlyBudget,
               monthlySpent: monthlySpent,
+              lastMonthSpent: thisLastMonthSpent,
               remainingDays: remainingDays,
+              daysSpent: daysSpent,
             ),
 
             const SizedBox(height: 20),
